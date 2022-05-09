@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4473975344231072728}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -45,9 +45,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wName: SwordSwing
-  weapPrefab: {fileID: 4665526592291766724, guid: 82c6c3f26038cb14597d076d35a9408f, type: 3}
+  weapPrefab: {fileID: 5645462391194907905, guid: 31b82b731cfbef443ab388d4ec28626b, type: 3}
+  playerObj: {fileID: 0}
   curCooldown: 0
   tickMaxCD: 10
+  iterations: 1
+  damage: 3
   spawnDetails:
   - spawnpoint: 0
     needsParent: 1
+  level: 1
+  logics: {fileID: 0}
+  swingNumber: 1
+  swordObjs: []
+  swordlogics: []

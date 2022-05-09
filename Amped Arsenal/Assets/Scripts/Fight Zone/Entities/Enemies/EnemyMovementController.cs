@@ -14,12 +14,13 @@ public class EnemyMovementController : MonoBehaviour
     }
 
     public EnemyStates enemyState;
-    public Animator animC;
+    public SpriteRenderer theSR;
 
     private GameObject target;
 
     private EnemyController eController;
     private Rigidbody thisRB;
+    public GameObject visuals;
     
     public float distance;
     public float attackRange, attackCooldown, attackCooldownMax;
@@ -34,13 +35,15 @@ public class EnemyMovementController : MonoBehaviour
     public GameObject deathPartSys;
     private Quaternion partSysRotation;
 
+    public Vector3 dir;
+
 
     // Start is called before the first frame update
     void Start()
     {
         target = PlayerController.playerObj.gameObject;
         eController = gameObject.GetComponent<EnemyController>();
-        animC.GetComponentInChildren<Animator>();
+        //animC.GetComponentInChildren<Animator>();
         enemyState = EnemyStates.MOVE;
         thisRB = GetComponent<Rigidbody>();
 
@@ -50,10 +53,31 @@ public class EnemyMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        dir = target.transform.position - transform.position;
+        //Debug.Log(dir);
+        // ignore any height difference:
+        
+        // calculate velocity limited to the desired speed:
+        var velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
+        //Debug.Log(velocity);
+        dir.y = 0;
+        velocity.y = 0;
+        Debug.Log(velocity);
+        //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+
+        //flip sprite
+        if(dir.x > 0)
+        {
+            theSR.flipX = true;
+        }
+        else if(dir.x < 0)
+        {
+            theSR.flipX = false;
+        }
+
         if(enemyState != EnemyStates.DEAD)
         {
             distance = Vector3.Distance(target.transform.position, transform.position);
-            transform.LookAt(target.transform, Vector3.up);
         }
         
         switch(enemyState)
@@ -64,13 +88,12 @@ public class EnemyMovementController : MonoBehaviour
                 //CHASE
                 if(!inRange)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.transform.position.x, 0, target.transform.position.z), eController._stats["spd"].Value * Time.deltaTime);
-                    //mcontroller.Move(Vector3.forward * eController._stats["spd"].Value * Time.deltaTime);
+                    thisRB.velocity = velocity;
                 }
                 //IN RANGE
                 else
                 {
-                    animC.SetBool("inRange", true);
+                    //animC.SetBool("inRange", true);
                     eController.AttackPlayer(target.GetComponent<PlayerController>());
                     enemyState = EnemyStates.ATTACK;
                 }
@@ -85,7 +108,7 @@ public class EnemyMovementController : MonoBehaviour
                 else
                 {
                     attackCooldown = 0;
-                    animC.SetBool("inRange", false);                    
+                    //animC.SetBool("inRange", false);                    
                     enemyState = EnemyStates.MOVE;
                 }
             break;
@@ -101,22 +124,17 @@ public class EnemyMovementController : MonoBehaviour
                     stagCD = 0;
                     thisRB.velocity = Vector3.zero;
                     isStaggered = false;
-                    animC.SetBool("isStaggered", isStaggered);
-                    if(eController.AmDead())
-                    {
-                        enemyState = EnemyStates.DEAD;
-                        deathPartSys.GetComponentInChildren<ParticleSystem>().Play();
-                        break;
-                    }
                     enemyState = EnemyStates.MOVE;
                 }
             break;
 
             case EnemyStates.DEAD:
                 deathPartSys.transform.rotation = partSysRotation;
-                GetComponent<BoxCollider>().enabled = false;
-                animC.SetBool("inRange", false); 
-                animC.SetBool("isDead", true);
+                GetComponent<CapsuleCollider>().enabled = false;
+                thisRB.velocity = Vector3.down *5;
+                visuals.GetComponent<VisualEffects>().Died();
+                //animC.SetBool("inRange", false); 
+                //animC.SetBool("isDead", true);
                 Destroy(this.gameObject, 2f);
             break;
         }
@@ -127,13 +145,18 @@ public class EnemyMovementController : MonoBehaviour
         if(collision.tag == "Weapon")
         {
             Rigidbody rb = collision.GetComponent<Rigidbody>();
-        
-            if(rb != null && enemyState != EnemyStates.STAGGER)
+
+            if(eController.AmDead())
+            {
+                enemyState = EnemyStates.DEAD;
+                deathPartSys.GetComponentInChildren<ParticleSystem>().Play();
+            }
+            else if(rb != null && enemyState != EnemyStates.STAGGER)
             {
                 //use stagger anim and stop movement
                 isStaggered = true;
-                animC.SetBool("inRange", false);
-                animC.SetBool("isStaggered", isStaggered);
+                //animC.SetBool("inRange", false);
+                //animC.SetBool("isStaggered", isStaggered);
                 enemyState = EnemyStates.STAGGER;
 
                 //calculate knockback

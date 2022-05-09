@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class PlayerController : Actor
 {
-    public GameObject weapLibObj;
+    public GameObject equippedWeapsObj;
     public WeaponLib weapLib;
-    public GameObject instObj, tempObj;
+    private GameObject instObj, tempObj;
 
     public List<GameObject> equippedWeapons = new List<GameObject>();
     public List<GameObject> spawnPoints = new List<GameObject>();
     public static PlayerController playerObj;
     public event Action<Stat> UpdateHPBar;
+    public event Action<Stat, bool> UpdateXPBar;
+
+    [Header("UI")]
+    public TextMeshProUGUI xpText;
 
     //List of equipped weapons List<Weapon>
 
@@ -34,7 +39,8 @@ public class PlayerController : Actor
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("pull",      50);    // How far to pull object from.
+        _stats.AddStat("pull",    4,15);    // How far to pull object from.
+        _stats.AddStat("xp",      0,10000);    // xp.
         
     }
 
@@ -42,7 +48,22 @@ public class PlayerController : Actor
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
+            //AddWeaponToCache("SwordSwing");
+            AddWeaponToCache("Axe");
+        }
+
+        if(Input.GetKeyDown(KeyCode.W))
+        {
             AddWeaponToCache("SwordSwing");
+            //AddWeaponToCache("Axe");
+        }
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            foreach(GameObject go in equippedWeapons)
+            {
+                go.GetComponent<WeaponBase>().UpgradeWeapon();
+            }
         }
     }
     
@@ -53,23 +74,41 @@ public class PlayerController : Actor
         UpdateHPBar(_stats["hp"]);
     }
 
-    public void SpawnWeapon(GameObject weapon, int spawnPoint, bool setParent)
+    public void AddXP(int xpAmount)
     {
-        //check weapon if it needs to be made a child of the spawn point
-        GameObject createdWeapon = Instantiate(weapon, spawnPoints[spawnPoint].transform.position, spawnPoints[spawnPoint].transform.rotation);
-        if(setParent)
+        int overflow = 0;
+        if((_stats["xp"].Value + xpAmount) >= _stats["xp"].Max)
         {
-            createdWeapon.transform.SetParent(spawnPoints[spawnPoint].transform);
+            overflow = ((int)_stats["xp"].Value + xpAmount) - _stats["xp"].Max;
+            Set("xp", 0 + overflow);
+            //LevelUp();
         }
+        else
+        {
+            Set("xp", _stats["xp"].Value + xpAmount);
+        }
+        xpText.text = "XP: " + _stats["xp"].Value;
+    }
+
+    public void LevelUp()
+    {
+        //call pause instance for timescale pausing
+        //GameZoneController.Instance.PauseGame(true);
+
+        //algorithm for leveling up
+        _stats["xp"].IncreaseMaxBy(10);
     }
 
     public void AddWeaponToCache(string weapName)
     {
         //Get weapon to spawn from library
         instObj = weapLib.FindWeaponFromLib(weapName);
+
         //create weapon object under the library
-        tempObj = Instantiate(instObj, weapLibObj.transform.position, weapLibObj.transform.rotation);
-        tempObj.transform.SetParent(weapLibObj.transform);
+        tempObj = Instantiate(instObj, equippedWeapsObj.transform.position, equippedWeapsObj.transform.rotation);
+        tempObj.transform.SetParent(equippedWeapsObj.transform);
+        tempObj.GetComponent<WeaponBase>().playerObj = this;
+
         //equip weapon to list
         equippedWeapons.Add(tempObj);
     }

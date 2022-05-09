@@ -5,55 +5,56 @@ using UnityEngine;
 public class ThirdPersonMovement : MonoBehaviour
 {
     public Joystick joystick;
-    public CharacterController controller;
-    public float speed, turnSmoothTIme = 0.1f;
-    float turnSMoothVel;
+    public float speed;
+    public Rigidbody theRB;
+    public Vector2 moveInput;
+    public Animator quispyAnim;
+    public SpriteRenderer theSR;
+    public bool lookedLeft = false, lookedRight = false;
 
-    [Header("Gravity")]
-    private float gravity = -9.81f;
-    private Vector3 velocity;
-    public Transform groundCheck;
-    public float groundDist = 0.4f;
-    public LayerMask groundMask;
-    private bool isGrounded;
-    public bool isMoving;
-    public Animator animC;
-
-    void Awake()
+    public void Flipperoo()
     {
-        animC.GetComponentInChildren<Animator>();
+        if(theSR.flipX == true)
+        {
+            theSR.flipX = false;
+        }
+        else if(theSR.flipX == false)
+        {
+            theSR.flipX = true;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        float horizontal = joystick.Horizontal;
-        float vertical = joystick.Vertical;
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        moveInput.x = joystick.Horizontal;
+        moveInput.y = joystick.Vertical;
+        moveInput.Normalize();
 
-        isMoving = direction != Vector3.zero ? true : false;
-        
-        animC.SetBool("isMoving", isMoving);
+        theRB.velocity = new Vector3(moveInput.x * speed, 0f, moveInput.y * speed);
 
-        //gravity
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDist, groundMask);
-
-        if(isGrounded && velocity.y < 0)
+        if(moveInput.x < 0)
         {
-            velocity.y = -2f;
-        }
-        velocity.y += gravity * Time.deltaTime;
-
-        controller.Move(velocity * Time.deltaTime);
-
-        if(direction.magnitude >= 0.1f)
+            if(lookedLeft == false)
+            {                
+                lookedLeft = true;
+                lookedRight = false;
+                if(theSR.flipX == false)
+                {
+                    quispyAnim.SetTrigger("Flip");
+                }
+            }
+            
+        } else if(moveInput.x > 0)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSMoothVel, turnSmoothTIme);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            Vector3 moveDir =  Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            //pull speed stat from controller
-            controller.Move(moveDir.normalized * PlayerController.playerObj._stats["spd"].Value * Time.deltaTime);
+            if(lookedRight == false)
+            {
+                lookedLeft = false;
+                lookedRight = true;
+                if(theSR.flipX == true)
+                {
+                    quispyAnim.SetTrigger("Flip");
+                }
+            }
         }
     }
 }

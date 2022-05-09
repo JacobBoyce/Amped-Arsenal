@@ -5,26 +5,49 @@ using UnityEngine;
 public class SwordSwingLogic : MonoBehaviour
 {
     public Animator swingAnimator;
-    public int swingNum = 3;
+    public int swingNum;
 
-    public float damage = 3;
+    public SwordSwingController controller;
 
-    void Awake()
+    //public float damage = 3;
+
+    public void InitSword(SwordSwingController cont, int initSwingNum)
     {
-        swingAnimator.SetInteger("swingNum", swingNum);
+        controller = cont;
+        SetSwingNum(initSwingNum);
     }
 
+    //animator uses this to know how many times to swing
     public void UpdateSwingNumber()
     {
         if(swingNum > 0)
         {
             swingNum--;
-            swingAnimator.SetInteger("swingNum", swingNum);
+            SetSwingNum(swingNum);
         }
-        else
+        else if(swingNum == 0)
         {
-            Destroy(this.gameObject.transform.parent.gameObject);
+            //swingAnimator.SetInteger("swingNum", swingNum);
+            StartCoroutine(WaitForAnimEnd());
         }
+    }
+
+    IEnumerator WaitForAnimEnd()
+    {
+        yield return new WaitForSeconds(.2f);
+        this.gameObject.SetActive(false);
+    }
+
+    public void TurnOn()
+    {
+        SetSwingNum(controller.swingNumber);
+        swingAnimator.SetBool("moreSwings", true);
+    }
+
+    public void SetSwingNum(int num)
+    {
+        swingNum = num;
+        swingAnimator.SetInteger("swingNum", swingNum);
     }
 
     public void OnTriggerEnter(Collider collision)
@@ -33,8 +56,7 @@ public class SwordSwingLogic : MonoBehaviour
 
         if(ec != null)
         {
-            //Debug.Log("Sending damage: " +PlayerController.playerObj._stats["str"].Value * damage);
-            ec.TakeDamage(PlayerController.playerObj._stats["str"].Value * damage);
+            controller.SendDamage(ec);
         }
     }
 }
