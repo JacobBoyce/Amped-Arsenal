@@ -62,7 +62,7 @@ public class SwordSwingController : WeaponBase
                 tempWeapSpawn.gameObject.transform.SetParent(playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform);
             }
 
-            tempWeapSpawn.GetComponent<SwordSwingLogic>().InitSword(this, swingNumber);
+            tempWeapSpawn.GetComponent<SwordSwingLogic>().InitSword(this, weapMod, swingNumber);
 
             swordObjs.Add(tempWeapSpawn);
             swordlogics.Add(tempWeapSpawn.GetComponent<SwordSwingLogic>());

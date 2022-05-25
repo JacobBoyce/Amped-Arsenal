@@ -80,7 +80,7 @@ public class AxeController : WeaponBase
             
             axeParent.transform.position = playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform.position;
             axeParent.GetComponent<FollowObject>().target = playerObj.spawnPoints[spawnDetails[i].spawnpoint].gameObject;
-            axeParent.GetComponentInChildren<AxeParent>().InitAxes(this, rotSpeed, distanceFromPlayer, speedOut);           
+            axeParent.GetComponentInChildren<AxeParent>().InitAxes(this, weapMod, rotSpeed, distanceFromPlayer, speedOut);           
         }        
     }
 

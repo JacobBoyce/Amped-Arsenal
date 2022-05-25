@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3878583972080492049}
   - component: {fileID: 2105884505301416687}
+  - component: {fileID: -8371573860064490137}
   m_Layer: 0
   m_Name: AxeContollerObj
   m_TagString: Untagged
@@ -47,9 +48,11 @@ MonoBehaviour:
   wName: Axe
   weapPrefab: {fileID: 7954670017760847499, guid: d645cb1830b3e71449c9e8628017cab4, type: 3}
   playerObj: {fileID: 0}
+  shopItemInfo: {fileID: 11400000, guid: 65094ad68f25714449649459c4052476, type: 2}
+  weapMod: {fileID: 0}
   curCooldown: 0
   tickMaxCD: 10
-  damage: 10
+  damage: 5
   spawnDetails:
   - spawnpoint: 4
     needsParent: 0
@@ -63,3 +66,17 @@ MonoBehaviour:
   activeSpinCDMax: 5
   spawnDelay: 0
   axeParent: {fileID: 0}
+--- !u!114 &-8371573860064490137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3688495694739287674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b974b903e97f7e840a2daef718927cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giveKnockback: 1
+  eleType: 0

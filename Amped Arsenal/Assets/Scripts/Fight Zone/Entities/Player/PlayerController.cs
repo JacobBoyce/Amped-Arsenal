@@ -6,18 +6,21 @@ using TMPro;
 
 public class PlayerController : Actor
 {
+    public GameObject mainController;
     public GameObject equippedWeapsObj;
     public WeaponLib weapLib;
     private GameObject instObj, tempObj;
 
     public List<GameObject> equippedWeapons = new List<GameObject>();
     public List<GameObject> spawnPoints = new List<GameObject>();
+    public List<GameObject> rotatingSpawnPoints = new List<GameObject>();
     public static PlayerController playerObj;
     public event Action<Stat> UpdateHPBar;
-    public event Action<Stat, bool> UpdateXPBar;
+
 
     [Header("UI")]
     public TextMeshProUGUI xpText;
+    public TextMeshProUGUI goldText;
 
     //List of equipped weapons List<Weapon>
 
@@ -27,6 +30,18 @@ public class PlayerController : Actor
         {
             UpdateHPBar(stat);
         }
+    }
+
+    public bool FindWeapon(string weapName)
+    {
+        foreach(GameObject weap in equippedWeapons)
+        {
+            if(weap.GetComponent<WeaponBase>().wName.Equals(weapName))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -40,7 +55,9 @@ public class PlayerController : Actor
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",    4,15);    // How far to pull object from.
-        _stats.AddStat("xp",      0,10000);    // xp.
+        _stats.AddStat("xp",      0,10000); // Xp.
+        _stats.AddStat("gold",    25,10000); //Gold
+        goldText.text = "Gold: " + _stats["gold"].Value;
         
     }
 
@@ -54,7 +71,13 @@ public class PlayerController : Actor
 
         if(Input.GetKeyDown(KeyCode.W))
         {
-            AddWeaponToCache("SwordSwing");
+            AddWeaponToCache("Sword");
+            //AddWeaponToCache("Axe");
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            AddWeaponToCache("Spear");
             //AddWeaponToCache("Axe");
         }
 
@@ -76,7 +99,7 @@ public class PlayerController : Actor
 
     public void AddXP(int xpAmount)
     {
-        int overflow = 0;
+        /*int overflow = 0;
         if((_stats["xp"].Value + xpAmount) >= _stats["xp"].Max)
         {
             overflow = ((int)_stats["xp"].Value + xpAmount) - _stats["xp"].Max;
@@ -87,7 +110,15 @@ public class PlayerController : Actor
         {
             Set("xp", _stats["xp"].Value + xpAmount);
         }
+        */
+        Set("xp", _stats["xp"].Value + xpAmount);
         xpText.text = "XP: " + _stats["xp"].Value;
+    }
+
+    public void AddGold(int goldAmount)
+    {
+        Set("gold", _stats["gold"].Value + goldAmount);
+        goldText.text = "Gold: " + _stats["gold"].Value;
     }
 
     public void LevelUp()

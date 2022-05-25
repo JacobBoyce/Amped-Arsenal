@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemySpawnController : MonoBehaviour
 {
         //POSSIBLE OBJECT POOLING FOR ENEMIES
+    public bool toggleSpawning;
 
     public GameObject enemyPrefab, tempePrefab;
     public List<GameObject> enemyPrefabs = new List<GameObject>();
@@ -12,26 +13,24 @@ public class EnemySpawnController : MonoBehaviour
     //private Quaternion rotation;
 
     public float spawnRate, spawnRateMax;
-    // Start is called before the first frame update
-    void Awake()
-    {
-        //rotation = transform.rotation;
-    }
+
 
     // Update is called once per frame
     void Update()
     {
-        if(spawnRate < spawnRateMax)
+        if(toggleSpawning)
         {
-            spawnRate += Time.deltaTime;
+            if(spawnRate < spawnRateMax)
+            {
+                spawnRate += Time.deltaTime;
+            }
+            else
+            {
+                spawnRate = 0;
+                UpdateSpawnPoints();
+                SpawnEnemy();
+            }
         }
-        else
-        {
-            spawnRate = 0;
-            UpdateSpawnPoints();
-            SpawnEnemy();
-        }
-        //transform.rotation = rotation;
     }
 
     public void SpawnEnemy()

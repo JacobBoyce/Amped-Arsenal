@@ -28,12 +28,12 @@ public class AxeChild : MonoBehaviour
         }
     }
 
-    public void InitStuff(AxeController cont, float speed,float distFP)
+    public void InitStuff(AxeController cont, WeaponMods mod,float speed,float distFP)
     {
         moveOut = false;
         UpdateValues(speed, distFP);
         curAxe = Instantiate(axePrefab, transform.position, transform.rotation);
-        curAxe.GetComponent<AxeLogic>().UpdateInfo(cont);
+        curAxe.GetComponent<AxeLogic>().UpdateInfo(cont, mod);
         visuals = curAxe.GetComponent<AxeLogic>().visuals;
         curAxe.GetComponent<FollowObject>().SetValues(gameObject, 100f);
         ToggleAxe(false);

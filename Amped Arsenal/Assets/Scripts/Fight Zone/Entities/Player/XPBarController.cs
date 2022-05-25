@@ -11,7 +11,7 @@ public class XPBarController : MonoBehaviour
     private bool updateBar = false;
     void Start()
     {
-        PlayerController.playerObj.UpdateXPBar += UpdateXPUI;
+        //PlayerController.playerObj.UpdateXPBar += UpdateXPUI;
     }
 
     public void UpdateXPUI(Stat stat, bool hasLeveled)

@@ -7,7 +7,8 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public string wName;
     public GameObject weapPrefab;
     public PlayerController playerObj;
-
+    public ShopItemSO shopItemInfo;
+    public WeaponMods weapMod;
     public int curCooldown, tickMaxCD, damage;
 
     [Header("Spawnpoint:\n0 = Front\n1 = Back\n2 = Left\n3 = Right \n4 = Center")]

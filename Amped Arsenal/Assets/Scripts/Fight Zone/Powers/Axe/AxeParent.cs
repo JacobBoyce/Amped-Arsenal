@@ -17,7 +17,7 @@ public class AxeParent : MonoBehaviour
         transform.Rotate(new Vector3(0, rotationSpeed * Time.deltaTime,0));
     }
 
-    public void InitAxes(AxeController cont, float rotSpeed, float distFP, float spo)
+    public void InitAxes(AxeController cont, WeaponMods mod,float rotSpeed, float distFP, float spo)
     {
         controller = cont;
         rotationSpeed = rotSpeed;
@@ -27,7 +27,7 @@ public class AxeParent : MonoBehaviour
         {
             //have the init spawn the axe then keep it deactive
             //then have a bool set in the child to run on the axe
-            go.GetComponent<AxeChild>().InitStuff(controller, spo, distFromPlayer);
+            go.GetComponent<AxeChild>().InitStuff(controller, mod,spo, distFromPlayer);
             axes.Add(go.GetComponent<AxeChild>());
         }
     }

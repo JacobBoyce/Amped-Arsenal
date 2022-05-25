@@ -9,10 +9,12 @@ public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
     public PlayerController p1;
-    public GameObject statsPanel, upgradePanel;
+    public GameObject statsPanel, uiController, upgradePanel, shopPanel;
     public TextMeshProUGUI statsTxt;
+    public ShopMenuController shopController;
 
-    public bool statsVisible;
+
+    public bool isPaused, statsVisible;
 
 
     private void Awake() 
@@ -58,16 +60,32 @@ public class GameZoneController : MonoBehaviour
         statsPanel.SetActive(onoff);
     }
 
-    public void PauseGame(bool pauseVar)
+    public void PauseGame()
     {
-        if(pauseVar == true)
+        isPaused = isPaused == true ? false : true;
+        if(isPaused == true)
         {
             Time.timeScale = 0;
         }
         else
         {
             Time.timeScale = 1;
-            upgradePanel.SetActive(false);
         }
+
+    }
+
+    public void OpenShop()
+    {
+        PauseGame();
+        uiController.SetActive(false);
+        shopPanel.SetActive(true);
+        shopController.InitShop();
+    }
+
+    public void TurnOffShop()
+    {
+        PauseGame();
+        uiController.SetActive(true);
+        shopPanel.SetActive(false);
     }
 }

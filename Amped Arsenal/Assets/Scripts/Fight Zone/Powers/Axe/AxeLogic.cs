@@ -5,10 +5,12 @@ using UnityEngine;
 public class AxeLogic : MonoBehaviour
 {
     public GameObject visuals;
-    public AxeController controller;
-    public void UpdateInfo(AxeController acont)
+    public AxeController controller; 
+    public WeaponMods weapMod;
+    public void UpdateInfo(AxeController acont, WeaponMods mod)
     {
         controller = acont;
+        weapMod = mod;
     }
 
     public void OnTriggerEnter(Collider collision)

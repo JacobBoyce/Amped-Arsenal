@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+//using System;
 
 public class EnemyController : Actor
 {
     public SpriteRenderer spriteR;
-    public GameObject xpPrefab;
-    public float blinkIntesity, blinkDuration, blinkTimer;
+    public GameObject deathPoof;
+    public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
     public bool tookDamage, spawnedXp = false;
+
+    public List<GameObject> drops = new List<GameObject>();
+    int multiDropChance, dropIndex;
 
     [Header("Stats")]
     public int hpMax;
-    public int str, def, spd, xp;
+    public int str, def, spd, xp, gold;
 
     void Awake()
     {
@@ -24,8 +27,8 @@ public class EnemyController : Actor
         _stats.AddStat("spd",     3,50);    // Movement speed
         _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("xp",       1,5);    //How much xp to give the player
+        _stats.AddStat("gold",     1,5);    //How much xp to give the player
         //_stats.Fill();
-        xpPrefab.GetComponent<MoveToPlayer>().xpAmount = (int)_stats["xp"].Value;
         spriteR = GetComponentInChildren<SpriteRenderer>();
 
         SetStats();
@@ -38,6 +41,7 @@ public class EnemyController : Actor
         _stats["def"].Value = def;
         _stats["spd"].Value = spd;
         _stats["xp"].Value = xp;
+        _stats["gold"].Value = gold;
     }
 
     public void Update()
@@ -74,9 +78,48 @@ public class EnemyController : Actor
         if(isDead && spawnedXp == false)
         {
             spawnedXp = true;
-            Instantiate(xpPrefab, transform.position, transform.rotation);
+            SpawnDrop();
+            Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
         }
         return isDead;
+    }
+
+    public void SpawnDrop()
+    {
+        int rand1, rand2;
+        List<GameObject> dropped = new List<GameObject>();
+        // chance for multi drop
+        multiDropChance = Random.Range(0,10);
+        if(multiDropChance < 3)
+        {
+            rand1 = Random.Range(0,drops.Count);
+            rand2 = Random.Range(0,drops.Count);
+            while(rand2 == rand1)
+            {
+                rand2 = Random.Range(0,drops.Count);
+            }
+
+            dropped.Add(Instantiate(drops[rand1], transform.position, transform.rotation));
+            dropped.Add(Instantiate(drops[rand2], transform.position, transform.rotation));
+            //choose two random drops from drop list
+        }
+        else
+        {
+            dropIndex = Random.Range(0,drops.Count);
+            dropped.Add(Instantiate(drops[dropIndex], transform.position, transform.rotation));
+        }
+
+        foreach(GameObject go in dropped)
+        {
+            if(go.tag == "XP")
+            {
+                go.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
+            }
+            else if(go.tag == "Gold")
+            {
+                go.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
+            }
+        }
     }
 
     public void VisualDamage()
@@ -86,7 +129,10 @@ public class EnemyController : Actor
             blinkTimer -= Time.deltaTime;
             float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
             float intensity = (lerp * blinkIntesity) + 1.0f;
-            spriteR.material.color = Color.white * intensity;
+            if(spriteR != null)
+            {
+                spriteR.material.color = Color.white * intensity;
+            }
         }
         else
         {

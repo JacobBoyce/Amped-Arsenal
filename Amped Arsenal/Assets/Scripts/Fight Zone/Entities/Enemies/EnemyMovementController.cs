@@ -8,7 +8,7 @@ public class EnemyMovementController : MonoBehaviour
     {
         STAGGER,
         MOVE,
-        IDLE,
+        INIT,
         ATTACK,
         DEAD
     }
@@ -24,30 +24,26 @@ public class EnemyMovementController : MonoBehaviour
     
     public float distance;
     public float attackRange, attackCooldown, attackCooldownMax;
-    private bool inRange = false;
+    private bool inRange = false, isDead;
 
     [Header("Stagger vars")]
     public float knockbackAmount;
     public float stagCD, stagCDMax;
-    public bool isStaggered;
-
-    [Header("Death Visuals")]
-    public GameObject deathPartSys;
-    private Quaternion partSysRotation;
-
+    public bool isStaggered, knockbackCalc = true;
     public Vector3 dir;
+    float velocity, initTimer = 0, initTimerMax = .5f;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        knockbackCalc = true;
         target = PlayerController.playerObj.gameObject;
         eController = gameObject.GetComponent<EnemyController>();
         //animC.GetComponentInChildren<Animator>();
-        enemyState = EnemyStates.MOVE;
+        enemyState = EnemyStates.INIT;
         thisRB = GetComponent<Rigidbody>();
-
-        partSysRotation = deathPartSys.transform.rotation;
+        thisRB.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     // Update is called once per frame
@@ -59,21 +55,23 @@ public class EnemyMovementController : MonoBehaviour
         
         // calculate velocity limited to the desired speed:
         var velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
-        //Debug.Log(velocity);
         dir.y = 0;
         velocity.y = 0;
-        Debug.Log(velocity);
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
         //flip sprite
-        if(dir.x > 0)
+        if(!isDead)
         {
-            theSR.flipX = true;
+            if(dir.x > 0)
+            {
+                theSR.flipX = true;
+            }
+            else if(dir.x < 0)
+            {
+                theSR.flipX = false;
+            }
         }
-        else if(dir.x < 0)
-        {
-            theSR.flipX = false;
-        }
+        
 
         if(enemyState != EnemyStates.DEAD)
         {
@@ -82,12 +80,28 @@ public class EnemyMovementController : MonoBehaviour
         
         switch(enemyState)
         {
+            case EnemyStates.INIT:
+                if(initTimer < initTimerMax)
+                {
+                    initTimer += Time.deltaTime;
+                }
+                else
+                {
+                    thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+                    enemyState = EnemyStates.MOVE;
+                }
+            break;
+
             case EnemyStates.MOVE:
                 inRange = distance > attackRange ? false : true;
                 
                 //CHASE
                 if(!inRange)
                 {
+                    dir = target.transform.position - transform.position;
+                    velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
+                    dir.y = 0;
+                    velocity.y = 0;
                     thisRB.velocity = velocity;
                 }
                 //IN RANGE
@@ -125,17 +139,21 @@ public class EnemyMovementController : MonoBehaviour
                     thisRB.velocity = Vector3.zero;
                     isStaggered = false;
                     enemyState = EnemyStates.MOVE;
+                    knockbackCalc = true;
                 }
             break;
 
             case EnemyStates.DEAD:
-                deathPartSys.transform.rotation = partSysRotation;
-                GetComponent<CapsuleCollider>().enabled = false;
-                thisRB.velocity = Vector3.down *5;
-                visuals.GetComponent<VisualEffects>().Died();
-                //animC.SetBool("inRange", false); 
-                //animC.SetBool("isDead", true);
-                Destroy(this.gameObject, 2f);
+                if(!isDead)
+                {
+                    isDead = true;
+                    GetComponent<CapsuleCollider>().enabled = false;
+                    visuals.GetComponent<VisualEffects>().Died();
+                    //animC.SetBool("inRange", false); 
+                    //animC.SetBool("isDead", true);
+                    Destroy(this.gameObject, 1f);
+                }
+                
             break;
         }
     }
@@ -144,27 +162,34 @@ public class EnemyMovementController : MonoBehaviour
     {
         if(collision.tag == "Weapon")
         {
-            Rigidbody rb = collision.GetComponent<Rigidbody>();
-
             if(eController.AmDead())
             {
                 enemyState = EnemyStates.DEAD;
-                deathPartSys.GetComponentInChildren<ParticleSystem>().Play();
+                return;
             }
-            else if(rb != null && enemyState != EnemyStates.STAGGER)
+            if(collision.gameObject.GetComponent<WeaponMods>().giveKnockback)
             {
-                //use stagger anim and stop movement
-                isStaggered = true;
-                //animC.SetBool("inRange", false);
-                //animC.SetBool("isStaggered", isStaggered);
-                enemyState = EnemyStates.STAGGER;
+                Rigidbody rb = collision.GetComponent<Rigidbody>();
+                if(rb != null && enemyState != EnemyStates.STAGGER)
+                {
+                    isStaggered = true;
+                    enemyState = EnemyStates.STAGGER;
 
-                //calculate knockback
-                Vector3 direction = collision.transform.position - transform.position;
-                direction.y = 0;
-                thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
+                    //calculate knockback
+                    if(knockbackCalc == true)
+                    {
+                        Vector3 direction = collision.transform.position - transform.position;
+                        direction.y = 0;
+                        thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
+                    }
+                }
             }
+            visuals.GetComponentInChildren<VisualEffects>().damaged = true; 
         }
-        
+    }
+
+    public void DetectIfKnockback()
+    {
+        knockbackCalc = false;
     }
 }

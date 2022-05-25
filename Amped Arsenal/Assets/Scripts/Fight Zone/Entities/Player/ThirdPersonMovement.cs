@@ -9,19 +9,24 @@ public class ThirdPersonMovement : MonoBehaviour
     public Rigidbody theRB;
     public Vector2 moveInput;
     public Animator quispyAnim;
-    public SpriteRenderer theSR;
-    public bool lookedLeft = false, lookedRight = false;
+    public SpriteRenderer thisSR;
+
+    public enum FlipState
+    {
+        WAIT,
+        CHECKSTATE
+    }
+    public float flipThreshold, flipTimer;
+    public FlipState fpState;
 
     public void Flipperoo()
     {
-        if(theSR.flipX == true)
-        {
-            theSR.flipX = false;
-        }
-        else if(theSR.flipX == false)
-        {
-            theSR.flipX = true;
-        }
+        thisSR.flipX = thisSR.flipX == false ? true : false;
+    }
+
+    public void Start()
+    {
+        fpState = FlipState.CHECKSTATE;
     }
 
     public void Update()
@@ -32,29 +37,76 @@ public class ThirdPersonMovement : MonoBehaviour
 
         theRB.velocity = new Vector3(moveInput.x * speed, 0f, moveInput.y * speed);
 
-        if(moveInput.x < 0)
+        switch(fpState)
         {
-            if(lookedLeft == false)
-            {                
-                lookedLeft = true;
-                lookedRight = false;
-                if(theSR.flipX == false)
+            case FlipState.CHECKSTATE:
+                if(thisSR.flipX == false)
                 {
-                    quispyAnim.SetTrigger("Flip");
+                    //check direction about to go
+                    //if movedir.x < 0 == moving left
+                    if(moveInput.x < 0)
+                    {
+                        flipTimer = 0;
+                        fpState = FlipState.WAIT;
+                        break;
+                    }
                 }
-            }
-            
-        } else if(moveInput.x > 0)
-        {
-            if(lookedRight == false)
-            {
-                lookedLeft = false;
-                lookedRight = true;
-                if(theSR.flipX == true)
+                //if looking right
+                else
                 {
-                    quispyAnim.SetTrigger("Flip");
+                    //if movedir.x > 0 == moving right
+                    if(moveInput.x > 0)
+                    {
+                        flipTimer = 0;
+                        fpState = FlipState.WAIT;
+                        break;
+                    }
                 }
-            }
+            break;
+
+            case FlipState.WAIT:
+                if(flipTimer < flipThreshold)
+                {
+                    flipTimer += Time.deltaTime;
+                }
+                else
+                {
+                    if(thisSR.flipX == false)
+                    {
+                        //check direction about to go
+                        //if movedir.x > 0 == moving right
+                        if(moveInput.x < 0)
+                        {
+                            quispyAnim.SetTrigger("Flip");
+                            flipTimer = 0;
+                            fpState = FlipState.WAIT;
+                            break;
+                        }
+                        else
+                        {
+                            fpState = FlipState.CHECKSTATE;
+                            break;
+                        }
+                    }
+                    //if looking right
+                    else
+                    {
+                        //if movedir.x < 0 == moving left
+                        if(moveInput.x > 0)
+                        {
+                            quispyAnim.SetTrigger("Flip");
+                            flipTimer = 0;
+                            fpState = FlipState.WAIT;
+                            break;
+                        }
+                        else
+                        {
+                            fpState = FlipState.CHECKSTATE;
+                            break;
+                        }
+                    }
+                }
+            break;
         }
     }
 }

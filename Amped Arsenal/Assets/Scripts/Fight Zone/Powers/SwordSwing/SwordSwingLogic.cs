@@ -8,12 +8,14 @@ public class SwordSwingLogic : MonoBehaviour
     public int swingNum;
 
     public SwordSwingController controller;
+    public WeaponMods weapMod;
 
     //public float damage = 3;
 
-    public void InitSword(SwordSwingController cont, int initSwingNum)
+    public void InitSword(SwordSwingController cont, WeaponMods mod, int initSwingNum)
     {
         controller = cont;
+        weapMod = mod;
         SetSwingNum(initSwingNum);
     }
 
@@ -57,6 +59,9 @@ public class SwordSwingLogic : MonoBehaviour
         if(ec != null)
         {
             controller.SendDamage(ec);
+            
+            //to remove any knock back
+            //ec.SendMessage("DetectIfKnockback");
         }
     }
 }

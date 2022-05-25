@@ -4,18 +4,32 @@ using UnityEngine;
 
 public class VisualEffects : MonoBehaviour
 {
-    
+    [Header("Bob Vars")]
     //bobbing values
-    public bool wantBob, islocal;
-    public float floatStrength;
-    public float speed;
-    public float offset;
+    public bool wantBob;
+    public bool islocal;
+    public float floatStrength, speed, offset, deathDeleteTimer;
     private float timer;
+
+    [Header("Shake Vars")]
+    public bool islocalShake;
+    public bool damaged;
+    public float shakeStr, shakeSpeed, shakeDur;
+    private float shakeOsc, shakeTimer;
+
+    [Header("Pop up Vars")]
+    public Rigidbody rbObj;
+    public bool wantPopUp;
+    public float delaytimeToSlowDown, popForce;
+    private float delay;
+
+    Rigidbody rb;
+
     Vector2 floatY;
+    Vector3 floatX;
 
     //switch bool
     bool isDead = false;
-    float deathSpd;
 
     //death vaues
     Vector3 deathPos;
@@ -23,36 +37,104 @@ public class VisualEffects : MonoBehaviour
 
     void Start ()
     {
+        if(rbObj == null)
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+        else
+        {
+            rb = rbObj;
+        }
+        
         floatY = transform.localPosition;
+        floatX = transform.localPosition;
         deathPos = new Vector3(-45, 0, 0);
         angle = transform.rotation.y;
+
+        if(wantPopUp)
+        {
+            PopUp();
+        }
     }
 
     void Update () 
     {
-        if(!isDead && wantBob)
+        if(!isDead && damaged)
         {
-            timer += Time.deltaTime * speed;
-            floatY.y = offset + Mathf.Abs(Mathf.Sin(timer) * floatStrength);
-            if(islocal)
+            if(shakeTimer < shakeDur)
             {
-                transform.localPosition = new Vector3(0,floatY.y,0);
-            } else
-            {
-                transform.position = new Vector3(transform.position.x ,floatY.y, transform.position.z);
+                shakeTimer += Time.deltaTime;
+                shakeOsc += Time.deltaTime * shakeSpeed;
+                floatX.x = Mathf.Abs(Mathf.Sin(shakeOsc) * shakeStr);
+                if(islocalShake)
+                {
+                    transform.localPosition = new Vector3(floatX.x, transform.localPosition.y, 0);
+                } else
+                {
+                    transform.position = new Vector3(floatX.x ,transform.position.y, transform.position.z);
+                }
             }
-            
-        }
-        else if(isDead)
-        {
-            angle--;
-            angle = Mathf.Clamp(angle, -45, 45);
-            transform.localEulerAngles = new Vector3(angle, 0, 0);
-            if(transform.localEulerAngles == deathPos)
+            else
             {
-                Destroy(this.gameObject);
+                shakeTimer = 0;
+                damaged = false;
             }
         }
+
+        if(wantPopUp && wantBob)
+        {
+            if(delay < delaytimeToSlowDown)
+            {
+                delay += Time.deltaTime;
+            }
+            else
+            {
+                if(rb.velocity.magnitude > 0)
+                {
+                    rb.velocity = rb.velocity * 0.95f * Time.deltaTime;
+                }
+                Bobber();
+            }
+            //wait then bobber
+        }
+        else
+        {
+            if(!isDead && wantBob)
+            {
+                Bobber();
+            }
+            else if(isDead)
+            {
+                angle--;
+                angle = Mathf.Clamp(angle, -45, 45);
+                transform.localEulerAngles = new Vector3(angle, 0, 0);
+                Destroy(this.gameObject, deathDeleteTimer);
+                /*if(transform.localEulerAngles == deathPos)
+                {
+                    Destroy(this.gameObject);
+                }*/
+            }
+        }
+    }
+
+    public void Bobber()
+    {
+        timer += Time.deltaTime * speed;
+        floatY.y = offset + Mathf.Abs(Mathf.Sin(timer) * floatStrength);
+        if(islocal)
+        {
+            transform.localPosition = new Vector3(0,floatY.y,0);
+        } else
+        {
+            transform.position = new Vector3(transform.position.x ,floatY.y, transform.position.z);
+        }
+    }
+
+    public void PopUp()
+    {
+        Vector3 dir = new Vector3(Random.Range(-2,2), popForce ,Random.Range(-2,2));
+
+        rb.AddForce(dir, ForceMode.Impulse);
     }
 
     public void Died()
