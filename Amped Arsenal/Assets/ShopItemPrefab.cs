@@ -23,11 +23,10 @@ public class ShopItemPrefab : MonoBehaviour
     }
     public void UpdatePrefab(ShopItemSO shopItem)
     {
-
         title.text = shopItem.weapName;
         desc.text = shopItem.description;
-        splash = shopItem.splashImg;
-        currency = shopItem.currency;
+        splash.sprite = shopItem.splashImg;
+        currency.sprite = shopItem.currency;
         indexNum = shopItem.indexNum;
     }
 }

@@ -7,6 +7,6 @@ using UnityEngine.UI;
 public class ShopItemSO : ScriptableObject
 {
     public string weapName, description, amount;
-    public Image splashImg, currency;
+    public Sprite splashImg, currency;
     public int indexNum;
 }
