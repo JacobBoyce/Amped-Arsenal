@@ -12,8 +12,8 @@ public class PlayerController : Actor
     private GameObject instObj, tempObj;
 
     public List<GameObject> equippedWeapons = new List<GameObject>();
-    public List<GameObject> spawnPoints = new List<GameObject>();
-    public List<GameObject> rotatingSpawnPoints = new List<GameObject>();
+    public List<GameObject> spawnPoints = new();// List<GameObject>();
+    public List<GameObject> rotatingSpawnPoints = new();// List<GameObject>();
     public static PlayerController playerObj;
     public event Action<Stat> UpdateHPBar;
 

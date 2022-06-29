@@ -8,6 +8,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public GameObject weapPrefab;
     public PlayerController playerObj;
     public ShopItemSO shopItemInfo;
+    public WeaponUpgradeSO weapUpgrades;
     public WeaponMods weapMod;
     public int curCooldown, tickMaxCD, damage;
 

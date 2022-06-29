@@ -9,12 +9,48 @@ public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
     public PlayerController p1;
-    public GameObject statsPanel, uiController, upgradePanel, shopPanel;
+    public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
+    public List<GameObject> mainUIComponents = new();
+    public List<GameObject> gamePlayUIComponents = new();
+    public bool isUpgrading;
+    GameObject focusedUI;
 
 
     public bool isPaused, statsVisible;
+
+    public void FocusUI(GameObject focus, bool needPause)
+    {
+        focusedUI = focus;
+        foreach (GameObject go in mainUIComponents)
+        {
+            if(focus == go)
+            {
+                Debug.Log("true");
+                go.SetActive(true);
+            }
+            else
+            {
+                go.SetActive(false);
+            }
+        }
+
+        if (needPause == true)
+        {
+            PauseGame();
+        }
+    }
+
+    public void ResumeGamePlay()
+    {
+        foreach (GameObject go in gamePlayUIComponents)
+        {
+            focusedUI.SetActive(false);
+            go.SetActive(true);
+        }
+        PauseGame();
+    }
 
 
     private void Awake() 
@@ -40,7 +76,22 @@ public class GameZoneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //turn on upgrade screen and turn off other ui
+            if(isUpgrading == false)
+            {
+                FocusUI(upgradePanel, true);
+            }
+            else
+            {
+                //display gameplay ui
+                ResumeGamePlay();
+            }
+            isUpgrading = isUpgrading ? false : true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
         {
             statsVisible = statsVisible ? false : true;
             ShowStats(statsVisible);
@@ -86,6 +137,7 @@ public class GameZoneController : MonoBehaviour
     {
         PauseGame();
         uiController.SetActive(true);
+        currencyUI.SetActive(true);
         shopPanel.SetActive(false);
     }
 }

@@ -14,8 +14,19 @@ public class ShopMenuController : MonoBehaviour
     public bool populatedShop = false, foundNum;
     int[] weapChoices = new int[3]{-1,-1,-1};
     int v1;
+    public GameObject uiParent;
     //player controller.p1
+
+    /*public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            //turn on upgrade screen and turn off other ui
+            controller.FocusUI(uiParent);
+        }
+    }*/
     
+
     public void TurnOffShopUI()
     {
         controller.TurnOffShop();

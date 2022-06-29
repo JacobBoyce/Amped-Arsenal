@@ -81,7 +81,9 @@ public class AxeController : WeaponBase
             axeParent.transform.position = playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform.position;
             axeParent.GetComponent<FollowObject>().target = playerObj.spawnPoints[spawnDetails[i].spawnpoint].gameObject;
             axeParent.GetComponentInChildren<AxeParent>().InitAxes(this, weapMod, rotSpeed, distanceFromPlayer, speedOut);           
-        }        
+        }
+
+        UpdateValues();
     }
 
     public void SendDamage(EnemyController enemy)
@@ -92,27 +94,13 @@ public class AxeController : WeaponBase
     public override void UpgradeWeapon()
     {
         level++;
-        if(level == 2)
-        {
-            tickMaxCD -= 1;
-            damage++;
-            numAxes++;
-        }
-        else if(level == 3)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
-        else if(level == 4)
-        {
-            tickMaxCD -= 1;
-            damage++;
-            numAxes++;
-        }
-        else if(level == 5)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
+        UpdateValues();
+    }
+
+    public void UpdateValues()
+    {
+        numAxes = (int)weapUpgrades.UpgradeList.Find(x => x.weapUp == WeapUpgrade.WeaponUpgrade.AMOUNT).upValues[level];
+        tickMaxCD = (int)weapUpgrades.UpgradeList.Find(x => x.weapUp == WeapUpgrade.WeaponUpgrade.COOLDOWN).upValues[level];
+        damage = (int)weapUpgrades.UpgradeList.Find(x => x.weapUp == WeapUpgrade.WeaponUpgrade.DAMAGE).upValues[level];
     }
 }
