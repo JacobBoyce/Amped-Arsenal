@@ -12,6 +12,7 @@ public class GameZoneController : MonoBehaviour
     public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
+    public ShopMenuAnimController shopAnimeController;
     public List<GameObject> mainUIComponents = new();
     public List<GameObject> gamePlayUIComponents = new();
     public bool isUpgrading;
@@ -131,6 +132,7 @@ public class GameZoneController : MonoBehaviour
         uiController.SetActive(false);
         shopPanel.SetActive(true);
         shopController.InitShop();
+        //shopAnimeController.ToggleDots();
     }
 
     public void TurnOffShop()
@@ -139,5 +141,6 @@ public class GameZoneController : MonoBehaviour
         uiController.SetActive(true);
         currencyUI.SetActive(true);
         shopPanel.SetActive(false);
+        //shopAnimeController.ToggleDots();
     }
 }

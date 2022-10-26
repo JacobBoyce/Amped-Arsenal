@@ -95,6 +95,10 @@ public class EnemyMovementController : MonoBehaviour
             case EnemyStates.MOVE:
                 inRange = distance > attackRange ? false : true;
                 
+                if(isDead)
+                {
+                    enemyState = EnemyStates.DEAD;
+                }
                 //CHASE
                 if(!inRange)
                 {
@@ -151,7 +155,7 @@ public class EnemyMovementController : MonoBehaviour
                     visuals.GetComponent<VisualEffects>().Died();
                     //animC.SetBool("inRange", false); 
                     //animC.SetBool("isDead", true);
-                    Destroy(this.gameObject, 1f);
+                    Destroy(this.gameObject);
                 }
                 
             break;
@@ -186,10 +190,5 @@ public class EnemyMovementController : MonoBehaviour
             }
             visuals.GetComponentInChildren<VisualEffects>().damaged = true; 
         }
-    }
-
-    public void DetectIfKnockback()
-    {
-        knockbackCalc = false;
     }
 }

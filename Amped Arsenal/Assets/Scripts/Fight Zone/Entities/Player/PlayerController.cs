@@ -121,6 +121,13 @@ public class PlayerController : Actor
         goldText.text = "Gold: " + _stats["gold"].Value;
     }
 
+    public void RemoveGold(int amt)
+    {
+        // add bool to perameters for taking all gold that is left.
+        Set("gold", _stats["gold"].Value - amt);
+        goldText.text = "Gold: " + _stats["gold"].Value;
+    }
+
     public void LevelUp()
     {
         //call pause instance for timescale pausing

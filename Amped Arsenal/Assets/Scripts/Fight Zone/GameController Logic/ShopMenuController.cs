@@ -39,6 +39,7 @@ public class ShopMenuController : MonoBehaviour
             MakeShopItems();
             populatedShop = true;
         }
+        CheckIfCanBuy();
     }
 
     public void ReRollShop()
@@ -117,7 +118,7 @@ public class ShopMenuController : MonoBehaviour
 
     public void ButtonTask(int index)
     {
-        controller.p1._stats["gold"].Value -= price;
+        controller.p1.RemoveGold(price); //_stats["gold"].Value -= price;
         //if index == 0
         //buyableweapons[index] has been bought
         Debug.Log(index);
@@ -130,6 +131,7 @@ public class ShopMenuController : MonoBehaviour
     {
         foreach(ShopItemPrefab sp in buyableItems)
         {
+            //check if you have enough gold to buy
             if(price > controller.p1._stats["gold"].Value)
             {
                 sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
@@ -140,15 +142,27 @@ public class ShopMenuController : MonoBehaviour
                 sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Buy";
                 sp.buyButton.enabled = true;
             }
+            //check if it has already been bought
+            if (controller.p1.FindWeapon(sp.title.text))
+            {
+                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                sp.buyButton.enabled = false;
+            }
         }
     }
 
     public void ScalePrices()
     {
         amountBought++;
-        if(amountBought == 1)
+        price += 25;
+        if (amountBought == 1)
         {
-            price = 50;
+            
+        }
+
+        foreach(ShopItemPrefab sp in buyableItems)
+        {
+            sp.UpdatePrice(price);
         }
     }
 }

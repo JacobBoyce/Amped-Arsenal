@@ -8,13 +8,16 @@ public class SpearLogic : MonoBehaviour
     public WeaponMods weapMod;
     Rigidbody thisRB;
     public int speed, pierceNum;
-    // Start is called before the first frame update
+    
+
     void Start()
     {
+        //when spawned throw the spear in the firsction faced
         thisRB = GetComponent<Rigidbody>();
         thisRB.AddForce(-(controller.playerObj.transform.position - transform.position).normalized * speed, ForceMode.Impulse);
     }
     
+
     public void InitSpear(SpearController sCont, WeaponMods mod)
     {
         controller = sCont;

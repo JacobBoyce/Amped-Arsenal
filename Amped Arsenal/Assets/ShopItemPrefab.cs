@@ -29,4 +29,9 @@ public class ShopItemPrefab : MonoBehaviour
         currency.sprite = shopItem.currency;
         indexNum = shopItem.indexNum;
     }
+
+    public void UpdatePrice(int newPrice)
+    {
+        amount.text = newPrice.ToString();
+    }
 }

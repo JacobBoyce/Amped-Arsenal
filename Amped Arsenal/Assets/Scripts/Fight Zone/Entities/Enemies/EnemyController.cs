@@ -80,6 +80,7 @@ public class EnemyController : Actor
             spawnedXp = true;
             SpawnDrop();
             Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
+            Destroy(this.gameObject);
         }
         return isDead;
     }

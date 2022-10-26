@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4273130302978788563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6582185662734884653}
+  - component: {fileID: 5930798332428847015}
+  - component: {fileID: 3255418615466689697}
+  m_Layer: 0
+  m_Name: CandleController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6582185662734884653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4273130302978788563}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 305.85, y: 1.6399999, z: 394.15778}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5930798332428847015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4273130302978788563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909e153289871eb4e9052810a818d066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wName: Candle
+  weapPrefab: {fileID: 5898951340699611868, guid: b351e86c07a07964ea58bd7028416dfb, type: 3}
+  playerObj: {fileID: 0}
+  shopItemInfo: {fileID: 11400000, guid: bd35be927e50a6e4fabe361f4cf0cd3f, type: 2}
+  weapUpgrades: {fileID: 0}
+  weapMod: {fileID: 3255418615466689697}
+  curCooldown: 0
+  tickMaxCD: 10
+  damage: 1
+  spawnDetails:
+  - spawnpoint: 4
+    needsParent: 0
+  level: 1
+  aoeRange: 5
+  damageTick: 0.5
+--- !u!114 &3255418615466689697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4273130302978788563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b974b903e97f7e840a2daef718927cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giveKnockback: 0
+  eleType: 0

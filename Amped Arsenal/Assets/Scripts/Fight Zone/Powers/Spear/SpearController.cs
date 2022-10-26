@@ -19,29 +19,7 @@ public class SpearController : WeaponBase
         if(curCooldown == tickMaxCD)
         {
             ActivateAbility();
-        }
-
-        /*if(currentlySpinning)
-        {
-            if(activeSpinCD < activeSpinCDMax)
-            {
-                activeSpinCD += Time.deltaTime;
-            }
-            else if(activeSpinCD >= activeSpinCDMax)
-            {
-                activeSpinCD = 0;
-                curCooldown = 0;
-                currentlySpinning = false;
-                ////// turn off axes HERE \\\\\\
-                axeParent.GetComponent<AxeParent>().TurnOffAxes();
-                /*for(int i = 0; i < spawnDetails.Count; i++)
-                {
-                    axes[i].SetActive(false);
-                }
-
-            }
-        }*/
-        
+        }        
     }
 
     public void OnEquipped()
@@ -54,6 +32,7 @@ public class SpearController : WeaponBase
     
     public override void ActivateAbility()
     {
+        //spawn object and call its init method 
         curCooldown = 0;
         for(int i = 0; i < numSpears; i++)
         {
