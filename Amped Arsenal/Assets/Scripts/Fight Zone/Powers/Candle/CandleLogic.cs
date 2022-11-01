@@ -19,7 +19,6 @@ public class CandleLogic : MonoBehaviour
 
     [Header("Spawning Vars")]
     private float cdM = .5f, cd;
-    private bool touchingGround = false;
    
 
     // code jumping animation from player

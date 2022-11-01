@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ShopMenuController : MonoBehaviour
 {
     public GameZoneController controller;
     public WeaponLib weapLib;
-    public GameObject shopWeaponParent, itemPrefab, tempItemPrefab;
+    public GameObject shopWeaponParent, itemPrefab, tempItemPrefab, rerollButton;
     public List<ShopItemPrefab> buyableItems;
     GameObject tempItemObj;
     public int amountBought, price = 25;
-    public bool populatedShop = false, foundNum;
+    public bool populatedShop = false;
     int[] weapChoices = new int[3]{-1,-1,-1};
-    int v1;
+    int v1, shopDirty = 0;
     public GameObject uiParent;
     //player controller.p1
 
@@ -44,9 +45,10 @@ public class ShopMenuController : MonoBehaviour
 
     public void ReRollShop()
     {
-        //take money away
+        //take money away-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         //delete current shop items
-        foreach(ShopItemPrefab pf in buyableItems)
+        foreach (ShopItemPrefab pf in buyableItems)
         {
             Destroy(pf.gameObject);
         }
@@ -54,64 +56,158 @@ public class ShopMenuController : MonoBehaviour
         weapChoices[0] = -1;
         weapChoices[1] = -1;
         weapChoices[2] = -1;
-        foundNum = false;
         MakeShopItems();
+        shopDirty = 0;
+
+        if (NumAvailableWeaponsToBuy() == 3 && shopDirty == 0)
+        {
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
+        
     }
 
     public void ChooseWeapons()
     {
-        v1 = Random.Range(0,weapLib.weaponList.Count);
-        while(controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == true)
+        int numAvail = NumAvailableWeaponsToBuy();
+        //check if there are less than 3 weapons to buy, if there are only 3 choices or less left, disable re roll shop option
+        if (numAvail == 1 && numAvail > 0)
         {
-            v1 = Random.Range(0,weapLib.weaponList.Count);
-        }
-        weapChoices[0] = v1;
-    
-        for (int i = 1; i < weapChoices.Length; i++)
-        {
-            v1 = Random.Range(0,weapLib.weaponList.Count);
-            if(controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == false)
+            v1 = 0;
+            while (controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == true)
             {
-                for (int j = 0; j < i; j++)
+                v1++;
+            }
+            weapChoices[0] = v1;
+            rerollButton.GetComponent<Button>().interactable = false;
+
+        }
+        else if (numAvail == 2 && numAvail > 0)
+        {
+            v1 = 0;
+            while (controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == true)
+            {
+                v1++;
+            }
+            weapChoices[0] = v1;
+
+            bool foundAvail = false;
+            v1 = 0;
+            while (foundAvail == false)
+            {
+                if (controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == false)
                 {
-                    while (v1 == weapChoices[j])
+                    if (v1 != weapChoices[0])
                     {
-                        v1 = Random.Range(0,weapLib.weaponList.Count);
-                        while(controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == true)
-                        {
-                            v1 = Random.Range(0,weapLib.weaponList.Count);
-                        }
-                        j = 0;
+                        foundAvail = true;
+                    }
+                    else
+                    {
+                        v1++;
                     }
                 }
-                weapChoices[i] = v1;
+                else
+                {
+                    v1++;
+                }
             }
-            else
+            weapChoices[1] = v1;
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            //randomly chooses a weapon from the library
+            v1 = Random.Range(0, weapLib.weaponList.Count);
+            // checks if we already have it equipped, if we do then keep trying until we get one we dont have
+            while (controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == true)
             {
-                i--;
+                v1 = Random.Range(0, weapLib.weaponList.Count);
+            }
+            //set the unequipped weapon to sell in slot 1
+            weapChoices[0] = v1;
+
+            //loop to get the other two choices
+            for (int i = 1; i < weapChoices.Length; i++)
+            {
+                //randomly choose another weapon from the list
+                v1 = Random.Range(0, weapLib.weaponList.Count);
+                //check if its equipped
+                if (controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == false)
+                {
+                    //loop thru the list of choices that have already been set so there are no duplicates
+                    for (int j = 0; j < i; j++)
+                    {
+                        //find one until it isnt one in the shop
+                        while (v1 == weapChoices[j])
+                        {
+                            //find one that also isnt equipped
+                            v1 = Random.Range(0, weapLib.weaponList.Count);
+                            while (controller.p1.FindWeapon(weapLib.weaponList[v1].GetComponent<WeaponBase>().wName) == true)
+                            {
+                                v1 = Random.Range(0, weapLib.weaponList.Count);
+                            }
+                            j = 0;
+                        }
+                    }
+                    //set the found weapon to the next slot
+                    weapChoices[i] = v1;
+                }
+                //if it is equipped then start the for loop over until we get one we havent equipped
+                else
+                {
+                    i--;
+                }
             }
         }
+    }
+
+    public int NumAvailableWeaponsToBuy()
+    {
+        int currentlyEquipped = 0;
+        foreach(GameObject weap in weapLib.weaponList)
+        {
+            if (controller.p1.FindWeapon(weap.GetComponent<WeaponBase>().wName) == true)
+            {
+                currentlyEquipped++;
+            }
+        }
+
+        currentlyEquipped = weapLib.weaponList.Count - currentlyEquipped;
+        return currentlyEquipped;
     }
     
 
     public void MakeShopItems()
     {
         ChooseWeapons();
-
+        
         for(int i = 0; i < 3; i++)
         {
+            //if weapon name is blank (-1) then do none of this other than making the prefab
+            
             tempItemPrefab = Instantiate(itemPrefab);
             tempItemPrefab.transform.SetParent(shopWeaponParent.transform);
             tempItemPrefab.transform.localScale = new Vector3(1,1,1);
 
-            tempItemPrefab.GetComponent<ShopItemPrefab>().UpdatePrefab(weapLib.weaponList[weapChoices[i]].GetComponent<WeaponBase>().shopItemInfo);
-            //set what buttons do
-            int tempInt = i;
-            tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.onClick.AddListener(() => ButtonTask(tempInt));
-            //set prices
-            tempItemPrefab.GetComponent<ShopItemPrefab>().amount.text = price.ToString();
-            buyableItems.Add(tempItemPrefab.GetComponent<ShopItemPrefab>());
-            Debug.Log(i);
+            if (weapChoices[i] != -1)
+            {
+                tempItemPrefab.GetComponent<ShopItemPrefab>().UpdatePrefab(weapLib.weaponList[weapChoices[i]].GetComponent<WeaponBase>().shopItemInfo);
+
+                //set what buttons do
+                int tempInt = i;
+                tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.onClick.AddListener(() => ButtonTask(tempInt));
+                //set prices
+                tempItemPrefab.GetComponent<ShopItemPrefab>().amount.text = price.ToString();
+                buyableItems.Add(tempItemPrefab.GetComponent<ShopItemPrefab>());
+            }
+            else if (weapChoices[i] == -1)
+            {
+                tempItemPrefab.GetComponent<ShopItemPrefab>().title.text = "None";
+                tempItemPrefab.GetComponent<ShopItemPrefab>().desc.text = "No Items left to buy";
+                tempItemPrefab.GetComponent<ShopItemPrefab>().amount.text = "0";
+                tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.interactable = false;
+                buyableItems.Add(tempItemPrefab.GetComponent<ShopItemPrefab>());
+            }
         }
         CheckIfCanBuy();
     }
@@ -121,14 +217,38 @@ public class ShopMenuController : MonoBehaviour
         controller.p1.RemoveGold(price); //_stats["gold"].Value -= price;
         //if index == 0
         //buyableweapons[index] has been bought
-        Debug.Log(index);
+        //Debug.Log(index);
         controller.p1.AddWeaponToCache(buyableItems[index].title.text);
         ScalePrices();
         CheckIfCanBuy();
+        shopDirty += 1;
+        int numLeft = NumAvailableWeaponsToBuy();
+        //if dirty = 3 and num left is > 0 allow reroll and fill the blanks
+        //if dirty = 2 and num left is > 2 allow reroll and fill in blanks
+        //if dirty = 1 and num left is >= 3 allow reroll
+        //if dirty = 0 and num left is >= 3 allow reroll
+        if(shopDirty == 3 && numLeft > 0)
+        {
+            rerollButton.GetComponent<Button>().interactable = true;
+        }
+        else if(shopDirty == 2 && numLeft >= 2)
+        {
+            rerollButton.GetComponent<Button>().interactable = true;
+        }
+        else if(shopDirty == 1 && numLeft >= 3)
+        {
+            rerollButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
     }
 
     public void CheckIfCanBuy()
     {
+        //##############################################################################################################
+        //make sure if the buyable item is a blank one that it cant be activated
         foreach(ShopItemPrefab sp in buyableItems)
         {
             //check if you have enough gold to buy
@@ -136,17 +256,21 @@ public class ShopMenuController : MonoBehaviour
             {
                 sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
                 sp.buyButton.enabled = false;
+                sp.buyButton.interactable = false;
             }
             else
             {
                 sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Buy";
                 sp.buyButton.enabled = true;
+                sp.buyButton.interactable = true;
             }
+
             //check if it has already been bought
-            if (controller.p1.FindWeapon(sp.title.text))
+            if (controller.p1.FindWeapon(sp.title.text) || sp.title.text == "None")
             {
                 sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
                 sp.buyButton.enabled = false;
+                sp.buyButton.interactable = false;
             }
         }
     }
