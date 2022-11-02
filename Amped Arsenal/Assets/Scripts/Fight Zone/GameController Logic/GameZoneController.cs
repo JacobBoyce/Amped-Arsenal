@@ -28,7 +28,6 @@ public class GameZoneController : MonoBehaviour
         {
             if(focus == go)
             {
-                Debug.Log("true");
                 go.SetActive(true);
             }
             else
@@ -83,6 +82,8 @@ public class GameZoneController : MonoBehaviour
             if(isUpgrading == false)
             {
                 FocusUI(upgradePanel, true);
+                upgradePanel.GetComponent<UpgradeMenuController>().PopulateUI();
+
             }
             else
             {

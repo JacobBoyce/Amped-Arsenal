@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EquippedUI : MonoBehaviour
 {
+    public UpgradeMenuController controller;
     public List<WeapItemSlotUI> weapUI = new();
     public List<WeapItemSlotUI> accessoryUI = new();
     private List<WeapItemSlotUI> allSlots = new();
@@ -14,14 +15,27 @@ public class EquippedUI : MonoBehaviour
         allSlots.AddRange(accessoryUI);
     }
 
-    public void UpdateWeapUI()
+    public void UpdateWeapUI(int idNum, WeaponBase wb)
     {
+        weapUI[idNum].weapName = wb.wName;
+        weapUI[idNum].weapImg.sprite = wb.shopItemInfo.splashImg;
+        weapUI[idNum].lvl.text = wb.level.ToString();
 
+        weapUI[idNum].weapImg.enabled = true;
+        weapUI[idNum].weapLvlBadge.SetActive(true);
     }
 
     public void UpdateAccUI()
     {
 
+    }
+
+    public void ClearSlots()
+    {
+        foreach(WeapItemSlotUI ws in weapUI)
+        {
+            ws.ClearStuff();
+        }
     }
 
     public void SelectThisOne(WeapItemSlotUI selectedOne)
@@ -32,6 +46,8 @@ public class EquippedUI : MonoBehaviour
             {
                 //select it
                 ws.selectBorder.SetActive(true);
+                //populate focusUI
+                controller.PopulateFocusUI(ws);
                 //set it to focus
             }
             else

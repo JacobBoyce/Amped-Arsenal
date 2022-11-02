@@ -22,9 +22,9 @@ public class WeapUpgrade
         SPEED,
         PIERCE
     };
-    public WeaponUpgrade weapUp;
+    public WeaponUpgrade weapUpType;
 
-    public float val;
+    public float curVal;
 
     [Space(10)]
     public int[] upValues = new int[5];
