@@ -48,14 +48,9 @@ public class UpgradeMenuController : MonoBehaviour
             {
                 WeaponBase tempWeap = go.GetComponent<WeaponBase>();
 
-                weapFocus.UpdateFocusUI(tempWeap);
+                weapFocus.UpdateFocusUI(tempWeap,playerCont);
             }
         }
-
-    }
-
-    public void InitUI()
-    {
 
     }
 }

@@ -40,20 +40,27 @@ public class EquippedUI : MonoBehaviour
 
     public void SelectThisOne(WeapItemSlotUI selectedOne)
     { 
+        //check if its already selected if so do nothing
+
         foreach(WeapItemSlotUI ws in allSlots)
         {
             if(selectedOne.indentity == ws.indentity)
             {
-                //select it
-                ws.selectBorder.SetActive(true);
-                //populate focusUI
-                controller.PopulateFocusUI(ws);
-                //set it to focus
+                if(ws.selectBorder.activeSelf != true)
+                {
+                    //select it
+                    ws.selectBorder.SetActive(true);
+                    controller.weapFocus.ClearFocusUI();
+                    //populate focusUI
+                    controller.PopulateFocusUI(ws);
+                    //set it to focus
+                }
             }
             else
             {
                 //deselect it
                 ws.selectBorder.SetActive(false);
+                
             }
         }
     }

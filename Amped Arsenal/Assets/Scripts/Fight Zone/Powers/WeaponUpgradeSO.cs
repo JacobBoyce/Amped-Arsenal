@@ -7,6 +7,7 @@ public class WeaponUpgradeSO : ScriptableObject
 {
     [SerializeField]
     public List<WeapUpgrade> UpgradeList = new();
+    public int[] costValues = new int[5];
 }
 
 [System.Serializable]
