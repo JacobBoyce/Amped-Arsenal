@@ -16,6 +16,7 @@ public class ShopMenuController : MonoBehaviour
     int[] weapChoices = new int[3]{-1,-1,-1};
     int v1, shopDirty = 0;
     public GameObject uiParent;
+    public TextMeshProUGUI goldText;
     //player controller.p1
 
     /*public void Update()
@@ -26,7 +27,7 @@ public class ShopMenuController : MonoBehaviour
             controller.FocusUI(uiParent);
         }
     }*/
-    
+
 
     public void TurnOffShopUI()
     {
@@ -35,7 +36,8 @@ public class ShopMenuController : MonoBehaviour
 
     public void InitShop()
     {
-        if(populatedShop == false)
+        goldText.text = "Gold: " + controller.p1._stats["gold"].Value;
+        if (populatedShop == false)
         {
             MakeShopItems();
             populatedShop = true;
@@ -215,6 +217,7 @@ public class ShopMenuController : MonoBehaviour
     public void ButtonTask(int index)
     {
         controller.p1.RemoveGold(price); //_stats["gold"].Value -= price;
+        goldText.text = "Gold: " + controller.p1._stats["gold"].Value;
         //if index == 0
         //buyableweapons[index] has been bought
         //Debug.Log(index);

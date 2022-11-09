@@ -28,6 +28,7 @@ public class SpearController : WeaponBase
         {
             curCooldown++;
         };
+        UpdateValues();
     }
     
     public override void ActivateAbility()
@@ -60,30 +61,22 @@ public class SpearController : WeaponBase
 
     public void SendDamage(EnemyController enemy)
     {
-        enemy.TakeDamage(damage * playerObj._stats["str"].Value);
+        //round up
+        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
     }
 
     public override void UpgradeWeapon()
     {
         level++;
-        if(level == 2)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
-        else if(level == 3)
-        {
-            tickMaxCD -= 1;
-        }
-        else if(level == 4)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
-        else if(level == 5)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
+        UpdateValues();
+    }
+
+    public void UpdateValues()
+    {
+        numSpears = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.AMOUNT).upValues[level - 1];
+        tickMaxCD = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.COOLDOWN).upValues[level - 1];
+        damage = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.DAMAGE).upValues[level - 1];
+        pierceNum = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.PIERCE).upValues[level - 1];
+        speed = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.SPEED).upValues[level - 1];
     }
 }

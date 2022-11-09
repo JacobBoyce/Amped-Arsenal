@@ -10,6 +10,7 @@ public class WeaponFocusUI : MonoBehaviour
     public Button upgradeButton;
     public TextMeshProUGUI weapName, lvlUpFrom, lvlUpTo, costUI;
 
+    public UpgradeMenuController controller;
     public GameObject levelContainer, upgradeSlotParent, statsUpSlotPrefab;
     private StatUpInfoSlot tempSlot;
     private WeaponBase focusedWeap;
@@ -98,7 +99,9 @@ public class WeaponFocusUI : MonoBehaviour
                 //update focused weapon
                 ClearFocusUI();
                 UpdateFocusUI(tempWeap, player);
+                controller.UpdateSlotUIInfo();
                 player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level-1]);
+                controller.xpText.text = "XP: " + player._stats["xp"].Value;
             }
         }
     }

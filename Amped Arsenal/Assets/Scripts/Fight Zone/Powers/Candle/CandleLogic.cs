@@ -30,15 +30,17 @@ public class CandleLogic : MonoBehaviour
     }
 
 
-    public void InitCandle(CandleController sCont, WeaponMods mod)
+    public void InitCandle(CandleController sCont, WeaponMods mod, float dtime, float range)
     {
         //this.transform.eulerAngles = new Vector3(0,0,0);
         controller = sCont;
         weapMod = mod;
-        aoeRange = controller.aoeRange;
+        timeToDie = dtime;
+        aoeRange = range;
         damageTick = controller.damageTick;
         GetComponent<Rigidbody>().freezeRotation = true;
 
+        //set visuals for range here
         rangeCollider.radius = aoeRange;
     }
 

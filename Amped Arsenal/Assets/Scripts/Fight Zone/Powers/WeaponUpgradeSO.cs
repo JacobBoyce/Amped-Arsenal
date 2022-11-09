@@ -21,7 +21,8 @@ public class WeapUpgrade
         COOLDOWN,
         AMOUNT,
         SPEED,
-        PIERCE
+        PIERCE,
+        RANGE
     };
     public WeaponUpgrade weapUpType;
 

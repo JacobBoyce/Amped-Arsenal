@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwordSwingController : WeaponBase
 {
-    //one prefab all references set, when spoawned move to proper position deacitvate and activate on cooldown stuff
+    //one prefab all references set, when spawned move to proper position deacitvate and activate on cooldown stuff
     public int swingNumber;
 
     public List<GameObject> swordObjs = new List<GameObject>();
@@ -67,37 +67,24 @@ public class SwordSwingController : WeaponBase
             swordObjs.Add(tempWeapSpawn);
             swordlogics.Add(tempWeapSpawn.GetComponent<SwordSwingLogic>());
         }
+        UpdateValues();
     }
 
     public void SendDamage(EnemyController enemy)
     {
-        enemy.TakeDamage(damage * playerObj._stats["str"].Value);
+        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
     }
 
     public override void UpgradeWeapon()
     {
         level++;
-        if(level == 2)
-        {
-            tickMaxCD -= 1;
-            damage++;
-            swingNumber++;
-        }
-        else if(level == 3)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
-        else if(level == 4)
-        {
-            tickMaxCD -= 1;
-            damage++;
-            swingNumber++;
-        }
-        else if(level == 5)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
+        UpdateValues();
+    }
+
+    public void UpdateValues()
+    {
+        swingNumber = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.AMOUNT).upValues[level - 1];
+        tickMaxCD = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.COOLDOWN).upValues[level - 1];
+        damage = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.DAMAGE).upValues[level - 1];
     }
 }

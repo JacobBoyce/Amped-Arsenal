@@ -55,7 +55,7 @@ public class PlayerController : Actor
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",    4,15);    // How far to pull object from.
-        _stats.AddStat("xp",      50,10000); // Xp.
+        _stats.AddStat("xp",      1000,10000); // Xp.
         _stats.AddStat("gold",    500,10000); //Gold
         goldText.text = "Gold: " + _stats["gold"].Value;
         xpText.text = "XP: " + _stats["xp"].Value;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CandleController : WeaponBase
 {
     public float aoeRange;
+    public float deathTimer;
     public float damageTick;
 
     void Start()
@@ -20,6 +21,7 @@ public class CandleController : WeaponBase
         if (curCooldown == tickMaxCD)
         {
             ActivateAbility();
+            
         }
     }
 
@@ -29,6 +31,7 @@ public class CandleController : WeaponBase
         {
             curCooldown++;
         };
+        UpdateValues();
     }
 
     public override void ActivateAbility()
@@ -36,36 +39,27 @@ public class CandleController : WeaponBase
         curCooldown = 0;
 
         GameObject tempCandle = Instantiate(weapPrefab, playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.position + new Vector3(0,1,0), playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.rotation);
-        tempCandle.GetComponentInChildren<CandleLogic>().InitCandle(this, weapMod);
+        tempCandle.GetComponentInChildren<CandleLogic>().InitCandle(this, weapMod, deathTimer , aoeRange);
+        //send weap stats to logic script
     }
 
 
     public void SendDamage(EnemyController enemy)
     {
-        enemy.TakeDamage(damage * playerObj._stats["str"].Value);
+        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
     }
 
     public override void UpgradeWeapon()
     {
         level++;
-        if (level == 2)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
-        else if (level == 3)
-        {
-            tickMaxCD -= 1;
-        }
-        else if (level == 4)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
-        else if (level == 5)
-        {
-            tickMaxCD -= 1;
-            damage++;
-        }
+        UpdateValues();
+    }
+
+    public void UpdateValues()
+    {
+        deathTimer = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.DURATION).upValues[level - 1];
+        tickMaxCD = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.COOLDOWN).upValues[level - 1];
+        damage = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.DAMAGE).upValues[level - 1];
+        aoeRange = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.RANGE).upValues[level - 1];
     }
 }

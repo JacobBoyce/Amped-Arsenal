@@ -88,7 +88,7 @@ public class AxeController : WeaponBase
 
     public void SendDamage(EnemyController enemy)
     {
-        enemy.TakeDamage(damage * playerObj._stats["str"].Value);
+        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
     }
 
     public override void UpgradeWeapon()

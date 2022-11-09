@@ -49,7 +49,7 @@ MonoBehaviour:
   weapPrefab: {fileID: 5898951340699611868, guid: b351e86c07a07964ea58bd7028416dfb, type: 3}
   playerObj: {fileID: 0}
   shopItemInfo: {fileID: 11400000, guid: bd35be927e50a6e4fabe361f4cf0cd3f, type: 2}
-  weapUpgrades: {fileID: 0}
+  weapUpgrades: {fileID: 11400000, guid: 66cffa6a9225435408878d9d649342c2, type: 2}
   weapMod: {fileID: 3255418615466689697}
   curCooldown: 0
   tickMaxCD: 10
@@ -59,6 +59,7 @@ MonoBehaviour:
     needsParent: 0
   level: 1
   aoeRange: 5
+  deathTimer: 10
   damageTick: 0.5
 --- !u!114 &3255418615466689697
 MonoBehaviour:
