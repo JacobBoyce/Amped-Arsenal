@@ -187,7 +187,6 @@ MonoBehaviour:
   stagCDMax: 0.3
   isStaggered: 0
   knockbackCalc: 1
-  deathPartSys: {fileID: 6825201131534646071}
   dir: {x: 0, y: 0, z: 0}
 --- !u!114 &8779101310253857394
 MonoBehaviour:
@@ -212,9 +211,10 @@ MonoBehaviour:
   drops:
   - {fileID: 1809617224858193442, guid: 63af3d9bfb0f8f0408dc3189cd9be17d, type: 3}
   - {fileID: 3644600517433400055, guid: cfd6d216cac1bbc4f93d7c5cb59be2f9, type: 3}
-  hpMax: 10
+  hpMax: 15
+  attk: 2
   str: 1
-  def: 1
+  def: 0.95
   spd: 3
   xp: 1
   gold: 2
@@ -618,10 +618,5 @@ PrefabInstance:
 --- !u!4 &4466734653617307125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1317883392338247283, guid: be16a2ead503d12418c1f228fcee2f7c, type: 3}
-  m_PrefabInstance: {fileID: 3438226143713182598}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6825201131534646071 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8142776624367745201, guid: be16a2ead503d12418c1f228fcee2f7c, type: 3}
   m_PrefabInstance: {fileID: 3438226143713182598}
   m_PrefabAsset: {fileID: 0}

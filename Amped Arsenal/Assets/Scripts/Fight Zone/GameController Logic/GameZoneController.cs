@@ -17,9 +17,11 @@ public class GameZoneController : MonoBehaviour
     public List<GameObject> gamePlayUIComponents = new();
     public bool isUpgrading;
     GameObject focusedUI;
-
-
     public bool isPaused, statsVisible;
+    public float gameTimer, gameTimerMax;
+    public int minutes, seconds;
+    public TextMeshProUGUI gameTimerUIText;
+
 
     public void FocusUI(GameObject focus, bool needPause)
     {
@@ -44,6 +46,7 @@ public class GameZoneController : MonoBehaviour
 
     public void ResumeGamePlay()
     {
+        //ADD JOYSTICK BACK HERE FOR UI ACTIVATION
         foreach (GameObject go in gamePlayUIComponents)
         {
             focusedUI.SetActive(false);
@@ -93,7 +96,7 @@ public class GameZoneController : MonoBehaviour
             isUpgrading = isUpgrading ? false : true;
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             statsVisible = statsVisible ? false : true;
             ShowStats(statsVisible);
@@ -106,6 +109,15 @@ public class GameZoneController : MonoBehaviour
                         + "\nLUCK: " + p1._stats["luck"].Value
                         + "\nPULL: " + p1._stats["pull"].Value
                         + "\nXP: " + p1._stats["xp"].Value + " / " + p1._stats["xp"].Max;
+
+        #region Game Timer
+            gameTimer += Time.deltaTime;
+            minutes = Mathf.FloorToInt(gameTimer / 60F);
+            seconds = Mathf.FloorToInt(gameTimer - minutes * 60);
+            string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+            gameTimerUIText.text = niceTime;
+
+        #endregion
     }
 
     public void ShowStats(bool onoff)
@@ -130,7 +142,7 @@ public class GameZoneController : MonoBehaviour
     public void OpenShop()
     {
         PauseGame();
-        uiController.SetActive(false);
+        //uiController.SetActive(false);
         shopPanel.SetActive(true);
         shopController.InitShop();
         //shopAnimeController.ToggleDots();
@@ -139,7 +151,7 @@ public class GameZoneController : MonoBehaviour
     public void TurnOffShop()
     {
         PauseGame();
-        uiController.SetActive(true);
+        //uiController.SetActive(true);
         currencyUI.SetActive(true);
         shopPanel.SetActive(false);
         //shopAnimeController.ToggleDots();

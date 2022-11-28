@@ -20,18 +20,34 @@ public class WeaponFocusUI : MonoBehaviour
 
     public void UpdateFocusUI(WeaponBase wb, PlayerController p1)
     {
+        //saving passed variables
         focusedWeap = wb;
         player = p1;
 
+        //set weapon image
         upgradeWeaponImg.sprite = wb.shopItemInfo.splashImg;
         upgradeWeaponImg.enabled = true;
-
+        //set weapon name
         weapName.text = wb.wName;
 
+        //show stats of weapon
         levelContainer.SetActive(true);
         lvlUpFrom.text = wb.level.ToString();
-        lvlUpTo.text = (wb.level + 1).ToString();
-        costUI.text = "Cost: " + wb.weapUpgrades.costValues[wb.level-1];
+
+        if(wb.IsMaxLvl())
+        {
+            //show level is the same
+            lvlUpTo.text = (wb.level).ToString();
+            //disable cost of upgrade button
+            upgradeButton.interactable = false;
+        }
+        else
+        {
+            //show next level
+            lvlUpTo.text = (wb.level + 1).ToString();
+            //show cost of upgrade
+            costUI.text = "Cost: " + wb.weapUpgrades.costValues[wb.level - 1];
+        }        
 
 
         //create a loop foreach of wb's upgrade stats from
@@ -42,9 +58,16 @@ public class WeaponFocusUI : MonoBehaviour
             tempSlot = tempSlotPrefab.GetComponent<StatUpInfoSlot>();
             //set image here
 
-            tempSlot.upFrom.text = up.upValues[wb.level-1].ToString();
-            tempSlot.upTo.text = up.upValues[wb.level].ToString();
-
+            if(wb.IsMaxLvl())
+            {
+                tempSlot.upFrom.text = up.upValues[wb.level - 1].ToString();
+                tempSlot.upTo.text = up.upValues[wb.level - 1].ToString();
+            }
+            else
+            {
+                tempSlot.upFrom.text = up.upValues[wb.level - 1].ToString();
+                tempSlot.upTo.text = up.upValues[wb.level].ToString();
+            }
             
             //add to upgrade list
             upInfoSlot.Add(tempSlotPrefab);
@@ -53,17 +76,20 @@ public class WeaponFocusUI : MonoBehaviour
 
         //check if upgrade button should be active
         //Debug.Log("Cost of upgrade: " + wb.weapUpgrades.costValues[wb.level - 1] + "  >= current xp: " + player._stats["xp"].Value);
-        if (wb.weapUpgrades.costValues[wb.level-1] <= player._stats["xp"].Value)
+        if(!wb.IsMaxLvl())
         {
-            //Debug.Log("turnon on init");
-            upgradeButton.interactable = true;
-        }
-        else
-        {
-            //Debug.Log("turnoff on init");
-            upgradeButton.interactable = false;
-            //costUI.text = "Cost: ";
-        }
+            if (wb.weapUpgrades.costValues[wb.level - 1] <= player._stats["xp"].Value)
+            {
+                //Debug.Log("turnon on init");
+                upgradeButton.interactable = true;
+            }
+            else
+            {
+                //Debug.Log("turnoff on init");
+                upgradeButton.interactable = false;
+                //costUI.text = "Cost: ";
+            }
+        }        
     }
 
     public void ClearFocusUI()

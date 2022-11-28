@@ -31,8 +31,11 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public void Update()
     {
-        moveInput.x = joystick.Horizontal;
-        moveInput.y = joystick.Vertical;
+        //moveInput.x = joystick.Horizontal;
+        //moveInput.y = joystick.Vertical;
+
+        moveInput.x = Input.GetAxis("Horizontal");
+        moveInput.y = Input.GetAxis("Vertical");
         moveInput.Normalize();
 
         theRB.velocity = new Vector3(moveInput.x * speed, 0f, moveInput.y * speed);

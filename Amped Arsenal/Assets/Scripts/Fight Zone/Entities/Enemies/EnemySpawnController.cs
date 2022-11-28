@@ -7,6 +7,7 @@ public class EnemySpawnController : MonoBehaviour
         //POSSIBLE OBJECT POOLING FOR ENEMIES
     public bool toggleSpawning;
 
+    public GameZoneController controller;
     public GameObject enemyPrefab, tempePrefab;
     public List<GameObject> enemyPrefabs = new List<GameObject>();
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
@@ -14,6 +15,17 @@ public class EnemySpawnController : MonoBehaviour
 
     public float spawnRate, spawnRateMax;
 
+    public int waveNum, checkMinChange, zoneMultiplier;
+
+    [Space(10)]
+    [Header("Stat Scaling")]
+    public float hp;
+    public float str,def,spd;
+
+    public void Start()
+    {
+        checkMinChange = controller.minutes;
+    }
 
     // Update is called once per frame
     void Update()
@@ -31,21 +43,25 @@ public class EnemySpawnController : MonoBehaviour
                 SpawnEnemy();
             }
         }
+        
+
+        //if(checkMinChange != controller.minutes)
+        //{
+        //    checkMinChange = controller.minutes;
+            //mintute incremented
+            //increase scale of enemy stats
+            waveNum = controller.minutes;
+        //}
     }
 
     public void SpawnEnemy()
     {
         int index = Random.Range(0, enemyPrefabs.Count);
-        //Front spawning logic - most often
-        tempePrefab = Instantiate(enemyPrefabs[index],esPoint[0].sPoint.transform.position, esPoint[0].sPoint.transform.rotation);
-
-        //Back spawning logic - least often
-        
-
-        //Left spawning logic - less often
-
-
-        //Right spawning logic - less often
+        int spnpoint = Random.Range(0, esPoint.Count);
+       
+        tempePrefab = Instantiate(enemyPrefabs[index],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+        //upgrade enemy stats here
+        tempePrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,spd,waveNum,zoneMultiplier);
     }
 
 

@@ -17,7 +17,12 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public List<SpawnDeets> spawnDetails = new List<SpawnDeets>();
 
     [Space(10)]
-    public int level = 1;
+    public int level = 1, maxLevel = 5;
+
+    public bool IsMaxLvl()
+    {
+        return level == maxLevel ? true : false;
+    }
 
     public virtual void ActivateAbility()
     {

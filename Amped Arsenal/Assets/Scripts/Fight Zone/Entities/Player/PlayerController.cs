@@ -16,6 +16,7 @@ public class PlayerController : Actor
     public List<GameObject> rotatingSpawnPoints = new();// List<GameObject>();
     public static PlayerController playerObj;
     public event Action<Stat> UpdateHPBar;
+    public bool openShop = false;
 
 
     [Header("UI")]
@@ -54,7 +55,7 @@ public class PlayerController : Actor
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("pull",    4,15);    // How far to pull object from.
+        _stats.AddStat("pull",    15,15);    // How far to pull object from.
         _stats.AddStat("xp",      1000,10000); // Xp.
         _stats.AddStat("gold",    500,10000); //Gold
         goldText.text = "Gold: " + _stats["gold"].Value;
@@ -64,7 +65,9 @@ public class PlayerController : Actor
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
+        #region Weapon testing
+        /*
+        if (Input.GetKeyDown(KeyCode.A))
         {
             //AddWeaponToCache("SwordSwing");
             AddWeaponToCache("Axe");
@@ -89,8 +92,18 @@ public class PlayerController : Actor
                 go.GetComponent<WeaponBase>().UpgradeWeapon();
             }
         }
+        */
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(openShop == true)
+            {
+                mainController.GetComponent<GameZoneController>().OpenShop();
+            }
+        }
     }
-    
+
 
     public void TakeDamage(float damage)
     {
@@ -157,4 +170,13 @@ public class PlayerController : Actor
         //equip weapon to list
         equippedWeapons.Add(tempObj);
     }
+
+    #region action button
+
+    public void OpenShop(bool openFlag)
+    {
+        openShop = openFlag;
+    }
+
+    #endregion
 }

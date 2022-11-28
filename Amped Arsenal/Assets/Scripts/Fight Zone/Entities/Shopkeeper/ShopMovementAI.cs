@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ShopMovementAI : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class ShopMovementAI : MonoBehaviour
     public Animator animCont;
     public Rigidbody thisRB;
     public SpriteRenderer thisSR;
+    public TextMeshProUGUI alertUI;
 
     public float moveSpeed;
     public int randomNum, enemyCount;
@@ -136,7 +139,8 @@ public class ShopMovementAI : MonoBehaviour
                         animCont.Play("FromStanding");
                         finishMovedToPlayer = true;
                         startMoveToPlayerInit = true;
-                        playerPos.GetComponent<PlayerController>().mainController.GetComponent<GameZoneController>().OpenShop();
+                        // open shop after he moves towards player
+                        //playerPos.GetComponent<PlayerController>().mainController.GetComponent<GameZoneController>().OpenShop();
                     }
                 }
             break;

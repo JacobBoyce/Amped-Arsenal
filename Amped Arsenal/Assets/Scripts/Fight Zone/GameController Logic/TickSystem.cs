@@ -26,7 +26,7 @@ public class TickSystem : MonoBehaviour
         tickTimer += Time.deltaTime;
         if(tickTimer >= TICK_TIMER_MAX)
         {
-            tickTimer -= TICK_TIMER_MAX;
+            tickTimer = 0;
             tick++;
             if(OnSubTick != null) OnSubTick(this, new OnTickEventArgs{tick = tick});
             /*

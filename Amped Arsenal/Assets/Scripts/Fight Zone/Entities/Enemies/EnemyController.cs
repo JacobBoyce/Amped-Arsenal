@@ -13,21 +13,26 @@ public class EnemyController : Actor
     public List<GameObject> drops = new List<GameObject>();
     int multiDropChance, dropIndex;
 
-    [Header("Stats")]
-    public int hpMax;
-    public int str, def, spd, xp, gold;
+    [Header("Base Stats")]
+    public float hpMax;
+    public float attk, str, def, spd, xp, gold;
+
+    [Header("Current Stats")]
+    public float _chp;
+    public float _cstr, _cdef, _cspd;
 
     void Awake()
     {
         //when setting stats pull from a level or scale and use here to instantiate
         _stats = new Stats();
-        _stats.AddStat("hp",        10);    // Max Health
-        _stats.AddStat("str",      1,2);    // Multiply this by the damage of weapon being used. (Attk > 1)
-        _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
-        _stats.AddStat("spd",     3,50);    // Movement speed
-        _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("xp",       1,5);    //How much xp to give the player
-        _stats.AddStat("gold",     1,5);    //How much xp to give the player
+        _stats.AddStat("hp",   10, 1000);    // Max Health
+        _stats.AddStat("attk",  1, 200);    // base attack damage to be scaled against strength
+        _stats.AddStat("str",   1, 1000);    // Multiply this by the damage of weapon being used. (Attk > 1)
+        _stats.AddStat("def",         1);    // Multiply by damage taken. (0 > Def < 1)
+        _stats.AddStat("spd",      3,50);    // Movement speed
+        _stats.AddStat("luck",  10, 100);    // How lucky you are to get different upgrades or drops from enemies.
+        _stats.AddStat("xp",     1, 100);    //How much xp to give the player
+        _stats.AddStat("gold",   1, 100);    //How much xp to give the player
         //_stats.Fill();
         spriteR = GetComponentInChildren<SpriteRenderer>();
 
@@ -37,11 +42,35 @@ public class EnemyController : Actor
     public void SetStats()
     {
         _stats["hp"].Value = hpMax;
+        _stats["attk"].Value = attk;
         _stats["str"].Value = str;
         _stats["def"].Value = def;
         _stats["spd"].Value = spd;
         _stats["xp"].Value = xp;
         _stats["gold"].Value = gold;
+    }
+
+    public void IncreaseStats(float _hp, float _str, float _def, float _spd, int waveNum, int _zoneNum)
+    {
+        float nHp, nStr, nDef, nSpd;
+
+        nHp = _hp * _zoneNum;
+        nStr = _str * _zoneNum;
+        nDef = _def * _zoneNum;
+        nSpd = _spd * _zoneNum;
+
+        for (int i = 0; i < waveNum; i++)
+        {
+            _stats["hp"].Value = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
+            _stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
+            _stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+            _stats["spd"].Value = (_stats["spd"].Value * nSpd) + _stats["spd"].Value;
+        }
+
+        _chp = _stats["hp"].Value;
+        _cstr = _stats["str"].Value;
+        _cdef = _stats["def"].Value;
+        _cspd = _stats["spd"].Value;
     }
 
     public void Update()
@@ -67,7 +96,7 @@ public class EnemyController : Actor
     {
         if(!AmDead())
         {
-            player.TakeDamage(_stats["str"].Value/* multiply by level of enemy*/);
+            player.TakeDamage(_stats["attk"].Value * _stats["attk"].Value);
         }
     }
 

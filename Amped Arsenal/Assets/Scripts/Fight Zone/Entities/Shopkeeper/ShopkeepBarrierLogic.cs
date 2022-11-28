@@ -44,6 +44,10 @@ public class ShopkeepBarrierLogic : MonoBehaviour
         if(other.tag == "Player")
         {
             moveScript.RunToLogic(other.gameObject);
+            other.GetComponent<PlayerController>().OpenShop(true);
+            //tell player he can press space
+            moveScript.alertUI.text = "!";
+            //trigger ! over head off
         }
     }
 
@@ -55,6 +59,12 @@ public class ShopkeepBarrierLogic : MonoBehaviour
             moveScript.inPlayerRange = false;
             moveScript.finishMovedToPlayer = false;
             //moveScript.StartCoroutine(moveScript.StandStill());
+
+            //tell player he canot open the shop
+            other.GetComponent<PlayerController>().OpenShop(false);
+
+            //trigger ! over head off
+            moveScript.alertUI.text = "";
         }
         //moveScript.TogglePlayerLogic(false)
 
