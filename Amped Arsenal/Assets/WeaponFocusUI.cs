@@ -46,7 +46,7 @@ public class WeaponFocusUI : MonoBehaviour
             //show next level
             lvlUpTo.text = (wb.level + 1).ToString();
             //show cost of upgrade
-            costUI.text = "Cost: " + wb.weapUpgrades.costValues[wb.level - 1];
+            costUI.text = "Cost: " + wb.weapUpgrades.costValues[wb.level-1];
         }        
 
 
@@ -119,6 +119,7 @@ public class WeaponFocusUI : MonoBehaviour
             WeaponBase tempWeap = go.GetComponent<WeaponBase>();
             if (tempWeap.wName.Equals(focusedWeap.wName))
             {
+                player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level - 1]);
                 //upgrade weapon
                 tempWeap.UpgradeWeapon();
 
@@ -126,7 +127,7 @@ public class WeaponFocusUI : MonoBehaviour
                 ClearFocusUI();
                 UpdateFocusUI(tempWeap, player);
                 controller.UpdateSlotUIInfo();
-                player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level-1]);
+                
                 controller.xpText.text = "XP: " + player._stats["xp"].Value;
             }
         }

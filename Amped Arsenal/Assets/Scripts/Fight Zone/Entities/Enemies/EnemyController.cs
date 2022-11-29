@@ -50,21 +50,20 @@ public class EnemyController : Actor
         _stats["gold"].Value = gold;
     }
 
-    public void IncreaseStats(float _hp, float _str, float _def, float _spd, int waveNum, int _zoneNum)
+    public void IncreaseStats(float _hp, float _str, float _def, int waveNum, int _zoneNum)
     {
-        float nHp, nStr, nDef, nSpd;
+        float nHp, nStr, nDef;
 
         nHp = _hp * _zoneNum;
         nStr = _str * _zoneNum;
         nDef = _def * _zoneNum;
-        nSpd = _spd * _zoneNum;
 
         for (int i = 0; i < waveNum; i++)
         {
             _stats["hp"].Value = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
             _stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
-            _stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-            _stats["spd"].Value = (_stats["spd"].Value * nSpd) + _stats["spd"].Value;
+            //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+            _stats["spd"].Value += .1f;
         }
 
         _chp = _stats["hp"].Value;

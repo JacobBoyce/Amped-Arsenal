@@ -20,7 +20,7 @@ public class EnemySpawnController : MonoBehaviour
     [Space(10)]
     [Header("Stat Scaling")]
     public float hp;
-    public float str,def,spd;
+    public float str,def;
 
     public void Start()
     {
@@ -61,7 +61,7 @@ public class EnemySpawnController : MonoBehaviour
        
         tempePrefab = Instantiate(enemyPrefabs[index],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
         //upgrade enemy stats here
-        tempePrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,spd,waveNum,zoneMultiplier);
+        tempePrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,waveNum,zoneMultiplier);
     }
 
 
