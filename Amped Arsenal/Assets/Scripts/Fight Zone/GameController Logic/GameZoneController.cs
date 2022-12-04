@@ -18,9 +18,24 @@ public class GameZoneController : MonoBehaviour
     public bool isUpgrading;
     GameObject focusedUI;
     public bool isPaused, statsVisible;
+    public TextMeshProUGUI gameTimerUIText;
+
     public float gameTimer, gameTimerMax;
     public int minutes, seconds;
-    public TextMeshProUGUI gameTimerUIText;
+    public int Min
+    {
+        get { return minutes; }
+        set
+        {
+            if (minutes == value) return;
+            minutes = value;
+            if (OnMinutesChanged != null)
+                OnMinutesChanged(minutes);
+        }
+    }
+
+    public delegate void MinutesChangedDelegate(int minutes);
+    public event MinutesChangedDelegate OnMinutesChanged;
 
 
     public void FocusUI(GameObject focus, bool needPause)
@@ -112,9 +127,9 @@ public class GameZoneController : MonoBehaviour
 
         #region Game Timer
             gameTimer += Time.deltaTime;
-            minutes = Mathf.FloorToInt(gameTimer / 60F);
-            seconds = Mathf.FloorToInt(gameTimer - minutes * 60);
-            string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+            Min = Mathf.FloorToInt(gameTimer / 60F);
+            seconds = Mathf.FloorToInt(gameTimer - Min * 60);
+            string niceTime = string.Format("{0:0}:{1:00}", Min, seconds);
             gameTimerUIText.text = niceTime;
 
         #endregion
