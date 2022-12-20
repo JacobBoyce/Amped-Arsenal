@@ -12,6 +12,8 @@ public class UpgradeMenuController : MonoBehaviour
     public TextMeshProUGUI xpText;
     private PlayerController playerCont;
 
+    public List<Sprite> upgradeImgs = new List<Sprite>();
+
     public void Awake()
     {
         playerCont = PlayerController.playerObj;

@@ -27,14 +27,16 @@ public class POIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int i = 0;
         foreach (GameObject go in lampPrefabs)
         {
-            if (go.tag.Equals("ALamp"))
-            {
+            //if (go.tag.Equals("ALamp"))
+            //{
                 GameObject temp;
-                temp = Instantiate(go, new Vector3(pois[0].transform.position.x, 0, pois[0].transform.position.z), pois[0].transform.rotation);
+                temp = Instantiate(go, new Vector3(pois[i].transform.position.x, 0, pois[i].transform.position.z), pois[i].transform.rotation);
                 spawnedEvents.Add(temp);
-            }
+                i++;
+            //}
         }
     }
 

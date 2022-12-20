@@ -11,7 +11,7 @@ public class MoveToPlayer : MonoBehaviour
     }
 
     public DropItem itemType;
-    public float speed, distance, distToLamp;
+    public float speed, rateOfSpeed, distance, distToLamp;
     public int amount;
     public bool inRangeOfPlayer = false, inRangeOfLamp = false, givenXp = false;
     private PlayerController p1;
@@ -47,7 +47,7 @@ public class MoveToPlayer : MonoBehaviour
             if (distance < p1._stats["pull"].Value)
             {
                 transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
-                speed += .1f;
+                speed += rateOfSpeed*rateOfSpeed;
             }
         }
         else if(inRangeOfLamp && itemType == DropItem.XP)

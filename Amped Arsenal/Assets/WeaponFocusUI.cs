@@ -58,7 +58,9 @@ public class WeaponFocusUI : MonoBehaviour
             tempSlot = tempSlotPrefab.GetComponent<StatUpInfoSlot>();
             //set image here
 
-            if(wb.IsMaxLvl())
+            tempSlot.upgradeSymbolImg.sprite = up.upImg;
+
+            if (wb.IsMaxLvl())
             {
                 tempSlot.upFrom.text = up.upValues[wb.level - 1].ToString();
                 tempSlot.upTo.text = up.upValues[wb.level - 1].ToString();

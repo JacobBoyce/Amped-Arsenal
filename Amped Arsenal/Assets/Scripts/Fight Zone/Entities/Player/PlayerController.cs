@@ -51,20 +51,36 @@ public class PlayerController : Actor
         playerObj = this;
         _stats = new Stats();
         _stats.AddStat("hp",       100);    // Max Health
-        _stats.AddStat("str",      1,2);    // Multiply this by the damage of weapon being used. (Attk > 1)
+        _stats.AddStat("str",      1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("pull",    4,30);    // How far to pull object from.
-        _stats.AddStat("xp",      1000,10000); // Xp.
-        _stats.AddStat("gold",    1000,10000); //Gold
+        _stats.AddStat("pull",    15,30);    // How far to pull object from.
+        _stats.AddStat("xp",      1000,100000); // Xp.
+        _stats.AddStat("gold",    1000,100000); //Gold
+        
+        //mod testing
+        _stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
+        _stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
+        
+
         goldText.text = "Gold: " + _stats["gold"].Value;
         xpText.text = "XP: " + _stats["xp"].Value;
+        UpdateBar(_stats["hp"]);
+    }
 
+    public void Start()
+    {
+        UpdateBar(_stats["hp"]);
     }
 
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            _stats["hp"].RemoveMod("main");
+            UpdateBar(_stats["hp"]);
+        }
         #region Weapon testing
         /*
         if (Input.GetKeyDown(KeyCode.A))
@@ -108,7 +124,7 @@ public class PlayerController : Actor
     public void TakeDamage(float damage)
     {
         Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
-        UpdateHPBar(_stats["hp"]);
+        UpdateBar(_stats["hp"]);
     }
 
     public void AddXP(int xpAmount)
