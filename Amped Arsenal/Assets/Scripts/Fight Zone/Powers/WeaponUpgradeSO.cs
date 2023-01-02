@@ -27,7 +27,7 @@ public class WeapUpgrade
         RANGE
     };
     public WeaponUpgrade weapUpType;
-    public Sprite upImg;
+    //public Sprite upImg;
 
     public float curVal;
 

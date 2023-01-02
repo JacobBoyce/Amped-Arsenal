@@ -14,6 +14,7 @@ public class Stats : IEnumerable<Stat>
         public void AddStat(string name, int value) => _stats.Add(new Stat {Name = name, Max = value, Value = value});
         public void AddStat(string name, int value,int max) => _stats.Add(new Stat {Name = name, Max = max, Value = value});
 
+        [SerializeField]
         public Stat this[string name]
         {
             get => Find(name);
@@ -34,6 +35,7 @@ public class Stats : IEnumerable<Stat>
         public IEnumerator<Stat> GetEnumerator() => _stats.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        [SerializeField]
         List<Stat> _stats;
 
         public void Fill()

@@ -31,20 +31,20 @@ public class WeaponFocusUI : MonoBehaviour
         weapName.text = wb.wName;
 
         //show stats of weapon
-        levelContainer.SetActive(true);
+        //levelContainer.SetActive(true);
         lvlUpFrom.text = wb.level.ToString();
 
         if(wb.IsMaxLvl())
         {
             //show level is the same
-            lvlUpTo.text = (wb.level).ToString();
+            //lvlUpTo.text = (wb.level).ToString();
             //disable cost of upgrade button
             upgradeButton.interactable = false;
         }
         else
         {
             //show next level
-            lvlUpTo.text = (wb.level + 1).ToString();
+            //lvlUpTo.text = (wb.level + 1).ToString();
             //show cost of upgrade
             costUI.text = "Cost: " + wb.weapUpgrades.costValues[wb.level-1];
         }        
@@ -58,7 +58,7 @@ public class WeaponFocusUI : MonoBehaviour
             tempSlot = tempSlotPrefab.GetComponent<StatUpInfoSlot>();
             //set image here
 
-            tempSlot.upgradeSymbolImg.sprite = up.upImg;
+            tempSlot.upgradeSymbolImg.sprite = controller.GetUpIcon(up.weapUpType);
 
             if (wb.IsMaxLvl())
             {
@@ -97,9 +97,9 @@ public class WeaponFocusUI : MonoBehaviour
     public void ClearFocusUI()
     {
         lvlUpFrom.text = "";
-        lvlUpTo.text = "";
+        //lvlUpTo.text = "";
         upgradeWeaponImg.enabled = false;
-        levelContainer.SetActive(true);
+        //levelContainer.SetActive(true);
         weapName.text = "";
         //disable upgrade button
         //Debug.Log("turnoff on focus off");

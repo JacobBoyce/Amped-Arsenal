@@ -7,15 +7,19 @@ using TMPro;
 public class PlayerController : Actor
 {
     public GameObject mainController;
-    public GameObject equippedWeapsObj;
+    public GameObject equippedWeapsObj, equippedRelicsObj;
     public WeaponLib weapLib;
-    private GameObject instObj, tempObj;
+    public RelicLib relLib;
+    private GameObject instObj, tempObj, tempRelicObj;
 
     public List<GameObject> equippedWeapons = new List<GameObject>();
+    public List<GameObject> equippedRelics = new List<GameObject>();
     public List<GameObject> spawnPoints = new();// List<GameObject>();
     public List<GameObject> rotatingSpawnPoints = new();// List<GameObject>();
     public static PlayerController playerObj;
     public event Action<Stat> UpdateHPBar;
+    public event Action OnDamaged;
+    public event Action OnHealed;
     public bool openShop = false;
 
 
@@ -60,12 +64,12 @@ public class PlayerController : Actor
         _stats.AddStat("gold",    1000,100000); //Gold
         
         //mod testing
-        _stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
-        _stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
+        //_stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
+        //_stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
         
 
-        goldText.text = "Gold: " + _stats["gold"].Value;
-        xpText.text = "XP: " + _stats["xp"].Value;
+        goldText.text = _stats["gold"].Value.ToString();
+        xpText.text = _stats["xp"].Value.ToString();
         UpdateBar(_stats["hp"]);
     }
 
@@ -78,8 +82,9 @@ public class PlayerController : Actor
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            _stats["hp"].RemoveMod("main");
-            UpdateBar(_stats["hp"]);
+            //_stats["hp"].RemoveMod("main");
+            //UpdateBar(_stats["hp"]);
+            HealPlayer(1);
         }
         #region Weapon testing
         /*
@@ -125,6 +130,23 @@ public class PlayerController : Actor
     {
         Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
         UpdateBar(_stats["hp"]);
+
+        //trigger damage event list
+        if(OnDamaged != null)
+        {
+            OnDamaged();
+        }
+    }
+
+    public void HealPlayer(float healAmt)
+    {
+        Set("hp", _stats["hp"].Value + Mathf.FloorToInt(healAmt));
+        UpdateBar(_stats["hp"]);
+
+        if(OnHealed != null)
+        {
+            OnHealed();
+        }
     }
 
     public void AddXP(int xpAmount)
@@ -142,35 +164,26 @@ public class PlayerController : Actor
         }
         */
         Set("xp", _stats["xp"].Value + xpAmount);
-        xpText.text = "XP: " + _stats["xp"].Value;
+        xpText.text = _stats["xp"].Value.ToString();
     }
 
     public void RemoveXP(int xpAmount)
     {
         Set("xp", _stats["xp"].Value - xpAmount);
-        xpText.text = "XP: " + _stats["xp"].Value;
+        xpText.text = _stats["xp"].Value.ToString();
     }
 
     public void AddGold(int goldAmount)
     {
         Set("gold", _stats["gold"].Value + goldAmount);
-        goldText.text = "Gold: " + _stats["gold"].Value;
+        goldText.text = _stats["gold"].Value.ToString();
     }
 
     public void RemoveGold(int amt)
     {
         // add bool to perameters for taking all gold that is left.
         Set("gold", _stats["gold"].Value - amt);
-        goldText.text = "Gold: " + _stats["gold"].Value;
-    }
-
-    public void LevelUp()
-    {
-        //call pause instance for timescale pausing
-        //GameZoneController.Instance.PauseGame(true);
-
-        //algorithm for leveling up
-        _stats["xp"].IncreaseMaxBy(10);
+        goldText.text = _stats["gold"].Value.ToString();
     }
 
     public void AddWeaponToCache(string weapName)
@@ -185,6 +198,18 @@ public class PlayerController : Actor
 
         //equip weapon to list
         equippedWeapons.Add(tempObj);
+    }
+
+    public void AddRelicToCache(RelicBase relic)
+    {
+        //this takes the physical object on the map and adds it to the equipped relic list
+        tempRelicObj = relic.gameObject;
+        tempRelicObj.transform.SetParent(equippedRelicsObj.transform);
+        tempRelicObj.transform.localPosition = Vector3.zero;
+        equippedRelics.Add(tempRelicObj);
+
+        //apply relic
+        relic.ApplyRelic(this);
     }
 
     #region action button

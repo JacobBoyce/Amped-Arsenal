@@ -10,6 +10,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector2 moveInput;
     public Animator quispyAnim;
     public SpriteRenderer thisSR;
+    public PlayerController player;
 
     public enum FlipState
     {
@@ -38,7 +39,7 @@ public class ThirdPersonMovement : MonoBehaviour
         moveInput.y = Input.GetAxis("Vertical");
         moveInput.Normalize();
 
-        theRB.velocity = new Vector3(moveInput.x * speed, 0f, moveInput.y * speed);
+        theRB.velocity = new Vector3(moveInput.x * player._stats["spd"].Value, 0f, moveInput.y * player._stats["spd"].Value);
 
         switch(fpState)
         {

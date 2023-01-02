@@ -10,6 +10,7 @@ public class ShopMenuController : MonoBehaviour
     public WeaponLib weapLib;
     public GameObject shopWeaponParent, itemPrefab, tempItemPrefab, rerollButton;
     public List<ShopItemPrefab> buyableItems;
+    public ShopItemPrefab tempShopItem;
     GameObject tempItemObj;
     public int amountBought, price = 25;
     public bool populatedShop = false;
@@ -17,6 +18,7 @@ public class ShopMenuController : MonoBehaviour
     int v1, shopDirty = 0;
     public GameObject uiParent;
     public TextMeshProUGUI goldText;
+    public Sprite currencySprite;
     //player controller.p1
 
     /*public void Update()
@@ -189,26 +191,27 @@ public class ShopMenuController : MonoBehaviour
             tempItemPrefab = Instantiate(itemPrefab);
             tempItemPrefab.transform.SetParent(shopWeaponParent.transform);
             tempItemPrefab.transform.localScale = new Vector3(1,1,1);
+            tempShopItem = tempItemPrefab.GetComponent<ShopItemPrefab>();
 
             if (weapChoices[i] != -1)
             {
-                tempItemPrefab.GetComponent<ShopItemPrefab>().UpdatePrefab(weapLib.weaponList[weapChoices[i]].GetComponent<WeaponBase>().shopItemInfo);
+                tempShopItem.UpdatePrefab(weapLib.weaponList[weapChoices[i]].GetComponent<WeaponBase>().shopItemInfo);
 
                 //set what buttons do
                 int tempInt = i;
-                tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.onClick.AddListener(() => ButtonTask(tempInt));
+                tempShopItem.buyButton.onClick.AddListener(() => ButtonTask(tempInt));
                 //set prices
-                tempItemPrefab.GetComponent<ShopItemPrefab>().amount.text = price.ToString();
-                buyableItems.Add(tempItemPrefab.GetComponent<ShopItemPrefab>());
+                tempShopItem.amount.text = price.ToString();
+                buyableItems.Add(tempShopItem);
             }
             else if (weapChoices[i] == -1)
             {
-                tempItemPrefab.GetComponent<ShopItemPrefab>().title.text = "None";
-                tempItemPrefab.GetComponent<ShopItemPrefab>().desc.text = "No Items left to buy";
-                tempItemPrefab.GetComponent<ShopItemPrefab>().amount.text = "0";
-                tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
-                tempItemPrefab.GetComponent<ShopItemPrefab>().buyButton.interactable = false;
-                buyableItems.Add(tempItemPrefab.GetComponent<ShopItemPrefab>());
+                tempShopItem.title.text = "None";
+                tempShopItem.desc.text = "No Items left to buy";
+                tempShopItem.amount.text = "0";
+                tempShopItem.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                tempShopItem.buyButton.interactable = false;
+                buyableItems.Add(tempShopItem);
             }
         }
         CheckIfCanBuy();

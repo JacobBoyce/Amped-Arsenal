@@ -65,7 +65,7 @@ public class AxeChild : MonoBehaviour
     {
         //turn off visuals
         visuals.SetActive(t);
-        curAxe.GetComponentInChildren<MeshRenderer>().enabled = t;
+        //curAxe.GetComponentInChildren<MeshRenderer>().enabled = t;
         curAxe.GetComponentInChildren<BoxCollider>().enabled = t;
     }
 }

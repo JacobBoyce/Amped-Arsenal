@@ -34,7 +34,10 @@ public class MoveToPlayer : MonoBehaviour
         distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
         if (distToLamp < 14 && itemType == DropItem.XP)
         {
-            inRangeOfLamp = true;
+            if(lamp.ableToAbsorb)
+            {
+                inRangeOfLamp = true;
+            }
         }
     }
 
@@ -52,20 +55,23 @@ public class MoveToPlayer : MonoBehaviour
         }
         else if(inRangeOfLamp && itemType == DropItem.XP)
         {
-            //move towards lamp
-            //maybe get lamp script to get the point the balls should fly to
-            transform.position = Vector3.MoveTowards(transform.position, lamp.transform.position, speed * Time.deltaTime);
-            speed += .2f;
-
-            distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
-
-            if (distToLamp < 3 && !givenXp)
+            if(lamp.ableToAbsorb == true)
             {
-                givenXp = true;
-                //call lamp script to subtract from counter
-                lamp.UpdateCount();
-                CallVisuals();
-                Destroy(this.gameObject, 1f);
+                //move towards lamp
+                //maybe get lamp script to get the point the balls should fly to
+                transform.position = Vector3.MoveTowards(transform.position, lamp.transform.position, speed * Time.deltaTime);
+                speed += .2f;
+
+                distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
+
+                if (distToLamp < 3 && !givenXp)
+                {
+                    givenXp = true;
+                    //call lamp script to subtract from counter
+                    lamp.UpdateCount();
+                    CallVisuals();
+                    Destroy(this.gameObject, 1f);
+                }
             }
         }
     }

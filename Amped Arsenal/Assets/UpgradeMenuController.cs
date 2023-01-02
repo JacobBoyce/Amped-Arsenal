@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UpgradeMenuController : MonoBehaviour
+public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
 {
     public WeaponFocusUI weapFocus;
     public EquippedUI equippedUICont;
@@ -12,7 +12,25 @@ public class UpgradeMenuController : MonoBehaviour
     public TextMeshProUGUI xpText;
     private PlayerController playerCont;
 
-    public List<Sprite> upgradeImgs = new List<Sprite>();
+    public List<UpgradeIcons> upIcons = new List<UpgradeIcons>();
+    UpgradeIcons Find(WeapUpgrade.WeaponUpgrade wuType) => upIcons.Find(x => x.upType.Equals(wuType));// FirstOrDefault(x => x.Name.Equals(type, StringComparison.OrdinalIgnoreCase));
+
+
+    public Sprite GetUpIcon(WeapUpgrade.WeaponUpgrade wuType)
+    {
+        foreach(UpgradeIcons icon in upIcons)
+        {
+            if(icon.upType.Equals(wuType))
+            {
+                return icon.upIcon;
+            }
+        }
+
+        return null;
+    }
+
+    public IEnumerator<UpgradeIcons> GetEnumerator() => upIcons.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public void Awake()
     {
@@ -64,4 +82,17 @@ public class UpgradeMenuController : MonoBehaviour
         }
 
     }
+
+   
 }
+
+[System.Serializable]
+ public class UpgradeIcons
+ {
+    [SerializeField]
+        public WeapUpgrade.WeaponUpgrade upType;
+        [SerializeField]
+        public Sprite upIcon;
+
+        
+ }
