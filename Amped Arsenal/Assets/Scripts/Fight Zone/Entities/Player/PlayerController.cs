@@ -10,6 +10,7 @@ public class PlayerController : Actor
     public GameObject equippedWeapsObj, equippedRelicsObj;
     public WeaponLib weapLib;
     public RelicLib relLib;
+    public EffectLib effectLib;
     private GameObject instObj, tempObj, tempRelicObj;
 
     public List<GameObject> equippedWeapons = new List<GameObject>();
@@ -49,17 +50,30 @@ public class PlayerController : Actor
         return false;
     }
 
+    public RelicBase FindRelic(string relicName)
+    {
+        RelicBase tempRelic = null;
+        foreach(GameObject relic in equippedRelics)
+        {
+            if(relic.GetComponent<RelicBase>().relicName.Equals(relicName))
+            {
+                tempRelic = relic.GetComponent<RelicBase>();
+            }
+        }
+        return tempRelic;
+    }
+
 
     void Awake()
     {
         playerObj = this;
         _stats = new Stats();
         _stats.AddStat("hp",       100);    // Max Health
-        _stats.AddStat("str",      1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
+        _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
-        _stats.AddStat("luck",      10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("pull",    15,30);    // How far to pull object from.
+        _stats.AddStat("luck",    9,10);    // How lucky you are to get different upgrades or drops from enemies.
+        _stats.AddStat("pull",   15,30);    // How far to pull object from.
         _stats.AddStat("xp",      1000,100000); // Xp.
         _stats.AddStat("gold",    1000,100000); //Gold
         
@@ -84,7 +98,14 @@ public class PlayerController : Actor
         {
             //_stats["hp"].RemoveMod("main");
             //UpdateBar(_stats["hp"]);
-            HealPlayer(1);
+            //HealPlayer(1);
+            foreach(GameObject weap in equippedWeapons)
+            {
+                if(weap.GetComponent<WeaponBase>().wName.Equals("Axe"))
+                {
+                    //weap.GetComponent<WeaponBase>().AddEffectToWeapon(FindRelic("Poison").);
+                }
+            }
         }
         #region Weapon testing
         /*

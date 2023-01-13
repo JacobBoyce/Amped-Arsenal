@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3402437347564286588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1448604348734443509}
+  - component: {fileID: 8815015681239692202}
+  m_Layer: 0
+  m_Name: Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1448604348734443509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3402437347564286588}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8261403218359870632}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8815015681239692202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3402437347564286588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3bfaafdaf0b7254ea899d2e8756dafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectObjs: []
+  enemyCont: {fileID: 5927899065205727374}
+  effectParent: {fileID: 3402437347564286588}
 --- !u!1 &3791055123043577848
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +59,7 @@ GameObject:
   - component: {fileID: 41604279069339930}
   - component: {fileID: 5927899065205727374}
   - component: {fileID: 4868084269488462099}
-  - component: {fileID: 2321590048663950337}
+  - component: {fileID: 2691533830791748436}
   m_Layer: 0
   m_Name: AntEnemy
   m_TagString: Enemy
@@ -33,6 +80,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7129349350123362636}
+  - {fileID: 1448604348734443509}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -61,6 +109,12 @@ MonoBehaviour:
   isStaggered: 0
   knockbackCalc: 1
   dir: {x: 0, y: 0, z: 0}
+  layers:
+    serializedVersion: 2
+    m_Bits: 8
+  rayDistance: 1.5
+  fallSpeed: 2
+  grounded: 0
 --- !u!114 &5927899065205727374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,6 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288bf8220b7f5ba47a10bceab12208f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stats:
+    _stats: []
   spriteR: {fileID: 8245237823271706758}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
   blinkIntesity: 40
@@ -81,9 +137,11 @@ MonoBehaviour:
   dpoofOffset: 3
   tookDamage: 0
   spawnedXp: 0
+  baseSpriteColor: {r: 0, g: 0, b: 0, a: 0}
   drops:
   - {fileID: 1809617224858193442, guid: 63af3d9bfb0f8f0408dc3189cd9be17d, type: 3}
   - {fileID: 3644600517433400055, guid: cfd6d216cac1bbc4f93d7c5cb59be2f9, type: 3}
+  effectCont: {fileID: 8815015681239692202}
   hpMax: 5
   attk: 1
   str: 1
@@ -91,6 +149,10 @@ MonoBehaviour:
   spd: 6
   xp: 1
   gold: 1
+  _chp: 0
+  _cstr: 0
+  _cdef: 0
+  _cspd: 0
 --- !u!54 &4868084269488462099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -105,10 +167,10 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 2
---- !u!136 &2321590048663950337
-CapsuleCollider:
+--- !u!65 &2691533830791748436
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -117,10 +179,9 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 1e0335ea713e9464a99977e523951254, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.16
-  m_Height: 3.67
-  m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Size: {x: 4.63739, y: 2.3009565, z: 1.9197998}
+  m_Center: {x: -0.018676758, y: 0.1843816, z: -0.066711426}
 --- !u!1 &5332059950944026705
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,8 +397,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -498128177
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 994bd4ba278c9224988165782cbf7cce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

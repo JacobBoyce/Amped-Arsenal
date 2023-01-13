@@ -9,17 +9,22 @@ public class EnemyController : Actor
     public GameObject deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
     public bool tookDamage, spawnedXp = false;
+    private Color baseDamageColor = Color.white;
+    public Color baseSpriteColor;
+    private Color curDamageColor;
+    private float curBlinkIntensity;
 
     public List<GameObject> drops = new List<GameObject>();
     int multiDropChance, dropIndex;
 
+    [Space(10)]
+    [Header("Effects")]
+    public EffectController effectCont;
+
+    [Space(10)]
     [Header("Base Stats")]
     public float hpMax;
     public float attk, str, def, spd, xp, gold;
-
-    [Header("Current Stats")]
-    public float _chp;
-    public float _cstr, _cdef, _cspd;
 
     void Awake()
     {
@@ -36,6 +41,7 @@ public class EnemyController : Actor
         //_stats.Fill();
         spriteR = GetComponentInChildren<SpriteRenderer>();
 
+        baseSpriteColor = spriteR.material.color;
         SetStats();
     }
 
@@ -65,11 +71,6 @@ public class EnemyController : Actor
             //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
             _stats["spd"].Value += .1f;
         }
-
-        _chp = _stats["hp"].Value;
-        _cstr = _stats["str"].Value;
-        _cdef = _stats["def"].Value;
-        _cspd = _stats["spd"].Value;
     }
 
     public void Update()
@@ -80,6 +81,26 @@ public class EnemyController : Actor
         }
     }
     
+    public bool HasEffect(EffectBase effect)
+    {
+        bool flag = false;
+
+        if(effectCont.effectObjs.Count != 0)
+        {
+            foreach(GameObject eff in effectCont.effectObjs)
+            {
+                if(eff.GetComponent<EffectBase>().effectName.Equals(effect.effectName))
+                {
+                    flag = true;
+                }
+            }
+        }
+        else
+        {
+            flag = false;
+        }
+        return flag;
+    }
 
     public void TakeDamage(float damage)
     {
@@ -89,6 +110,33 @@ public class EnemyController : Actor
             blinkTimer = blinkDuration;
             Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
         }
+    }
+
+    public void TakeDamageFromEffect(float damage, Color dmgColor)
+    {
+        if(!AmDead())
+        {
+            tookDamage = true;
+            curDamageColor = dmgColor;
+            blinkTimer = blinkDuration;
+            Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+        }
+    }
+
+    public void AddEffect(GameObject effect)
+    {
+        effectCont.AddEffect(effect, this);
+    }
+
+    public void RemoveEffect(string eName)
+    {
+        spriteR.material.color = baseSpriteColor;
+        effectCont.RemoveEffect(eName);
+    }
+
+    public void UpdateEffect(GameObject effect)
+    {
+        effectCont.UpdateEffect(effect);
     }
 
     public void AttackPlayer(PlayerController player)
@@ -166,6 +214,8 @@ public class EnemyController : Actor
         else
         {
             tookDamage = false;
+            //curBlinkIntensity = blinkIntesity;
+            //curDamageColor = baseDamageColor;
         }
     }
 }

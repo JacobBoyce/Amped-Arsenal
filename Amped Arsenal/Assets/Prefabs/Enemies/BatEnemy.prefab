@@ -132,8 +132,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -498128177
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a9a724d74839f7a45a8b978e9b46019f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -166,6 +166,53 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1432494565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1432494566}
+  - component: {fileID: 1432494567}
+  m_Layer: 0
+  m_Name: Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1432494566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432494565}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 126802570399370747}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1432494567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432494565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3bfaafdaf0b7254ea899d2e8756dafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectObjs: []
+  enemyCont: {fileID: 126802570399370746}
+  effectParent: {fileID: 1432494565}
 --- !u!1 &1872441509
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,7 +308,7 @@ GameObject:
   - component: {fileID: 126802570399370741}
   - component: {fileID: 126802570399370746}
   - component: {fileID: 1909001664}
-  - component: {fileID: 621677785}
+  - component: {fileID: 4141661359871722453}
   m_Layer: 0
   m_Name: BatEnemy
   m_TagString: Enemy
@@ -282,6 +329,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 403880049}
+  - {fileID: 1432494566}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -310,6 +358,12 @@ MonoBehaviour:
   isStaggered: 0
   knockbackCalc: 1
   dir: {x: 0, y: 0, z: 0}
+  layers:
+    serializedVersion: 2
+    m_Bits: 8
+  rayDistance: 2.1
+  fallSpeed: 2
+  grounded: 0
 --- !u!114 &126802570399370746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288bf8220b7f5ba47a10bceab12208f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stats:
+    _stats: []
   spriteR: {fileID: 1104389642}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
   blinkIntesity: 40
@@ -330,9 +386,11 @@ MonoBehaviour:
   dpoofOffset: 3
   tookDamage: 0
   spawnedXp: 0
+  baseSpriteColor: {r: 0, g: 0, b: 0, a: 0}
   drops:
   - {fileID: 1809617224858193442, guid: 63af3d9bfb0f8f0408dc3189cd9be17d, type: 3}
   - {fileID: 3644600517433400055, guid: cfd6d216cac1bbc4f93d7c5cb59be2f9, type: 3}
+  effectCont: {fileID: 1432494567}
   hpMax: 10
   attk: 3
   str: 1
@@ -340,6 +398,10 @@ MonoBehaviour:
   spd: 4
   xp: 1
   gold: 1
+  _chp: 0
+  _cstr: 0
+  _cdef: 0
+  _cspd: 0
 --- !u!54 &1909001664
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -356,8 +418,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
---- !u!136 &621677785
-CapsuleCollider:
+--- !u!65 &4141661359871722453
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -366,7 +428,6 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 1e0335ea713e9464a99977e523951254, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.5
-  m_Height: 6.73
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.35, z: 0.47}
+  serializedVersion: 2
+  m_Size: {x: 3.0580444, y: 6.523996, z: 2.02359}
+  m_Center: {x: 0.005432129, y: 1.3418801, z: 0.14527893}

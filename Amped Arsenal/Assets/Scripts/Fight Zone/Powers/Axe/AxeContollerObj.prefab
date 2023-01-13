@@ -53,11 +53,15 @@ MonoBehaviour:
   weapMod: {fileID: 0}
   curCooldown: 0
   tickMaxCD: 10
-  damage: 5
+  damage: 0
+  maxSlots: 1
+  currentEquippedSlots: 0
+  effectSlots: []
   spawnDetails:
   - spawnpoint: 4
     needsParent: 0
   level: 1
+  maxLevel: 5
   numAxes: 1
   currentlySpinning: 0
   rotSpeed: 150

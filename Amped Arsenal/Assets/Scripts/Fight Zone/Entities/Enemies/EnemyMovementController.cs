@@ -33,6 +33,12 @@ public class EnemyMovementController : MonoBehaviour
     public Vector3 dir;
     float velocity, initTimer = 0, initTimerMax = .5f;
 
+    [Space(10)]
+    [Header("Ground Detection")]
+    public LayerMask layers;
+    public float rayDistance, fallSpeed;
+    public bool grounded;
+
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +62,25 @@ public class EnemyMovementController : MonoBehaviour
         // calculate velocity limited to the desired speed:
         var velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
         dir.y = 0;
-        velocity.y = 0;
+        //velocity.y = 0;
+
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, Vector3.down);
+
+        grounded = Physics.Raycast(ray, out hit, rayDistance, layers);
+
+        if(!grounded)
+        {
+            thisRB.useGravity = true;
+            thisRB.constraints = RigidbodyConstraints.None;
+            thisRB.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+        else
+        {
+            velocity.y = 0;
+            thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+            thisRB.useGravity = false;
+        }
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
         //flip sprite
@@ -87,7 +111,7 @@ public class EnemyMovementController : MonoBehaviour
                 }
                 else
                 {
-                    thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+                    thisRB.constraints = RigidbodyConstraints.FreezeRotation;// | RigidbodyConstraints.FreezePositionY;
                     enemyState = EnemyStates.MOVE;
                 }
             break;
@@ -105,7 +129,7 @@ public class EnemyMovementController : MonoBehaviour
                     dir = target.transform.position - transform.position;
                     velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
                     dir.y = 0;
-                    velocity.y = 0;
+                    //velocity.y = 0;
                     thisRB.velocity = velocity;
                 }
                 //IN RANGE
