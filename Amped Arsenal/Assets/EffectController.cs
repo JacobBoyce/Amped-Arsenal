@@ -43,7 +43,7 @@ public class EffectController : MonoBehaviour
         {
             if(go.GetComponent<EffectBase>().effectName.Equals(effect.GetComponent<EffectBase>().effectName) == true)
             {
-                Debug.Log("Reset Cooldown of " + go.GetComponent<EffectBase>().effectName + " effect");
+                //Debug.Log("Reset Cooldown of " + go.GetComponent<EffectBase>().effectName + " effect");
                 go.GetComponent<EffectBase>().tickAmtDuration = 0;
             }
         }

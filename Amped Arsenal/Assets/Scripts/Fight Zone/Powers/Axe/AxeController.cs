@@ -86,14 +86,7 @@ public class AxeController : WeaponBase
         UpdateValues();
     }
 
-    public void SendDamage(EnemyController enemy)
-    {
-        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
-        //send enemy effect if applied
-        
-        //check luck
-        ApplyEffects(enemy);
-    }
+
 
     public override void UpgradeWeapon()
     {

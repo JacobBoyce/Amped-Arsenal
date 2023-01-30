@@ -17,10 +17,16 @@ public class RelicBase : MonoBehaviour
     public RelicType rType;
 
     public GameObject visuals;
+    private int weapsAvailable = 0;
+
+    public virtual void ApplyRelic(PlayerController player, string weapName)
+    {
+
+    }
 
     public virtual void ApplyRelic(PlayerController player)
     {
-
+        
     }
 
     /*
@@ -54,7 +60,6 @@ public class RelicBase : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             //add relic to player equipment
-            //CHECK WHITE BOARD---------------------------------------------------------------------
             if(rType == RelicType.ONHIT || rType == RelicType.ONKILL)
             {
                 //check if weapon list has a weapon and if the weapon has enough slots
@@ -66,13 +71,18 @@ public class RelicBase : MonoBehaviour
                         //if the weapon has an open slot
                         if(weap.GetComponent<WeaponBase>().currentEquippedSlots < weap.GetComponent<WeaponBase>().maxSlots)
                         {
-                            other.gameObject.GetComponent<PlayerController>().AddRelicToCache(this);
-                            //player script will handle the trigger for the relics
-
-                            //turn off visuals
-                            visuals.SetActive(false);
-                            GetComponent<BoxCollider>().enabled = false;
+                            weapsAvailable++;
                         }
+                    }
+
+                    if(weapsAvailable > 0)
+                    {
+                        other.gameObject.GetComponent<PlayerController>().AddRelicToCache(this);
+                        //player script will handle the trigger for the relics
+
+                        //turn off visuals
+                        visuals.SetActive(false);
+                        GetComponent<BoxCollider>().enabled = false;
                     }
                 }
             }

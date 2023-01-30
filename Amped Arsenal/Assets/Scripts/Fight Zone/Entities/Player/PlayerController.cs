@@ -230,7 +230,11 @@ public class PlayerController : Actor
         equippedRelics.Add(tempRelicObj);
 
         //apply relic
-        relic.ApplyRelic(this);
+        //open up Choice UI thru main controller
+        //Then after choice has been made send the name of the weapon to the relic so it can be applied
+
+        mainController.GetComponent<GameZoneController>().OpenWeapSelectEffect(relic);
+        //relic.ApplyRelic(this, weapname);
     }
 
     #region action button

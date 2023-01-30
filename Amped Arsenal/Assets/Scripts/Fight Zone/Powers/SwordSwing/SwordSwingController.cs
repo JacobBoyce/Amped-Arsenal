@@ -70,11 +70,6 @@ public class SwordSwingController : WeaponBase
         UpdateValues();
     }
 
-    public void SendDamage(EnemyController enemy)
-    {
-        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
-    }
-
     public override void UpgradeWeapon()
     {
         level++;

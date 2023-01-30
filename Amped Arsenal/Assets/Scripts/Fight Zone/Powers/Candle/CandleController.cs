@@ -44,11 +44,6 @@ public class CandleController : WeaponBase
     }
 
 
-    public void SendDamage(EnemyController enemy)
-    {
-        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
-    }
-
     public override void UpgradeWeapon()
     {
         level++;

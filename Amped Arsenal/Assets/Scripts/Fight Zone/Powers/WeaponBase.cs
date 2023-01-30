@@ -62,6 +62,12 @@ public class WeaponBase : MonoBehaviour, IWeapon
         }
     }
 
+    public void SendDamage(EnemyController enemy)
+    {
+        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
+        ApplyEffects(enemy);
+    }
+
     public virtual void ActivateAbility()
     {
 

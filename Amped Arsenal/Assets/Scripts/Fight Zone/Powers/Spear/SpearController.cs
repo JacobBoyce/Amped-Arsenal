@@ -42,28 +42,6 @@ public class SpearController : WeaponBase
         }
     }
 
-    /*public override void SetSpawnDetails()
-    {
-        for(int i = 0; i < spawnDetails.Count; i++)
-        {    
-            //axeParent = Instantiate(weapPrefab);
-            if(spawnDetails[i].needsParent)
-            {
-                //axeParent.gameObject.transform.SetParent(playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform);
-                //axeParent.transform.position = axeParent.transform.parent.transform.position;
-            }
-            
-            //axeParent.transform.position = playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform.position;
-            //axeParent.GetComponent<FollowObject>().target = playerObj.spawnPoints[spawnDetails[i].spawnpoint].gameObject;
-            //axeParent.GetComponentInChildren<AxeParent>().InitAxes(this, rotSpeed, distanceFromPlayer, speedOut);           
-        }        
-    }*/
-
-    public void SendDamage(EnemyController enemy)
-    {
-        //round up
-        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
-    }
 
     public override void UpgradeWeapon()
     {

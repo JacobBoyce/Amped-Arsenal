@@ -9,16 +9,13 @@ public class PoisonRelic : RelicBase
 
     public WeaponBase appliedWeapon;
 
-    public void Start()
-    {
-        
-    }
-    public override void ApplyRelic(PlayerController player)
+
+    public override void ApplyRelic(PlayerController player, string weapName)
     {
         //call UI to select weapon
         foreach(GameObject weap in player.equippedWeapons)
         {
-            if(weap.GetComponent<WeaponBase>().wName.Equals("Axe"))
+            if(weap.GetComponent<WeaponBase>().wName.Equals(weapName))
             {
                 weap.GetComponent<WeaponBase>().AddEffectToWeapon(poisonEffectPrefab);
             }

@@ -9,7 +9,7 @@ public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
     public PlayerController p1;
-    public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel;
+    public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel, chooseWeapApplyEffect;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
     public ShopMenuAnimController shopAnimeController;
@@ -170,5 +170,19 @@ public class GameZoneController : MonoBehaviour
         currencyUI.SetActive(true);
         shopPanel.SetActive(false);
         //shopAnimeController.ToggleDots();
+    }
+
+    public void OpenWeapSelectEffect(RelicBase relic)
+    {
+        PauseGame();
+        chooseWeapApplyEffect.SetActive(true);
+        chooseWeapApplyEffect.GetComponent<ApplyToWeapMenu>().PopulateWeapChoiceList(p1, relic);
+    }
+
+    public void CloseWeapSelectEffect()
+    {
+        PauseGame();
+        chooseWeapApplyEffect.SetActive(false);
+        
     }
 }
