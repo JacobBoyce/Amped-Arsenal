@@ -25,6 +25,7 @@ public class EnemyController : Actor
     [Header("Base Stats")]
     public float hpMax;
     public float attk, str, def, spd, xp, gold;
+    public int threatLVL;
 
     void Awake()
     {

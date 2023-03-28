@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4805786086556685389}
   - component: {fileID: 8676859760198110596}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 3809400898837878070}
   - component: {fileID: 7086824672155732014}
   - component: {fileID: 5535522664844660179}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LarvaEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288bf8220b7f5ba47a10bceab12208f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorName: Larva
   _stats:
     _stats: []
   spriteR: {fileID: 2620344502982267995}
@@ -150,10 +151,7 @@ MonoBehaviour:
   spd: 3
   xp: 1
   gold: 2
-  _chp: 0
-  _cstr: 0
-  _cdef: 0
-  _cspd: 0
+  threatLVL: 3
 --- !u!54 &3809400898837878070
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -208,7 +206,7 @@ GameObject:
   - component: {fileID: 498293275458223020}
   - component: {fileID: 5601870166772708588}
   - component: {fileID: 5493932449768437252}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +289,7 @@ GameObject:
   - component: {fileID: 4503767883884206213}
   - component: {fileID: 2620344502982267995}
   - component: {fileID: 258177223477388566}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LarvaEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -395,7 +393,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1844288094635193735}
   - component: {fileID: 754250157}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}

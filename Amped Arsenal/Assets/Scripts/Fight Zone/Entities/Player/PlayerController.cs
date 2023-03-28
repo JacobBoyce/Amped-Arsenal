@@ -74,8 +74,8 @@ public class PlayerController : Actor
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",    9,10);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",   15,30);    // How far to pull object from.
-        _stats.AddStat("xp",      1000,100000); // Xp.
-        _stats.AddStat("gold",    1000,100000); //Gold
+        _stats.AddStat("xp",      0,100000); // Xp.
+        _stats.AddStat("gold",    50,100000); //Gold
         
         //mod testing
         //_stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
@@ -235,6 +235,11 @@ public class PlayerController : Actor
 
         mainController.GetComponent<GameZoneController>().OpenWeapSelectEffect(relic);
         //relic.ApplyRelic(this, weapname);
+    }
+
+    public void MovePlayerToField(GameObject moveToPos)
+    {
+        transform.position = moveToPos.transform.position;
     }
 
     #region action button

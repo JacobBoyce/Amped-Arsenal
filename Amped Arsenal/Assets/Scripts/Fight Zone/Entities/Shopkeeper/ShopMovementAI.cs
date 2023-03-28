@@ -140,7 +140,10 @@ public class ShopMovementAI : MonoBehaviour
                         finishMovedToPlayer = true;
                         startMoveToPlayerInit = true;
                         // open shop after he moves towards player
-                        //playerPos.GetComponent<PlayerController>().mainController.GetComponent<GameZoneController>().OpenShop();
+                        if(Vector3.Distance(gameObject.transform.position, playerPos.transform.position) < 10)
+                        {
+                            playerPos.GetComponent<PlayerController>().mainController.GetComponent<GameZoneController>().OpenShop();
+                        }
                     }
                 }
             break;

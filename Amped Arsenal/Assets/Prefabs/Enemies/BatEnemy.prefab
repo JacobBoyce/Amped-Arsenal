@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 403880049}
   - component: {fileID: 403880051}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 1104389640}
   - component: {fileID: 1104389642}
   - component: {fileID: 1104389641}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BatEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1432494566}
   - component: {fileID: 1432494567}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 1872441510}
   - component: {fileID: 1872441512}
   - component: {fileID: 1872441511}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 126802570399370746}
   - component: {fileID: 1909001664}
   - component: {fileID: 4141661359871722453}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BatEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -376,6 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288bf8220b7f5ba47a10bceab12208f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorName: Bat
   _stats:
     _stats: []
   spriteR: {fileID: 1104389642}
@@ -398,10 +399,7 @@ MonoBehaviour:
   spd: 4
   xp: 1
   gold: 1
-  _chp: 0
-  _cstr: 0
-  _cdef: 0
-  _cspd: 0
+  threatLVL: 2
 --- !u!54 &1909001664
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -124,15 +124,23 @@ public class GameZoneController : MonoBehaviour
                         + "\nLUCK: " + p1._stats["luck"].Value
                         + "\nPULL: " + p1._stats["pull"].Value
                         + "\nXP: " + p1._stats["xp"].Value + " / " + p1._stats["xp"].Max;
+    }
 
-        #region Game Timer
-            gameTimer += Time.deltaTime;
-            Min = Mathf.FloorToInt(gameTimer / 60F);
-            seconds = Mathf.FloorToInt(gameTimer - Min * 60);
-            string niceTime = string.Format("{0:0}:{1:00}", Min, seconds);
-            gameTimerUIText.text = niceTime;
+    public void OpenUpgrades()
+    {
+        //turn on upgrade screen and turn off other ui
+            if(isUpgrading == false)
+            {
+                FocusUI(upgradePanel, true);
+                upgradePanel.GetComponent<UpgradeMenuController>().PopulateUI();
 
-        #endregion
+            }
+            else
+            {
+                //display gameplay ui
+                ResumeGamePlay();
+            }
+            isUpgrading = isUpgrading ? false : true;
     }
 
     public void ShowStats(bool onoff)

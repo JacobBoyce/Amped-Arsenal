@@ -32,11 +32,11 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public void Update()
     {
-        //moveInput.x = joystick.Horizontal;
-        //moveInput.y = joystick.Vertical;
+        moveInput.x = joystick.Horizontal;
+        moveInput.y = joystick.Vertical;
 
-        moveInput.x = Input.GetAxis("Horizontal");
-        moveInput.y = Input.GetAxis("Vertical");
+        //moveInput.x = Input.GetAxis("Horizontal");
+        //moveInput.y = Input.GetAxis("Vertical");
         moveInput.Normalize();
 
         theRB.velocity = new Vector3(moveInput.x * player._stats["spd"].Value, 0f, moveInput.y * player._stats["spd"].Value);

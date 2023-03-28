@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1448604348734443509}
   - component: {fileID: 8815015681239692202}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 5927899065205727374}
   - component: {fileID: 4868084269488462099}
   - component: {fileID: 2691533830791748436}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: AntEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 288bf8220b7f5ba47a10bceab12208f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorName: Ant
   _stats:
     _stats: []
   spriteR: {fileID: 8245237823271706758}
@@ -149,10 +150,7 @@ MonoBehaviour:
   spd: 6
   xp: 1
   gold: 1
-  _chp: 0
-  _cstr: 0
-  _cdef: 0
-  _cspd: 0
+  threatLVL: 1
 --- !u!54 &4868084269488462099
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -192,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7129349350123362636}
   - component: {fileID: 3912815307578510298}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +252,7 @@ GameObject:
   - component: {fileID: 3195106546690793842}
   - component: {fileID: 2782542469877064999}
   - component: {fileID: 6329631104469400141}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +335,7 @@ GameObject:
   - component: {fileID: 7783527389565370419}
   - component: {fileID: 8245237823271706758}
   - component: {fileID: 3590293290467657320}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Ant1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

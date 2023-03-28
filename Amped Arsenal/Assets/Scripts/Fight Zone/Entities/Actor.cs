@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Actor : MonoBehaviour
 {
+    public string actorName;
     [SerializeField]
     public Stats _stats;
 
