@@ -227,13 +227,20 @@ public class PlayerController : Actor
         tempRelicObj = relic.gameObject;
         tempRelicObj.transform.SetParent(equippedRelicsObj.transform);
         tempRelicObj.transform.localPosition = Vector3.zero;
-        equippedRelics.Add(tempRelicObj);
+        
 
         //apply relic
         //open up Choice UI thru main controller
         //Then after choice has been made send the name of the weapon to the relic so it can be applied
-
-        mainController.GetComponent<GameZoneController>().OpenWeapSelectEffect(relic);
+        if(tempRelicObj.GetComponent<RelicBase>().rType == RelicBase.RelicType.ONHIT || tempRelicObj.GetComponent<RelicBase>().rType == RelicBase.RelicType.ONKILL)
+        {
+            mainController.GetComponent<GameZoneController>().OpenWeapSelectEffect(relic);
+        }
+        else
+        {
+            tempRelicObj.GetComponent<RelicBase>().ApplyRelic(this);
+        }
+        equippedRelics.Add(tempRelicObj);
         //relic.ApplyRelic(this, weapname);
     }
 

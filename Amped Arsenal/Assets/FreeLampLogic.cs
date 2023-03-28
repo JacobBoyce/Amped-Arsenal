@@ -11,6 +11,8 @@ public class FreeLampLogic : MonoBehaviour
     public float countdown, cdMax;
     public bool inRange, done = false;
 
+    public GameObject relicToSpawn, spawnRewardPoint;
+    private GameObject tempRelicSpawned;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +36,8 @@ public class FreeLampLogic : MonoBehaviour
                 done = true;
                 countdownText.text = "";
                 //spawn artifact
+                tempRelicSpawned = Instantiate(relicToSpawn , spawnRewardPoint.transform.position, spawnRewardPoint.transform.rotation);
+                GetComponent<ShootReward>().ShootObject(spawnRewardPoint, tempRelicSpawned);
             }
         }
     }

@@ -86,6 +86,15 @@ public class RelicBase : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                other.gameObject.GetComponent<PlayerController>().AddRelicToCache(this);
+                //player script will handle the trigger for the relics
+
+                //turn off visuals
+                visuals.SetActive(false);
+                GetComponent<BoxCollider>().enabled = false;
+            }
         }
     }
 }
