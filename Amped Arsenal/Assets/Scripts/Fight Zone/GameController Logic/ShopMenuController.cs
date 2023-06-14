@@ -38,7 +38,7 @@ public class ShopMenuController : MonoBehaviour
 
     public void InitShop()
     {
-        goldText.text = "Gold: " + controller.p1._stats["gold"].Value;
+        goldText.text = controller.p1._stats["gold"].Value.ToString();
         if (populatedShop == false)
         {
             MakeShopItems();
@@ -52,11 +52,11 @@ public class ShopMenuController : MonoBehaviour
         //take money away-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         //delete current shop items
-        foreach (ShopItemPrefab pf in buyableItems)
+        /*foreach (ShopItemPrefab pf in buyableItems)
         {
             Destroy(pf.gameObject);
-        }
-        buyableItems.Clear();
+        }*/
+        //buyableItems.Clear();
         weapChoices[0] = -1;
         weapChoices[1] = -1;
         weapChoices[2] = -1;
@@ -67,7 +67,6 @@ public class ShopMenuController : MonoBehaviour
         {
             rerollButton.GetComponent<Button>().interactable = false;
         }
-        
     }
 
     public void ChooseWeapons()
@@ -188,10 +187,14 @@ public class ShopMenuController : MonoBehaviour
         {
             //if weapon name is blank (-1) then do none of this other than making the prefab
             
+            /*
             tempItemPrefab = Instantiate(itemPrefab);
             tempItemPrefab.transform.SetParent(shopWeaponParent.transform);
             tempItemPrefab.transform.localScale = new Vector3(1,1,1);
             tempShopItem = tempItemPrefab.GetComponent<ShopItemPrefab>();
+            */
+
+            tempShopItem = buyableItems[i];
 
             if (weapChoices[i] != -1)
             {
@@ -201,17 +204,12 @@ public class ShopMenuController : MonoBehaviour
                 int tempInt = i;
                 tempShopItem.buyButton.onClick.AddListener(() => ButtonTask(tempInt));
                 //set prices
-                tempShopItem.amount.text = price.ToString();
-                buyableItems.Add(tempShopItem);
+                tempShopItem.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
             }
             else if (weapChoices[i] == -1)
             {
-                tempShopItem.title.text = "None";
-                tempShopItem.desc.text = "No Items left to buy";
-                tempShopItem.amount.text = "0";
                 tempShopItem.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
                 tempShopItem.buyButton.interactable = false;
-                buyableItems.Add(tempShopItem);
             }
         }
         CheckIfCanBuy();
@@ -220,11 +218,11 @@ public class ShopMenuController : MonoBehaviour
     public void ButtonTask(int index)
     {
         controller.p1.RemoveGold(price); //_stats["gold"].Value -= price;
-        goldText.text = "Gold: " + controller.p1._stats["gold"].Value;
+        goldText.text = controller.p1._stats["gold"].Value.ToString();
         //if index == 0
         //buyableweapons[index] has been bought
         //Debug.Log(index);
-        controller.p1.AddWeaponToCache(buyableItems[index].title.text);
+        controller.p1.AddWeaponToCache(buyableItems[index].weapName);
         ScalePrices();
         CheckIfCanBuy();
         shopDirty += 1;
@@ -260,19 +258,19 @@ public class ShopMenuController : MonoBehaviour
             //check if you have enough gold to buy
             if(price > controller.p1._stats["gold"].Value)
             {
-                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
                 sp.buyButton.enabled = false;
                 sp.buyButton.interactable = false;
             }
             else
             {
-                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Buy";
+                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
                 sp.buyButton.enabled = true;
                 sp.buyButton.interactable = true;
             }
 
             //check if it has already been bought
-            if (controller.p1.FindWeapon(sp.title.text) || sp.title.text == "None")
+            if (controller.p1.FindWeapon(sp.weapName) || sp.weapName == "None")
             {
                 sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
                 sp.buyButton.enabled = false;

@@ -6,25 +6,22 @@ using UnityEngine.UI;
 
 public class ShopItemPrefab : MonoBehaviour
 {
-    public TextMeshProUGUI title, desc, amount;
+    public string weapName = "None";
     public Button buyButton;
     public Image splash, currency;
     [Space(10)]
     public int indexNum;
 
-    public void UpdatePrefab(string tit, string des, string amt, Image sp, Image cur, int ind)
+    public void UpdatePrefab(string wpName, Image sp, Image cur, int ind)
     {
-        title.text = tit;
-        desc.text = des;
-        amount.text = amt;
+        weapName = wpName;
         splash = sp;
         currency = cur;
         indexNum = ind;
     }
     public void UpdatePrefab(ShopItemSO shopItem)
     {
-        title.text = shopItem.weapName;
-        desc.text = shopItem.description;
+        weapName = shopItem.weapName;
         splash.sprite = shopItem.splashImg;
         currency.sprite = shopItem.currency;
         indexNum = shopItem.indexNum;
@@ -32,6 +29,6 @@ public class ShopItemPrefab : MonoBehaviour
 
     public void UpdatePrice(int newPrice)
     {
-        amount.text = newPrice.ToString();
+        buyButton.GetComponentInChildren<TextMeshProUGUI>().text = newPrice.ToString();
     }
 }
