@@ -28,10 +28,10 @@ public class MoveToPlayer : MonoBehaviour
             if (go.tag.Equals("ALamp"))
             {
                 lamp = go.GetComponent<AbsorbLamp>();
+                distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
             }
         }
 
-        distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
         if (distToLamp < 14 && itemType == DropItem.XP)
         {
             if(lamp.ableToAbsorb)

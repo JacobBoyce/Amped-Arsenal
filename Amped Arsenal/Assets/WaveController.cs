@@ -166,6 +166,8 @@ public class WaveController : MonoBehaviour
             }
             
         }
+
+        spawnRateMax = (maxWaveTimer - (maxWaveTimer * .25f)) / toSpawnList.Count; 
     }
 
     public void RaiseThreatLVL()

@@ -79,7 +79,7 @@ public class ThirdPersonMovement : MonoBehaviour
                     {
                         //check direction about to go
                         //if movedir.x > 0 == moving right
-                        if(moveInput.x < 0)
+                        if(moveInput.x > 0)
                         {
                             quispyAnim.SetTrigger("Flip");
                             flipTimer = 0;
@@ -96,7 +96,7 @@ public class ThirdPersonMovement : MonoBehaviour
                     else
                     {
                         //if movedir.x < 0 == moving left
-                        if(moveInput.x > 0)
+                        if(moveInput.x < 0)
                         {
                             quispyAnim.SetTrigger("Flip");
                             flipTimer = 0;

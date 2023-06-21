@@ -6,13 +6,11 @@ public class EquippedUI : MonoBehaviour
 {
     public UpgradeMenuController controller;
     public List<WeapItemSlotUI> weapUI = new();
-    public List<WeapItemSlotUI> accessoryUI = new();
     private List<WeapItemSlotUI> allSlots = new();
 
     public void Start()
     {
         allSlots.AddRange(weapUI);
-        allSlots.AddRange(accessoryUI);
     }
 
     public void UpdateWeapUI(int idNum, WeaponBase wb)

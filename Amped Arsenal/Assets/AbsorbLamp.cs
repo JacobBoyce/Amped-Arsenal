@@ -41,7 +41,7 @@ public class AbsorbLamp : MonoBehaviour
             //shoot reward
             //GameObject tempRewardObj = intantiate / Get random reward here
             tempRewardObj = Instantiate(testPrefab , spawnRewardPoint.transform.position, spawnRewardPoint.transform.rotation);
-            GetComponent<ShootReward>().ShootObject(spawnRewardPoint, tempRewardObj);
+            GetComponent<ShootReward>().ShootObject(spawnRewardPoint, tempRewardObj, ShootReward.ShootType.Facing);
         }
     }
 }

@@ -37,7 +37,7 @@ public class FreeLampLogic : MonoBehaviour
                 countdownText.text = "";
                 //spawn artifact
                 tempRelicSpawned = Instantiate(relicToSpawn , spawnRewardPoint.transform.position, spawnRewardPoint.transform.rotation);
-                GetComponent<ShootReward>().ShootObject(spawnRewardPoint, tempRelicSpawned);
+                GetComponent<ShootReward>().ShootObject(spawnRewardPoint, tempRelicSpawned, ShootReward.ShootType.Facing);
             }
         }
     }

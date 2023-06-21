@@ -177,18 +177,23 @@ public class EnemyController : Actor
                 rand2 = Random.Range(0,drops.Count);
             }
 
-            dropped.Add(Instantiate(drops[rand1], transform.position, transform.rotation));
-            dropped.Add(Instantiate(drops[rand2], transform.position, transform.rotation));
+            dropped.Add(drops[rand1]);
+            dropped.Add(drops[rand2]);
             //choose two random drops from drop list
         }
         else
         {
             dropIndex = Random.Range(0,drops.Count);
-            dropped.Add(Instantiate(drops[dropIndex], transform.position, transform.rotation));
+            dropped.Add(drops[dropIndex]);
         }
 
         foreach(GameObject go in dropped)
         {
+            //shoot reward like it dropped it
+            GameObject tempDrop;
+            tempDrop = Instantiate(drops[dropIndex], transform.position, transform.rotation);
+            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
+
             if(go.tag == "XP")
             {
                 go.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;

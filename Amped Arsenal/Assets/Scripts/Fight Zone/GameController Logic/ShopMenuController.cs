@@ -18,7 +18,7 @@ public class ShopMenuController : MonoBehaviour
     int v1, shopDirty = 0;
     public GameObject uiParent;
     public TextMeshProUGUI goldText;
-    public Sprite currencySprite;
+    public GameObject upgradeButtonUI;
     //player controller.p1
 
     /*public void Update()
@@ -45,6 +45,7 @@ public class ShopMenuController : MonoBehaviour
             populatedShop = true;
         }
         CheckIfCanBuy();
+        upgradeButtonUI.SetActive(false);
     }
 
     public void ReRollShop()

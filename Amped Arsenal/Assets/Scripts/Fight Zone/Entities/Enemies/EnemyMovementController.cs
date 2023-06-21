@@ -21,6 +21,7 @@ public class EnemyMovementController : MonoBehaviour
     private EnemyController eController;
     private Rigidbody thisRB;
     public GameObject visuals;
+    public ParticleSystem dustCloud;
     
     public float distance;
     public float attackRange, attackCooldown, attackCooldownMax;
@@ -89,6 +90,7 @@ public class EnemyMovementController : MonoBehaviour
             if(dir.x > 0)
             {
                 theSR.flipX = true;
+                //dustCloud.velocityOverLifetime.x = 0 - dustCloud.velocityOverLifetime.x;
             }
             else if(dir.x < 0)
             {

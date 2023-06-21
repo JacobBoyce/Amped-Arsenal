@@ -8,7 +8,7 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
 {
     public WeaponFocusUI weapFocus;
     public EquippedUI equippedUICont;
-    public GameObject blankSlotPrefab;
+    //public GameObject blankSlotPrefab;
     public TextMeshProUGUI xpText;
     private PlayerController playerCont;
 

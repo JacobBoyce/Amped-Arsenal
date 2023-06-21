@@ -20,6 +20,8 @@ public class GameZoneController : MonoBehaviour
     public bool isPaused, statsVisible;
     public TextMeshProUGUI gameTimerUIText;
 
+    public GameObject thingToShoot, whereToShoot;
+
     public float gameTimer, gameTimerMax;
     public int minutes, seconds;
     public int Min
@@ -115,6 +117,13 @@ public class GameZoneController : MonoBehaviour
         {
             statsVisible = statsVisible ? false : true;
             ShowStats(statsVisible);
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            GameObject tempObj = Instantiate(thingToShoot, whereToShoot.transform.position, Quaternion.identity);
+            GetComponent<ShootReward>().ShootObject(whereToShoot, tempObj, ShootReward.ShootType.Up);
+            
         }
 
         statsTxt.text = "HP: " + p1._stats["hp"].Value + " / " + p1._stats["hp"].Max
