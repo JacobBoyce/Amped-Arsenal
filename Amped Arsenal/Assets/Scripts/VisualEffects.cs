@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class VisualEffects : MonoBehaviour
 {
+    [Header("Billboard Vars")]
+
+    public bool wantBillboard;
+
     [Header("Bob Vars")]
     //bobbing values
     public bool wantBob;
@@ -59,6 +63,14 @@ public class VisualEffects : MonoBehaviour
 
     void Update () 
     {
+
+        //check if want to billboard
+        if(wantBillboard)
+        {
+            transform.rotation = Quaternion.Euler(Camera.main.transform.rotation.eulerAngles.x, 0 ,0);
+        }
+
+
         if(!isDead && damaged)
         {
             if(shakeTimer < shakeDur)

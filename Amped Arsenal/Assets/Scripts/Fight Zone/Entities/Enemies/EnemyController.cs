@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class EnemyController : Actor
 {
-    public SpriteRenderer spriteR;
-    public GameObject deathPoof;
+    public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
     public bool tookDamage, spawnedXp = false;
     private Color baseDamageColor = Color.white;
@@ -40,9 +39,7 @@ public class EnemyController : Actor
         _stats.AddStat("xp",     1, 100);    //How much xp to give the player
         _stats.AddStat("gold",   1, 100);    //How much xp to give the player
         //_stats.Fill();
-        spriteR = GetComponentInChildren<SpriteRenderer>();
 
-        baseSpriteColor = spriteR.material.color;
         SetStats();
     }
 
@@ -131,7 +128,6 @@ public class EnemyController : Actor
 
     public void RemoveEffect(string eName)
     {
-        spriteR.material.color = baseSpriteColor;
         effectCont.RemoveEffect(eName);
     }
 
@@ -212,9 +208,9 @@ public class EnemyController : Actor
             blinkTimer -= Time.deltaTime;
             float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
             float intensity = (lerp * blinkIntesity) + 1.0f;
-            if(spriteR != null)
+            if(spriteObj != null)
             {
-                spriteR.material.color = Color.white * intensity;
+                spriteObj.GetComponent<MeshRenderer>().material.color = Color.white * intensity;
             }
         }
         else

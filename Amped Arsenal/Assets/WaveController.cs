@@ -18,7 +18,6 @@ public class WaveController : MonoBehaviour
     [Header("Spawn Stuff")]
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
     private GameObject tempPrefab;
-    private int toSpawnIndex = 0;
 
     [Header("Stat Scaling")]
     public float hp;
@@ -70,7 +69,7 @@ public class WaveController : MonoBehaviour
                     //start waves
                     curWave++;
                     StartWave();
-                    Debug.Log("Next wave");
+                    //Debug.Log("Next wave");
                     wasPeaceWave = false;
                 }
                 else
@@ -84,13 +83,13 @@ public class WaveController : MonoBehaviour
                             //start waves
                             curWave++;
                             StartWave();
-                            Debug.Log("Next wave");
+                            //Debug.Log("Next wave");
                         }
                         else
                         {
                             //tell shop keeper to come out
                             wasPeaceWave = true;
-                            Debug.Log("Peace wave");
+                            //Debug.Log("Peace wave");
                         }
                     }
                     else
@@ -98,7 +97,7 @@ public class WaveController : MonoBehaviour
                         //call next wave
                         curWave++;
                         StartWave();
-                        Debug.Log("Next wave");
+                        //Debug.Log("Next wave");
                     }
                 }
                 waveText.text = "Wave " + curWave + "/50";
@@ -132,7 +131,6 @@ public class WaveController : MonoBehaviour
         RaiseThreatLVL();
         DecideWave();
         //spawn enemies
-        toSpawnIndex = 0;
         toggleSpawning = true;
     }
 
@@ -147,7 +145,7 @@ public class WaveController : MonoBehaviour
             //choose enemy from list add its threat stat to tempThreat
             int randomChoice = Random.Range(0,enemyPrefabs.Count);
             GameObject tempEnemy = enemyPrefabs[randomChoice];
-            Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " chosen (" + randomChoice + ") // current threat level: " + tempThreat);
+            //Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " chosen (" + randomChoice + ") // current threat level: " + tempThreat);
 
             //if the threat to add is less than the wave threat level, continue
             if(tempThreat + tempEnemy.GetComponent<EnemyController>().threatLVL <= waveThreatLVL)
@@ -156,12 +154,12 @@ public class WaveController : MonoBehaviour
                 tempThreat += tempEnemy.GetComponent<EnemyController>().threatLVL;
                 //add to spawnlist
                 toSpawnList.Add(tempEnemy);
-                Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " added // current threat level: " + tempThreat);
+                //Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " added // current threat level: " + tempThreat);
 
             }
             else
             {
-                Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " not chosen, rechoosing");
+                //Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " not chosen, rechoosing");
                 /*break loop and start again untill one is found to fill the threat level*/
             }
             

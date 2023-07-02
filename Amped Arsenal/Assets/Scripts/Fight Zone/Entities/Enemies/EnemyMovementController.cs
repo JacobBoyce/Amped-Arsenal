@@ -21,11 +21,12 @@ public class EnemyMovementController : MonoBehaviour
     private EnemyController eController;
     private Rigidbody thisRB;
     public GameObject visuals;
-    public ParticleSystem dustCloud;
+    //public ParticleSystem dustCloud;
     
     public float distance;
     public float attackRange, attackCooldown, attackCooldownMax;
     private bool inRange = false, isDead;
+    public bool facingLeft, facingRight;
 
     [Header("Stagger vars")]
     public float knockbackAmount;
@@ -87,14 +88,20 @@ public class EnemyMovementController : MonoBehaviour
         //flip sprite
         if(!isDead)
         {
-            if(dir.x > 0)
+            if(dir.x > 0 && facingRight != true)
             {
-                theSR.flipX = true;
+                //theSR.flipX = true;
+                facingRight = true;
+                facingLeft = false;
+                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", true);
                 //dustCloud.velocityOverLifetime.x = 0 - dustCloud.velocityOverLifetime.x;
             }
-            else if(dir.x < 0)
+            else if(dir.x < 0 && facingLeft != true)
             {
-                theSR.flipX = false;
+                //theSR.flipX = false;
+                facingRight = false;
+                facingLeft = true;
+                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", false);
             }
         }
         
