@@ -160,45 +160,38 @@ public class EnemyController : Actor
 
     public void SpawnDrop()
     {
-        int rand1, rand2;
-        List<GameObject> dropped = new List<GameObject>();
-        // chance for multi drop
+           // chance for multi drop
         multiDropChance = Random.Range(0,10);
-        if(multiDropChance < 3)
+        if(multiDropChance < 2)
         {
-            rand1 = Random.Range(0,drops.Count);
-            rand2 = Random.Range(0,drops.Count);
-            while(rand2 == rand1)
-            {
-                rand2 = Random.Range(0,drops.Count);
-            }
-
-            dropped.Add(drops[rand1]);
-            dropped.Add(drops[rand2]);
-            //choose two random drops from drop list
+            //spawn xp and gold
+            SpawnDropObject(drops[0]);
+            SpawnDropObject(drops[1]);
         }
         else
         {
-            dropIndex = Random.Range(0,drops.Count);
-            dropped.Add(drops[dropIndex]);
+            //spawn xp
+            SpawnDropObject(drops[0]);
         }
 
-        foreach(GameObject go in dropped)
-        {
-            //shoot reward like it dropped it
+    }
+
+    public void SpawnDropObject(GameObject drop)
+    {
+        //shoot reward like it dropped it
             GameObject tempDrop;
-            tempDrop = Instantiate(drops[dropIndex], transform.position, transform.rotation);
+            tempDrop = Instantiate(drop);
+            tempDrop.transform.position = this.gameObject.transform.position;
             GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
 
-            if(go.tag == "XP")
+            if(tempDrop.tag == "XP")
             {
-                go.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
+                tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
             }
-            else if(go.tag == "Gold")
+            else if(tempDrop.tag == "Gold")
             {
-                go.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
+                tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
             }
-        }
     }
 
     public void VisualDamage()

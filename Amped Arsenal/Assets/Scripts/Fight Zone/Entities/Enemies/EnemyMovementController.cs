@@ -14,8 +14,6 @@ public class EnemyMovementController : MonoBehaviour
     }
 
     public EnemyStates enemyState;
-    public SpriteRenderer theSR;
-
     private GameObject target;
 
     private EnemyController eController;
@@ -184,7 +182,6 @@ public class EnemyMovementController : MonoBehaviour
                 if(!isDead)
                 {
                     isDead = true;
-                    GetComponent<CapsuleCollider>().enabled = false;
                     visuals.GetComponent<VisualEffects>().Died();
                     //animC.SetBool("inRange", false); 
                     //animC.SetBool("isDead", true);

@@ -34,7 +34,7 @@ public class MoveToPlayer : MonoBehaviour
 
         if (distToLamp < 14 && itemType == DropItem.XP)
         {
-            if(lamp.ableToAbsorb)
+            if(lamp!= null && lamp.ableToAbsorb)
             {
                 inRangeOfLamp = true;
             }
