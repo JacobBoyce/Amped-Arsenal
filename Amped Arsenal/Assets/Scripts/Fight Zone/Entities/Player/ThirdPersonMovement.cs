@@ -9,8 +9,9 @@ public class ThirdPersonMovement : MonoBehaviour
     public Rigidbody theRB;
     public Vector2 moveInput;
     public Animator quispyAnim;
-    public SpriteRenderer thisSR;
     public PlayerController player;
+
+    public bool lookingLeft, lookingRight;
 
     public enum FlipState
     {
@@ -19,11 +20,6 @@ public class ThirdPersonMovement : MonoBehaviour
     }
     public float flipThreshold, flipTimer;
     public FlipState fpState;
-
-    public void Flipperoo()
-    {
-        thisSR.flipX = thisSR.flipX == false ? true : false;
-    }
 
     public void Start()
     {
@@ -44,22 +40,19 @@ public class ThirdPersonMovement : MonoBehaviour
         switch(fpState)
         {
             case FlipState.CHECKSTATE:
-                if(thisSR.flipX == false)
+                //check direction about to go
+                //if movedir.x < 0 == moving left
+                if(moveInput.x < 0 && lookingLeft == false)
                 {
-                    //check direction about to go
-                    //if movedir.x < 0 == moving left
-                    if(moveInput.x < 0)
-                    {
-                        flipTimer = 0;
-                        fpState = FlipState.WAIT;
-                        break;
-                    }
+                    flipTimer = 0;
+                    fpState = FlipState.WAIT;
+                    break;
                 }
                 //if looking right
                 else
                 {
                     //if movedir.x > 0 == moving right
-                    if(moveInput.x > 0)
+                    if(moveInput.x > 0 && lookingRight == false)
                     {
                         flipTimer = 0;
                         fpState = FlipState.WAIT;
@@ -75,39 +68,30 @@ public class ThirdPersonMovement : MonoBehaviour
                 }
                 else
                 {
-                    if(thisSR.flipX == false)
+                    //check direction about to go
+                    //if movedir.x > 0 == moving right
+                    if(moveInput.x > 0 && lookingRight == false)
                     {
-                        //check direction about to go
-                        //if movedir.x > 0 == moving right
-                        if(moveInput.x > 0)
-                        {
-                            quispyAnim.SetTrigger("Flip");
-                            flipTimer = 0;
-                            fpState = FlipState.WAIT;
-                            break;
-                        }
-                        else
-                        {
-                            fpState = FlipState.CHECKSTATE;
-                            break;
-                        }
+                        quispyAnim.SetBool("Flip",true);
+                        lookingRight = true;
+                        lookingLeft = false;
+                        flipTimer = 0;
+                        fpState = FlipState.WAIT;
+                        break;
                     }
-                    //if looking right
+                    else if(moveInput.x < 0 && lookingLeft == false)
+                    {
+                        quispyAnim.SetBool("Flip",false);
+                        lookingRight = false;
+                        lookingLeft = true;
+                        flipTimer = 0;
+                        fpState = FlipState.WAIT;
+                        break;
+                    }
                     else
                     {
-                        //if movedir.x < 0 == moving left
-                        if(moveInput.x < 0)
-                        {
-                            quispyAnim.SetTrigger("Flip");
-                            flipTimer = 0;
-                            fpState = FlipState.WAIT;
-                            break;
-                        }
-                        else
-                        {
-                            fpState = FlipState.CHECKSTATE;
-                            break;
-                        }
+                        fpState = FlipState.CHECKSTATE;
+                        break;
                     }
                 }
             break;

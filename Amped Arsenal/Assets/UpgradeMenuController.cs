@@ -47,7 +47,7 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
         equippedUICont.ClearSlots();
         weapFocus.ClearFocusUI();
 
-        xpText.text = "XP: " + playerCont._stats["xp"].Value;
+        xpText.text = playerCont._stats["xp"].Value.ToString();
 
         //check the slot first to see if the thing we are about to populate is already in the list
         UpdateSlotUIInfo();
@@ -80,10 +80,7 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
                 weapFocus.UpdateFocusUI(tempWeap,playerCont);
             }
         }
-
     }
-
-   
 }
 
 [System.Serializable]

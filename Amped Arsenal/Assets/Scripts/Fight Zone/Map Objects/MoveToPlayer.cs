@@ -101,6 +101,8 @@ public class MoveToPlayer : MonoBehaviour
             if(itemType == DropItem.XP)
             {
                 p1.AddXP(amount);
+                // check if can show upgrade notification.
+                p1.CheckIfCanUpgradeWeapons();
             }
             else if(itemType == DropItem.GOLD)
             {

@@ -17,6 +17,7 @@ public class GameZoneController : MonoBehaviour
     public List<GameObject> gamePlayUIComponents = new();
     public bool isUpgrading;
     GameObject focusedUI;
+    public Image upNotifyImg;
     public bool isPaused, statsVisible;
     public TextMeshProUGUI gameTimerUIText;
 
@@ -201,5 +202,10 @@ public class GameZoneController : MonoBehaviour
         PauseGame();
         chooseWeapApplyEffect.SetActive(false);
         
+    }
+
+    public void ToggleUpgradeNotification(bool toggleVal)
+    {
+        upNotifyImg.gameObject.SetActive(toggleVal);
     }
 }

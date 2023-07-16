@@ -12,8 +12,10 @@ public class ShopMovementAI : MonoBehaviour
     //         false = looking left
 
     public Animator animCont;
+
+    public Material standMat, walkMat;
+    public MeshRenderer meshRend;
     public Rigidbody thisRB;
-    public SpriteRenderer thisSR;
     public TextMeshProUGUI alertUI;
 
     public float moveSpeed;
@@ -32,7 +34,7 @@ public class ShopMovementAI : MonoBehaviour
     [Header("If Hell")]
     public float standingTimer;
     public float standingTimerMax, walkingTimer, walkingTimerMax, moveToTimer, moveToTimerMax;
-    public bool startMoveToPlayerInit;
+    public bool startMoveToPlayerInit, lookingLeft, lookingRight;
 
     private GameObject playerPos, runFromPos;
 
@@ -41,8 +43,10 @@ public class ShopMovementAI : MonoBehaviour
     public void Start()
     {
         //StartCoroutine(StandStill());
+        animCont.SetBool("Stand", true);
+        meshRend.material = standMat;
+        //animCont.SetTrigger("ChangeStance");
         SwitchToStanding();
-
     }
 
     void Update()
@@ -72,11 +76,17 @@ public class ShopMovementAI : MonoBehaviour
                     if(randomNum > 2)
                     {
                         SwitchToWalking();
+                        animCont.SetBool("Stand", true);
+                        meshRend.material = standMat;
+                        //animCont.SetTrigger("ChangeStance");
                         break;
                     }
                     else
                     {
                         SwitchToStanding();
+                        animCont.SetBool("Stand", false);
+                        meshRend.material = walkMat;
+                        //animCont.SetTrigger("ChangeStance");
                         break;
                     }
                 }
@@ -99,6 +109,9 @@ public class ShopMovementAI : MonoBehaviour
                 else
                 {
                     walkingTimer = 0;
+                    animCont.SetBool("Stand", false);
+                    meshRend.material = standMat;
+                    animCont.SetTrigger("ChangeStance");
                     SwitchToStanding();
                     break;
                 }
@@ -126,7 +139,7 @@ public class ShopMovementAI : MonoBehaviour
                             FlipLogic(true);
                             thisRB.isKinematic = true;
                             startMoveToPlayerInit = false;
-                            animCont.Play("FrogWalking");
+                            //animCont.Play("FrogWalking");
                         }
                         moveToTimer += Time.deltaTime;
                         this.transform.position = Vector3.MoveTowards(this.transform.position, playerPos.transform.position, (moveSpeed * .5f) * Time.deltaTime);
@@ -136,13 +149,13 @@ public class ShopMovementAI : MonoBehaviour
                     {
                         moveToTimer = 0;
                         StopMove();
-                        animCont.Play("FromStanding");
+                        //animCont.Play("FromStanding");
                         finishMovedToPlayer = true;
                         startMoveToPlayerInit = true;
                         // open shop after he moves towards player
                         if(Vector3.Distance(gameObject.transform.position, playerPos.transform.position) < 10)
                         {
-                            playerPos.GetComponent<PlayerController>().mainController.GetComponent<GameZoneController>().OpenShop();
+                            playerPos.GetComponent<PlayerController>().mainController.OpenShop();
                         }
                     }
                 }
@@ -154,18 +167,19 @@ public class ShopMovementAI : MonoBehaviour
     {
         walkingTimer = 0;
         StartMove();
+
         //decide blink
         int chance = Random.Range(1,10);
         chance += walkBlinkMod;
         if(chance > 10)
         {
             walkBlinkMod = 0;
-            animCont.Play("FrogBlinkAnim");
+            //animCont.Play("FrogBlinkAnim");
         }
         else
         {
             walkBlinkMod++;
-            animCont.Play("FrogWalking");
+            //animCont.Play("FrogWalking");
         }
         walkingTimerMax = Random.Range(2,3);
         shopState = ShopStates.WALK;
@@ -175,18 +189,19 @@ public class ShopMovementAI : MonoBehaviour
     {
         standingTimer = 0;
         StopMove();
+
         //decide blink
         int chance = Random.Range(1,5);
         chance += standBlinkMod;
         if(chance > 5)
         {
             standBlinkMod = 0;
-            animCont.Play("FrogStandingBlink");
+            //animCont.Play("FrogStandingBlink");
         }
         else
         {
             standBlinkMod++;
-            animCont.Play("FromStanding");
+            //animCont.Play("FromStanding");
         }
 
         shopState = ShopStates.STAND;
@@ -204,12 +219,18 @@ public class ShopMovementAI : MonoBehaviour
         FlipLogic(false);
         moveDir.y = 0f;
         thisRB.isKinematic = false;
+        animCont.SetBool("Stand", false);
+        meshRend.material = walkMat;
+        animCont.SetTrigger("ChangeStance");     
     }
 
     public void StopMove()
     {
         runAway = false;
         thisRB.isKinematic = true;
+        animCont.SetBool("Stand", true);
+        meshRend.material = standMat;
+        animCont.SetTrigger("ChangeStance");
     }
 
     public void RunawayLogic(GameObject runFrom)
@@ -239,24 +260,21 @@ public class ShopMovementAI : MonoBehaviour
     {
         if(!bypass)
         {
-            //if looking left
-            if(thisSR.flipX == false)
+            //check direction about to go
+            //if movedir.x > 0 == moving right
+            if(moveDir.x > 0 && lookingLeft)
             {
-                //check direction about to go
-                //if movedir.x > 0 == moving right
-                if(moveDir.x > 0)
-                {
-                    animCont.SetTrigger("Flip");
-                }
+                lookingRight = true;
+                lookingLeft = false;
+                animCont.SetBool("Flip", true);
             }
-            //if looking right
-            else
+        
+            //if movedir.x < 0 == moving left
+            if(moveDir.x < 0 && lookingRight)
             {
-                //if movedir.x < 0 == moving left
-                if(moveDir.x < 0)
-                {
-                    animCont.SetTrigger("Flip");
-                }
+                lookingRight = false;
+                lookingLeft = true;
+                animCont.SetBool("Flip", false);
             }
         }
         else
@@ -265,24 +283,22 @@ public class ShopMovementAI : MonoBehaviour
 		    //dirNum = AngleDir(transform.forward, heading, transform.up);
             var cross = Vector3.Cross(transform.forward, heading);
             float dir = Vector3.Dot(cross, transform.up);
-            //if looking left
-            if(thisSR.flipX == false)
+
+            //check direction about to go
+            //if movedir.x > 0 == moving right
+            if(dir > 0 && lookingLeft)
             {
-                //check direction about to go
-                //if movedir.x > 0 == moving right
-                if(dir > 0)
-                {
-                    animCont.SetTrigger("Flip");
-                }
+                lookingRight = true;
+                lookingLeft = false;
+                animCont.SetBool("Flip", true);
             }
-            //if looking right
-            else
+        
+            //if movedir.x < 0 == moving left
+            if(dir < 0 && lookingRight)
             {
-                //if movedir.x < 0 == moving left
-                if(dir < 0)
-                {
-                    animCont.SetTrigger("Flip");
-                }
+                lookingRight = false;
+                lookingLeft = true;
+                animCont.SetBool("Flip", false);
             }
         }
     }

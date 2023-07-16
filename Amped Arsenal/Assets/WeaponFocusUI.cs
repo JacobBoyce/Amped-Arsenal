@@ -46,7 +46,7 @@ public class WeaponFocusUI : MonoBehaviour
             //show next level
             //lvlUpTo.text = (wb.level + 1).ToString();
             //show cost of upgrade
-            costUI.text = "Cost: " + wb.weapUpgrades.costValues[wb.level-1];
+            costUI.text = ((byte)wb.weapUpgrades.costValues[wb.level-1]).ToString();
         }        
 
 
@@ -104,7 +104,7 @@ public class WeaponFocusUI : MonoBehaviour
         //disable upgrade button
         //Debug.Log("turnoff on focus off");
         upgradeButton.interactable = false;
-        costUI.text = "Cost: ";
+        costUI.text = "";
 
         foreach (GameObject go in upInfoSlot)
         {
@@ -130,7 +130,7 @@ public class WeaponFocusUI : MonoBehaviour
                 UpdateFocusUI(tempWeap, player);
                 controller.UpdateSlotUIInfo();
                 
-                controller.xpText.text = "XP: " + player._stats["xp"].Value;
+                controller.xpText.text = player._stats["xp"].Value.ToString();
             }
         }
     }

@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class ShopkeepBarrierLogic : MonoBehaviour
 {
-    public ShopMovementAI moveScript;
+    public ShopMovement moveScript;
     public bool obstHit;
     
     public void OnCollisionEnter(Collision other)
     {
         if(other.gameObject.tag == "TerrainObj")
         {
-            obstHit = true;
+            moveScript.runFromObject = other.gameObject;
+        }
+        else if(other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerController>().mainController.OpenShop();
         }
     }
 
@@ -19,7 +23,7 @@ public class ShopkeepBarrierLogic : MonoBehaviour
     {
         if(other.gameObject.tag == "TerrainObj")
         {
-            obstHit = false;
+            moveScript.runFromObject = null;
         }
     }
 
@@ -29,22 +33,21 @@ public class ShopkeepBarrierLogic : MonoBehaviour
         {
             if(!obstHit)
             {
-                moveScript.enemyCount++;
-                moveScript.RunawayLogic(other.gameObject);
+                //moveScript.RunawayLogic(other.gameObject);
             }
         }
         if(other.tag == "TerrainObj")
         {
             if(!obstHit)
             {
-                moveScript.RunawayLogic(other.gameObject);
+                //moveScript.RunawayLogic(other.gameObject);
             }
         }
 
         if(other.tag == "Player")
         {
-            moveScript.RunToLogic(other.gameObject);
-            other.GetComponent<PlayerController>().OpenShop(true);
+            //moveScript.RunToLogic(other.gameObject);
+            //other.GetComponent<PlayerController>().OpenShop(true);
             //tell player he can press space
             moveScript.alertUI.text = "!";
             //trigger ! over head off
@@ -56,8 +59,8 @@ public class ShopkeepBarrierLogic : MonoBehaviour
         //if player exits turn off toggle
         if(other.tag == "Player")
         {
-            moveScript.inPlayerRange = false;
-            moveScript.finishMovedToPlayer = false;
+            //moveScript.inPlayerRange = false;
+            //moveScript.finishMovedToPlayer = false;
             //moveScript.StartCoroutine(moveScript.StandStill());
 
             //tell player he canot open the shop
@@ -65,17 +68,6 @@ public class ShopkeepBarrierLogic : MonoBehaviour
 
             //trigger ! over head off
             moveScript.alertUI.text = "";
-        }
-        //moveScript.TogglePlayerLogic(false)
-
-        if(other.tag == "Enemy")
-        {
-            moveScript.runAwayDir = Vector3.zero;
-        }
-
-        if(other.tag == "TerrainObj")
-        {
-            moveScript.runAwayDir = Vector3.zero;
         }
     }
 }

@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerController : Actor
 {
-    public GameObject mainController;
+    public GameZoneController mainController;
     public GameObject equippedWeapsObj, equippedRelicsObj;
     public WeaponLib weapLib;
     public RelicLib relLib;
@@ -141,7 +141,7 @@ public class PlayerController : Actor
         {
             if(openShop == true)
             {
-                mainController.GetComponent<GameZoneController>().OpenShop();
+                mainController.OpenShop();
             }
         }
     }
@@ -192,6 +192,8 @@ public class PlayerController : Actor
     {
         Set("xp", _stats["xp"].Value - xpAmount);
         xpText.text = _stats["xp"].Value.ToString();
+
+        CheckIfCanUpgradeWeapons();
     }
 
     public void AddGold(int goldAmount)
@@ -234,7 +236,7 @@ public class PlayerController : Actor
         //Then after choice has been made send the name of the weapon to the relic so it can be applied
         if(tempRelicObj.GetComponent<RelicBase>().rType == RelicBase.RelicType.ONHIT || tempRelicObj.GetComponent<RelicBase>().rType == RelicBase.RelicType.ONKILL)
         {
-            mainController.GetComponent<GameZoneController>().OpenWeapSelectEffect(relic);
+            mainController.OpenWeapSelectEffect(relic);
         }
         else
         {
@@ -257,4 +259,31 @@ public class PlayerController : Actor
     }
 
     #endregion
+
+    public void CheckIfCanUpgradeWeapons()
+    {
+        int counter = 0;
+        foreach(GameObject go in equippedWeapons)
+        {
+            WeaponBase weap = go.GetComponent<WeaponBase>();
+            if (weap != null && !weap.IsMaxLvl())
+            {
+                if (weap.weapUpgrades.costValues[weap.level - 1] <= _stats["xp"].Value)
+                {
+                    counter++;
+                }
+            }
+        }
+
+        if(counter > 0)
+        {
+            mainController.ToggleUpgradeNotification(true);
+        }
+        else
+        {
+            mainController.ToggleUpgradeNotification(false);
+        }
+        //if all equipped weapons upgrade cost is less than current xp turn on notify
+        
+    }
 }

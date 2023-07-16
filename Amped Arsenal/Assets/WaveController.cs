@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class WaveController : MonoBehaviour
 {
     public EnemySpawnController spawnController;
     public TextMeshProUGUI countdownText, waveText;
+    public Image countdownBarUI;
     public int curWave = 0;
     private int seconds;
     public bool wavesActive = false, wasPeaceWave = false;
@@ -57,6 +59,7 @@ public class WaveController : MonoBehaviour
             if(mainCountdown >= 0)
             {
                 mainCountdown -= Time.deltaTime;
+                countdownBarUI.fillAmount = 1 - (mainCountdown / maxWaveTimer);
                 seconds = Mathf.FloorToInt(mainCountdown);
                 string niceTime = string.Format("{0}", seconds);
                 //string niceTime = string.Format("{0:0}:{1:00}", Min, seconds);
