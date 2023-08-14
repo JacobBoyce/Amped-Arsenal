@@ -1,0 +1,82 @@
+---Create 2 empty Gameobjects
+   -BombParent (xParent)
+   -BombController (xController)
+
+---Inside the Controller script
+   -Add WeaponBase to the class
+  ex) public class BombController : WeaponBase
+   -Add the variables that will be upgradable in both classes
+
+---Then copy and paste this code
+
+void Start()
+    {
+        TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 
+        {
+            curCooldown++;
+        };
+        //SetSpawnDetails();
+    }
+    public void Update()
+    {
+        if(curCooldown == tickMaxCD)
+        {
+            ActivateAbility();
+        }        
+    }
+
+    public void OnEquipped()
+    {
+        TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 
+        {
+            curCooldown++;
+        };
+        UpdateValues();
+    }
+    
+    public override void ActivateAbility()
+    {
+        //spawn object and call its init method 
+        curCooldown = 0;
+        for(int i = 0; i < playerObj.rotatingSpawnPoints.Count; i++)
+        {
+            GameObject tempSpear = Instantiate(weapPrefab, playerObj.rotatingSpawnPoints[i].transform.position, playerObj.rotatingSpawnPoints[i].transform.rotation);
+            tempSpear.GetComponentInChildren<SpearLogic>().InitSpear(this, weapMod);
+        }
+    }
+
+
+    public override void UpgradeWeapon()
+    {
+        level++;
+        UpdateValues();
+    }
+
+    //This updates the values of the weapon each time it is activated. so after you upgrade the weapon
+    //then it will give it the new stats right before the next time it activates
+    public void UpdateValues()
+    {
+        //numSpears = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.AMOUNT).upValues[level - 1];
+        tickMaxCD = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.COOLDOWN).upValues[level - 1];
+        damage = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.DAMAGE).upValues[level - 1];
+        pierceNum = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.PIERCE).upValues[level - 1];
+        range = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.RANGE).upValues[level - 1];
+        //speed = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.SPEED).upValues[level - 1];
+        
+    }
+
+
+---Start adjusting the names of the variables and UpdateValues method
+
+---The Activate ability method you will change according to how the weapon will spawn and where.
+
+---Have this method activate anything on the spawned weapon by calling InitX (InitBomb)
+
+---Add shop item Scriptable object from the create menu
+-- Add weapUpgrades SO from the create menu
+	--drag these on the the controller parent prefab
+
+
+Updated how the upgrades show up behind the scenes.
+Changed the spear to a Needle, and updated UI
+Added Bomb Weapon, damaging

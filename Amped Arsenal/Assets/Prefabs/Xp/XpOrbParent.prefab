@@ -63,6 +63,11 @@ MonoBehaviour:
   wantPopUp: 1
   delaytimeToSlowDown: 0
   popForce: 10
+  thisSR: {fileID: 0}
+  wantFlash: 0
+  blinkTimer: 0
+  blinkDuration: 0
+  blinkIntesity: 0
 --- !u!114 &1791112686883939405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +150,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.66
+  m_Radius: 0.78
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &8716789116410938839
 CapsuleCollider:
@@ -29298,7 +29303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8308940445698098936
 Transform:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
     public int maxSlots = 1, currentEquippedSlots = 0;
     public List<GameObject> effectSlots = new List<GameObject>();
 
-    [Header("Spawnpoint:\n0 = Front\n1 = Back\n2 = Left\n3 = Right \n4 = Center")]
+    [Header("Spawnpoint: \t Rotating Spawnpoint:\n0 = Front \t 0 = front\n1 = Back \t 1 = Back\n2 = Left \t 2 = Left\n3 = Right \t 3 = Right\n4 = Center \t 4 = Front/Right\n5 = Front/Right  5 = Back/Right\n6 = Back/Right \t 6 = Back/Left\n7 = Back/Left \t 7 = Front/Left\n8 = Front/Left")]
     [SerializeField]
     public List<SpawnDeets> spawnDetails = new List<SpawnDeets>();
 

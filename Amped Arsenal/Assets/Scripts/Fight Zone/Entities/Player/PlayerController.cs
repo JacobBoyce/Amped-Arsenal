@@ -13,8 +13,8 @@ public class PlayerController : Actor
     public EffectLib effectLib;
     private GameObject instObj, tempObj, tempRelicObj;
 
-    public List<GameObject> equippedWeapons = new List<GameObject>();
-    public List<GameObject> equippedRelics = new List<GameObject>();
+    public List<GameObject> equippedWeapons = new();
+    public List<GameObject> equippedRelics = new();
     public List<GameObject> spawnPoints = new();// List<GameObject>();
     public List<GameObject> rotatingSpawnPoints = new();// List<GameObject>();
     public static PlayerController playerObj;
@@ -64,7 +64,7 @@ public class PlayerController : Actor
     }
 
 
-    void Awake()
+    public void Awake()
     {
         playerObj = this;
         _stats = new Stats();
@@ -108,20 +108,20 @@ public class PlayerController : Actor
             }
         }
         #region Weapon testing
-        /*
-        if (Input.GetKeyDown(KeyCode.A))
+        
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             //AddWeaponToCache("SwordSwing");
-            AddWeaponToCache("Axe");
+            AddWeaponToCache("Bomb");
         }
 
-        if(Input.GetKeyDown(KeyCode.W))
+        if(Input.GetKeyDown(KeyCode.G))
         {
             AddWeaponToCache("Sword");
             //AddWeaponToCache("Axe");
         }
 
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(Input.GetKeyDown(KeyCode.U))
         {
             AddWeaponToCache("Spear");
             //AddWeaponToCache("Axe");
@@ -134,7 +134,7 @@ public class PlayerController : Actor
                 go.GetComponent<WeaponBase>().UpgradeWeapon();
             }
         }
-        */
+        
         #endregion
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -186,6 +186,7 @@ public class PlayerController : Actor
         */
         Set("xp", _stats["xp"].Value + xpAmount);
         xpText.text = _stats["xp"].Value.ToString();
+        CheckIfCanUpgradeWeapons();
     }
 
     public void RemoveXP(int xpAmount)
@@ -214,13 +215,19 @@ public class PlayerController : Actor
         //Get weapon to spawn from library
         instObj = weapLib.FindWeaponFromLib(weapName);
 
+        if(FindWeapon(instObj.GetComponent<WeaponBase>().shopItemInfo.weapName) == false)
+        {
+            tempObj = Instantiate(instObj, equippedWeapsObj.transform.position, equippedWeapsObj.transform.rotation);
+            tempObj.transform.SetParent(equippedWeapsObj.transform);
+            tempObj.GetComponent<WeaponBase>().playerObj = this;
+            //equip weapon to list
+            equippedWeapons.Add(tempObj);
+        }
+        else
+        {
+            Debug.Log("Weapon already exsists");
+        }
         //create weapon object under the library
-        tempObj = Instantiate(instObj, equippedWeapsObj.transform.position, equippedWeapsObj.transform.rotation);
-        tempObj.transform.SetParent(equippedWeapsObj.transform);
-        tempObj.GetComponent<WeaponBase>().playerObj = this;
-
-        //equip weapon to list
-        equippedWeapons.Add(tempObj);
     }
 
     public void AddRelicToCache(RelicBase relic)

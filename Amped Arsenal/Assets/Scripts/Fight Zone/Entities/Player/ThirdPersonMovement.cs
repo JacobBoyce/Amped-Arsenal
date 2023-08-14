@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
@@ -26,10 +27,20 @@ public class ThirdPersonMovement : MonoBehaviour
         fpState = FlipState.CHECKSTATE;
     }
 
+    public void OnMovement(InputValue value)
+    {
+        moveInput = value.Get<Vector2>();
+        //moveInput.x = joystick.Horizontal;
+        //moveInput.y = joystick.Vertical;
+        //Debug.Log("doin stuff");
+    }
+
     public void Update()
     {
-        moveInput.x = joystick.Horizontal;
-        moveInput.y = joystick.Vertical;
+        //moveInput.x = joystick.Horizontal;
+        //moveInput.y = joystick.Vertical;
+        
+        
 
         //moveInput.x = Input.GetAxis("Horizontal");
         //moveInput.y = Input.GetAxis("Vertical");

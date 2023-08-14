@@ -23,6 +23,7 @@ public class Stats : IEnumerable<Stat>
                 var found = Find(name);
                 if (found != null)
                 {
+                    found._statName = value.Name;
                     found.Value = value.Value;
                     found.Max = value.Max;
                 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2027965028459197608}
   - component: {fileID: 2230788874450530412}
   - component: {fileID: 2229643611495798970}
-  m_Layer: 8
+  m_Layer: 19
   m_Name: Star_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4895,7 +4895,7 @@ GameObject:
   - component: {fileID: 461413399}
   - component: {fileID: 7522555135500725554}
   - component: {fileID: 4311001861283952416}
-  m_Layer: 6
+  m_Layer: 19
   m_Name: GoldNug
   m_TagString: Gold
   m_Icon: {fileID: 0}
@@ -4998,7 +4998,7 @@ GameObject:
   - component: {fileID: 4001067698663696276}
   - component: {fileID: 4001067698663696275}
   - component: {fileID: 4001067698663696277}
-  m_Layer: 6
+  m_Layer: 19
   m_Name: Plane_GoldSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5101,13 +5101,13 @@ GameObject:
   - component: {fileID: 4001067700317620981}
   - component: {fileID: 4001067700317620979}
   - component: {fileID: 4001067700317620980}
-  m_Layer: 6
+  m_Layer: 19
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4001067700317620981
 Transform:
   m_ObjectHideFlags: 0
@@ -5214,7 +5214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5249454682897694946}
-  m_Layer: 8
+  m_Layer: 19
   m_Name: Star_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5249,7 +5249,7 @@ GameObject:
   - component: {fileID: 5249432326563582904}
   - component: {fileID: 5334696987988107306}
   - component: {fileID: 5336026047291450860}
-  m_Layer: 8
+  m_Layer: 19
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10131,7 +10131,7 @@ GameObject:
   - component: {fileID: 5479637717348226179}
   - component: {fileID: 7095468940883440764}
   - component: {fileID: 7095468940883440763}
-  m_Layer: 6
+  m_Layer: 19
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10183,6 +10183,11 @@ MonoBehaviour:
   wantPopUp: 0
   delaytimeToSlowDown: 0
   popForce: 0
+  thisSR: {fileID: 0}
+  wantFlash: 0
+  blinkTimer: 0
+  blinkDuration: 0
+  blinkIntesity: 0
 --- !u!114 &7095468940883440763
 MonoBehaviour:
   m_ObjectHideFlags: 0

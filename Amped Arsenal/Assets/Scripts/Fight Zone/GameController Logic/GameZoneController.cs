@@ -17,7 +17,7 @@ public class GameZoneController : MonoBehaviour
     public List<GameObject> gamePlayUIComponents = new();
     public bool isUpgrading;
     GameObject focusedUI;
-    public Image upNotifyImg;
+    public GameObject notifyGamesOfUpgrade;
     public bool isPaused, statsVisible;
     public TextMeshProUGUI gameTimerUIText;
 
@@ -111,19 +111,20 @@ public class GameZoneController : MonoBehaviour
                 //display gameplay ui
                 ResumeGamePlay();
             }
-            isUpgrading = isUpgrading ? false : true;
+            isUpgrading = !isUpgrading;
         }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
-            statsVisible = statsVisible ? false : true;
+            statsVisible = !statsVisible;
             ShowStats(statsVisible);
         }
 
         if (Input.GetKeyDown(KeyCode.J))
         {
-            GameObject tempObj = Instantiate(thingToShoot, whereToShoot.transform.position, Quaternion.identity);
-            GetComponent<ShootReward>().ShootObject(whereToShoot, tempObj, ShootReward.ShootType.Up);
+            
+            //GameObject tempObj = Instantiate(thingToShoot, whereToShoot.transform.position, Quaternion.identity);
+            //GetComponent<ShootReward>().ShootObject(whereToShoot, tempObj, ShootReward.ShootType.Facing);
             
         }
 
@@ -150,7 +151,7 @@ public class GameZoneController : MonoBehaviour
                 //display gameplay ui
                 ResumeGamePlay();
             }
-            isUpgrading = isUpgrading ? false : true;
+            isUpgrading = !isUpgrading;
     }
 
     public void ShowStats(bool onoff)
@@ -160,7 +161,7 @@ public class GameZoneController : MonoBehaviour
 
     public void PauseGame()
     {
-        isPaused = isPaused == true ? false : true;
+        isPaused = !isPaused;
         if(isPaused == true)
         {
             Time.timeScale = 0;
@@ -206,6 +207,6 @@ public class GameZoneController : MonoBehaviour
 
     public void ToggleUpgradeNotification(bool toggleVal)
     {
-        upNotifyImg.gameObject.SetActive(toggleVal);
+        notifyGamesOfUpgrade.GetComponent<NotifyPlayerOfUpgrade>().ChangeButtonImage(toggleVal);
     }
 }

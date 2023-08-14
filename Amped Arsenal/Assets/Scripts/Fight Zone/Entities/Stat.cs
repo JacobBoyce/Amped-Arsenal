@@ -6,12 +6,18 @@ using UnityEngine;
 public class Stat
 {
     [SerializeField]
+    public string  _statName;
+    [SerializeField]
     float _value;
 
     [SerializeField]
     public float Max { get; set; }
     [SerializeField]
-    public string Name { get; set; }
+    public string Name 
+    { 
+        get => _statName; 
+        set => _statName = value; 
+    }
     [SerializeField]
     public List<Modifier> mods = new List<Modifier>();
 

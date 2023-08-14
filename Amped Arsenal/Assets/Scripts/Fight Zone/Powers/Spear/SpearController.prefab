@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db66e59b0850dc4ead2d3a13e637aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wName: Spear
+  wName: Needle
   weapPrefab: {fileID: 2518624624325811872, guid: c9137b161102fbb4d8139dee44dfa1cf, type: 3}
   playerObj: {fileID: 0}
   shopItemInfo: {fileID: 11400000, guid: 822fec101f45b034eb0cb794fb97db35, type: 2}
@@ -54,13 +54,18 @@ MonoBehaviour:
   curCooldown: 0
   tickMaxCD: 7
   damage: 5
+  maxSlots: 1
+  currentEquippedSlots: 0
+  effectSlots: []
   spawnDetails:
   - spawnpoint: 0
     needsParent: 0
   level: 1
+  maxLevel: 5
   numSpears: 1
   pierceNum: 1
-  speed: 25
+  speed: 70
+  range: 15
 --- !u!114 &-6320784671989068796
 MonoBehaviour:
   m_ObjectHideFlags: 0

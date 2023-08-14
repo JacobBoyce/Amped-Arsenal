@@ -21,14 +21,14 @@ public class ShopMenuController : MonoBehaviour
     public GameObject upgradeButtonUI;
     //player controller.p1
 
-    /*public void Update()
+    public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.K))
         {
             //turn on upgrade screen and turn off other ui
-            controller.FocusUI(uiParent);
+            controller.p1.AddWeaponToCache("Splash");
         }
-    }*/
+    }
 
 
     public void TurnOffShopUI()
@@ -205,11 +205,11 @@ public class ShopMenuController : MonoBehaviour
                 int tempInt = i;
                 tempShopItem.buyButton.onClick.AddListener(() => ButtonTask(tempInt));
                 //set prices
-                tempShopItem.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
+                tempShopItem.UpdatePrice(price); // .buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
             }
             else if (weapChoices[i] == -1)
             {
-                tempShopItem.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                tempShopItem.UpdatePrice("X"); //buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
                 tempShopItem.buyButton.interactable = false;
             }
         }
@@ -259,13 +259,14 @@ public class ShopMenuController : MonoBehaviour
             //check if you have enough gold to buy
             if(price > controller.p1._stats["gold"].Value)
             {
-                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
+                sp.UpdatePrice(price); // .GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
                 sp.buyButton.enabled = false;
                 sp.buyButton.interactable = false;
             }
             else
             {
-                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
+                sp.UpdatePrice(price); 
+                //sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
                 sp.buyButton.enabled = true;
                 sp.buyButton.interactable = true;
             }
@@ -273,7 +274,7 @@ public class ShopMenuController : MonoBehaviour
             //check if it has already been bought
             if (controller.p1.FindWeapon(sp.weapName) || sp.weapName == "None")
             {
-                sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                 sp.UpdatePrice("X"); //sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
                 sp.buyButton.enabled = false;
                 sp.buyButton.interactable = false;
             }

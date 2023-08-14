@@ -7,7 +7,11 @@ public class SpearLogic : MonoBehaviour
     public SpearController controller;
     public WeaponMods weapMod;
     Rigidbody thisRB;
-    public int speed, pierceNum;
+
+    public int speed, pierceNum, range;
+
+    //spawn damage object with a sphere collider
+    //change its radius to be the bombs range
     
 
     void Start()
@@ -24,6 +28,7 @@ public class SpearLogic : MonoBehaviour
         weapMod = mod;
         speed = controller.speed;
         pierceNum = controller.pierceNum;
+        range = controller.range;
     }
 
     public void OnTriggerEnter(Collider collision)
@@ -45,6 +50,12 @@ public class SpearLogic : MonoBehaviour
     public void Update()
     {
         if(pierceNum <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+
+        float dist = Vector3.Distance(this.transform.position, controller.playerObj.gameObject.transform.position);
+        if(dist > range)
         {
             Destroy(this.gameObject);
         }

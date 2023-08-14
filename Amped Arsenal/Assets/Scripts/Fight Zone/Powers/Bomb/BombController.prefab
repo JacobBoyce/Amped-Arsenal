@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6108408964986409511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5459033776724572898}
+  - component: {fileID: 707232750734307783}
+  - component: {fileID: 5296947393509600175}
+  m_Layer: 9
+  m_Name: BombController
+  m_TagString: Weapon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5459033776724572898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6108408964986409511}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 106.75794, y: -14.602354, z: 409.62915}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &707232750734307783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6108408964986409511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76ba0ba3082006468153e1344bd7fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wName: Bomb
+  weapPrefab: {fileID: 5367156382964555347, guid: 70aaf0cafba389d43a8c9053c538a9e3, type: 3}
+  playerObj: {fileID: 0}
+  shopItemInfo: {fileID: 11400000, guid: bbf5f99b7b9251449b68e92241c4c5fd, type: 2}
+  weapUpgrades: {fileID: 11400000, guid: 77d352acefd92bb419919e9e929f9965, type: 2}
+  weapMod: {fileID: 5296947393509600175}
+  curCooldown: 0
+  tickMaxCD: 10
+  damage: 10
+  maxSlots: 1
+  currentEquippedSlots: 0
+  effectSlots: []
+  spawnDetails:
+  - spawnpoint: 4
+    needsParent: 0
+  - spawnpoint: 0
+    needsParent: 0
+  level: 1
+  maxLevel: 5
+  range: 5
+  timeToExplode: 3
+  spawnPointCenter: {fileID: 0}
+  spawnPointBack: {fileID: 0}
+  _offsetY: 0
+--- !u!114 &5296947393509600175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6108408964986409511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b974b903e97f7e840a2daef718927cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giveKnockback: 1
+  eleType: 0

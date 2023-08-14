@@ -27,6 +27,11 @@ public class VisualEffects : MonoBehaviour
     public float delaytimeToSlowDown, popForce;
     private float delay;
 
+    [Header("Flash Vars")]
+    public SpriteRenderer thisSR;
+    public bool wantFlash;
+    public float blinkTimer, blinkDuration, blinkIntesity;
+
     Rigidbody rb;
 
     Vector2 floatY;
@@ -67,9 +72,26 @@ public class VisualEffects : MonoBehaviour
         //check if want to billboard
         if(wantBillboard)
         {
-            transform.rotation = Quaternion.Euler(Camera.main.transform.rotation.eulerAngles.x, 0 ,0);
+            transform.rotation = Quaternion.Euler(Camera.main.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
         }
 
+        if(wantFlash)
+        {
+            if(blinkTimer > 0)
+            {
+                blinkTimer -= Time.deltaTime;
+                float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
+                float intensity = (lerp * blinkIntesity) + 1.0f;
+                if(thisSR != null)
+                {
+                    thisSR.GetComponent<SpriteRenderer>().material.color = Color.white * intensity;
+                }
+            }
+            else
+            {
+                blinkTimer = blinkDuration;
+            }
+        }
 
         if(!isDead && damaged)
         {
@@ -127,6 +149,11 @@ public class VisualEffects : MonoBehaviour
                 }*/
             }
         }
+    }
+
+    public void EndAnimation()
+    {
+        Destroy(this.gameObject);
     }
 
     public void Bobber()

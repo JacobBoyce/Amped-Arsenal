@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "###ShopItem", menuName = "Shop Item")]
 public class ShopItemSO : ScriptableObject
 {
-    public string weapName, description, amount;
-    public Sprite splashImg, currency;
+    public string weapName;
+    public Sprite splashImg;
     public int indexNum;
 }
