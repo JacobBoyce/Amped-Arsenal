@@ -17,7 +17,6 @@ public class BombExplosionLogic : MonoBehaviour
         
         if(ec != null)
         {
-            Debug.Log("hitEnemy");
             controller.SendDamage(ec);
         }
     }

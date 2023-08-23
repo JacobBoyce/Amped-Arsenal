@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ShopItemPrefab : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ShopItemPrefab : MonoBehaviour
     public Image splash;
     [Space(10)]
     public int indexNum;
+
 
     public void UpdatePrefab(string wpName, Image sp, int ind)
     {

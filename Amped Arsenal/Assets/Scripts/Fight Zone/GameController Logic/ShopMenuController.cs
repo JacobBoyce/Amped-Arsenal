@@ -202,8 +202,8 @@ public class ShopMenuController : MonoBehaviour
                 tempShopItem.UpdatePrefab(weapLib.weaponList[weapChoices[i]].GetComponent<WeaponBase>().shopItemInfo);
 
                 //set what buttons do
-                int tempInt = i;
-                tempShopItem.buyButton.onClick.AddListener(() => ButtonTask(tempInt));
+                //int tempInt = i;
+                //tempShopItem.buyButton.onClick.AddListener(() => ButtonTask(tempInt));
                 //set prices
                 tempShopItem.UpdatePrice(price); // .buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
             }

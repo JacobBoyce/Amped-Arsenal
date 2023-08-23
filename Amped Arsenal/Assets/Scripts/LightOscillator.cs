@@ -11,7 +11,7 @@ public class LightOscillator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        glowLight = GetComponentInChildren<Light>();
+        glowLight = GetComponent<Light>();
     }
 
     // Update is called once per frame

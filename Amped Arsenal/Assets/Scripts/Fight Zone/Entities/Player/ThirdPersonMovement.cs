@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
-    public Joystick joystick;
+    public FloatingJoystickController joystick;
     public float speed;
     public Rigidbody theRB;
     public Vector2 moveInput;
     public Animator quispyAnim;
     public PlayerController player;
+    public bool movementEnabled = true;
 
     public bool lookingLeft, lookingRight;
 
@@ -22,14 +24,20 @@ public class ThirdPersonMovement : MonoBehaviour
     public float flipThreshold, flipTimer;
     public FlipState fpState;
 
+    private InputAction _movement;
+
     public void Start()
     {
         fpState = FlipState.CHECKSTATE;
+        _movement = InputManager.playerInput.actions["Movement"];
     }
 
     public void OnMovement(InputValue value)
     {
-        moveInput = value.Get<Vector2>();
+        if(movementEnabled)
+        {
+            moveInput = value.Get<Vector2>();
+        }
         //moveInput.x = joystick.Horizontal;
         //moveInput.y = joystick.Vertical;
         //Debug.Log("doin stuff");
@@ -39,8 +47,8 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         //moveInput.x = joystick.Horizontal;
         //moveInput.y = joystick.Vertical;
-        
-        
+        moveInput = InputManager.playerInput.actions["Movement"].ReadValue<Vector2>();
+        //moveInput = _movement.ReadValue<Vector2>();
 
         //moveInput.x = Input.GetAxis("Horizontal");
         //moveInput.y = Input.GetAxis("Vertical");

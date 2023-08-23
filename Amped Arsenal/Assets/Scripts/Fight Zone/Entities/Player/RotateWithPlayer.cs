@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class RotateWithPlayer : MonoBehaviour
 {
-    public Joystick joystick;
+    public ThirdPersonMovement movementObj;
     public float turnSmoothTime = .2f;
     float turnSmoothVel;
 
+    public void Start()
+    {
+        movementObj = GetComponentInParent<ThirdPersonMovement>();
+    }
     public void Update()
     {
-        float horizontal = joystick.Horizontal;
-        float vertical = joystick.Vertical;
+        float horizontal = movementObj.moveInput.x;
+        float vertical = movementObj.moveInput.y;
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if(direction.magnitude >= 0.1f)

@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.IO;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.OnScreen;
+using UnityEngine.InputSystem;
 
 public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
+    public GameObject joystickController, upgradeButton;
     public PlayerController p1;
     public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel, chooseWeapApplyEffect;
     public TextMeshProUGUI statsTxt;
@@ -69,6 +72,7 @@ public class GameZoneController : MonoBehaviour
         {
             focusedUI.SetActive(false);
             go.SetActive(true);
+            joystickController.SetActive(true);
         }
         PauseGame();
     }
@@ -97,7 +101,7 @@ public class GameZoneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             //turn on upgrade screen and turn off other ui
             if(isUpgrading == false)
@@ -112,7 +116,7 @@ public class GameZoneController : MonoBehaviour
                 ResumeGamePlay();
             }
             isUpgrading = !isUpgrading;
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -139,17 +143,19 @@ public class GameZoneController : MonoBehaviour
 
     public void OpenUpgrades()
     {
+        
         //turn on upgrade screen and turn off other ui
             if(isUpgrading == false)
             {
                 FocusUI(upgradePanel, true);
                 upgradePanel.GetComponent<UpgradeMenuController>().PopulateUI();
-
+                joystickController.SetActive(false);
             }
             else
             {
                 //display gameplay ui
                 ResumeGamePlay();
+                joystickController.SetActive(true);
             }
             isUpgrading = !isUpgrading;
     }
@@ -162,6 +168,7 @@ public class GameZoneController : MonoBehaviour
     public void PauseGame()
     {
         isPaused = !isPaused;
+        
         if(isPaused == true)
         {
             Time.timeScale = 0;
@@ -175,19 +182,25 @@ public class GameZoneController : MonoBehaviour
 
     public void OpenShop()
     {
+        p1.GetComponent<ThirdPersonMovement>().movementEnabled = false;
         PauseGame();
-        //uiController.SetActive(false);
+        
+        //p1.GetComponent<PlayerInput>().defaultActionMap = "UI";
+        joystickController.SetActive(false);
         shopPanel.SetActive(true);
         shopController.InitShop();
+        upgradeButton.SetActive(false);
         //shopAnimeController.ToggleDots();
     }
 
     public void TurnOffShop()
     {
         PauseGame();
-        //uiController.SetActive(true);
+        p1.GetComponent<ThirdPersonMovement>().movementEnabled = true;
+        joystickController.SetActive(true);
         currencyUI.SetActive(true);
         shopPanel.SetActive(false);
+        upgradeButton.SetActive(true);
         //shopAnimeController.ToggleDots();
     }
 
@@ -195,12 +208,14 @@ public class GameZoneController : MonoBehaviour
     {
         PauseGame();
         chooseWeapApplyEffect.SetActive(true);
+        joystickController.SetActive(false);
         chooseWeapApplyEffect.GetComponent<ApplyToWeapMenu>().PopulateWeapChoiceList(p1, relic);
     }
 
     public void CloseWeapSelectEffect()
     {
         PauseGame();
+        joystickController.SetActive(true);
         chooseWeapApplyEffect.SetActive(false);
         
     }

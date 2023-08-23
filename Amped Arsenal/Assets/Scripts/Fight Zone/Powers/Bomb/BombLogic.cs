@@ -26,7 +26,8 @@ public class BombLogic : MonoBehaviour
         shootCenterDir = controller.spawnPointCenter;
         shootBackDir = controller.spawnPointBack;
 
-        shootDir = shootCenterDir.transform.position - shootBackDir.transform.position;
+        shootDir = shootBackDir.transform.position - shootCenterDir.transform.position;
+        Debug.DrawLine(shootCenterDir.transform.position,shootBackDir.transform.position, Color.white, 2f);
         //add offset
         shootDir = new Vector3(shootDir.x, shootDir.y + offsetY, shootDir.z);
         thisRB.AddForce(shootDir * shootPower, ForceMode.Impulse);
@@ -54,7 +55,7 @@ public class BombLogic : MonoBehaviour
         else
         {
             //explode
-            Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y, transform.position.z), transform.rotation);
+            //Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y, transform.position.z), transform.rotation);
             GameObject tempExpl = Instantiate(explosion, new Vector3(transform.position.x , transform.position.y, transform.position.z), transform.rotation);
             tempExpl.GetComponent<BombExplosionLogic>().controller = controller;
             Destroy(this.gameObject);
