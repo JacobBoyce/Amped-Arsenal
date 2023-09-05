@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.OnScreen;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameZoneController : MonoBehaviour
 {
@@ -96,6 +97,9 @@ public class GameZoneController : MonoBehaviour
     {
         statsVisible = false;
         ShowStats(statsVisible);
+
+        //Apply base stats from main menu
+        p1._stats["str"].Value += PlayerPrefs.GetInt("Strength");
     }
 
     // Update is called once per frame
@@ -223,5 +227,11 @@ public class GameZoneController : MonoBehaviour
     public void ToggleUpgradeNotification(bool toggleVal)
     {
         notifyGamesOfUpgrade.GetComponent<NotifyPlayerOfUpgrade>().ChangeButtonImage(toggleVal);
+    }
+
+    public void EndGame()
+    {
+        //end level stuff
+        SceneManager.LoadScene("MainMenu");
     }
 }

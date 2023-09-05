@@ -81,6 +81,11 @@ public class PlayerController : Actor
         //_stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
         //_stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
         
+        _stats["hp"].Value += PlayerPrefs.GetInt("HP");
+        _stats["str"].Value += PlayerPrefs.GetInt("Strength");
+        _stats["def"].Value += PlayerPrefs.GetInt("Armor");
+        _stats["spd"].Value += PlayerPrefs.GetInt("Speed");
+        _stats["pull"].Value += PlayerPrefs.GetInt("Magnet");
 
         goldText.text = _stats["gold"].Value.ToString();
         xpText.text = _stats["xp"].Value.ToString();
@@ -156,6 +161,14 @@ public class PlayerController : Actor
         if(OnDamaged != null)
         {
             OnDamaged();
+        }
+        if(_stats["hp"].Value == 0)
+        {
+            Debug.Log("GameOver");
+            //---------------------add player prefs inflation to equation here
+            PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (PlayerPrefs.GetInt("Inflation") / 10)));
+            PlayerPrefs.SetInt("Returned", 1);
+            mainController.EndGame();
         }
     }
 
