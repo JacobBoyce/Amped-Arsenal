@@ -36,7 +36,18 @@ public class BaseUpgradeSquare : MonoBehaviour
         get{return _baseUpgradeLevel;}
         set
         {
-            _baseUpgradeLevel = value;
+            if(value > 5)
+            {
+                _baseUpgradeLevel = 5;
+            }
+            else if (value < 0 )
+            {
+                _baseUpgradeLevel = 0;
+            }
+            else
+            {
+                _baseUpgradeLevel = value;
+            }
             UpdateLevelUI();
         }
     }
@@ -49,9 +60,17 @@ public class BaseUpgradeSquare : MonoBehaviour
 
         bUpName.text = baseUpgradeName;
         bUpLevel.text = "LVL: " + ulvl;
-        //lvlFillBar.fillAmount = 0;
-        //set graphic level to given level
     }
+
+    public void SetUpgradeVisuals(int ulvl, int uCost)
+    {
+        BaseUpgradeLevel = ulvl;
+        BaseCost = uCost;
+
+        bUpLevel.text = "LVL: " + ulvl;
+    }
+
+    
 
     public void OnEnable()
     {

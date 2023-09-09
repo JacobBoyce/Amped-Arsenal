@@ -5,10 +5,11 @@ using UnityEngine.EventSystems;
 
 public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-
-    [SerializeField] private float _verticalMoveAmount = 30f;
-    [SerializeField] private float _moveTime = .1f;
-    [Range(0f,2f), SerializeField] private float _scaleAmount = 1.1f;
+    [TextArea]
+    public string toolTip;
+    [SerializeField] private readonly float _verticalMoveAmount = 30f;
+    [SerializeField] private readonly float _moveTime = .1f;
+    [Range(0f,2f), SerializeField] private readonly float _scaleAmount = 1.1f;
     private Vector3 _startPos, _startScale;
 
     // Start is called before the first frame update
@@ -69,6 +70,7 @@ public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPo
             if(ShopItemSelectionManager.instance.shopItems[i] == gameObject)
             {
                 ShopItemSelectionManager.instance.LastSelectedIndex = i;
+                ShopItemSelectionManager.instance.ShowToolTip(toolTip);
                 return;
             }
         }
@@ -76,6 +78,7 @@ public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPo
 
     public void OnDeselect(BaseEventData eventData)
     {
+        ShopItemSelectionManager.instance.ShowToolTip("");
         StartCoroutine(MoveShopItem(false));
     }
 }

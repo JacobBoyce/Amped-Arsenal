@@ -14,29 +14,24 @@ public class UpgradeController : MonoBehaviour
     
     [SerializeField]
     public List<UpgradeValues> upVals;
-    
-
-    [Space(10)]
-
     public int[] upgradeCostValues = new int[5];
 
     public void Awake()
     {
         upgradeList ??= new List<MainMenuController.BaseUpgrade>();
-        // the code below equals this ^
+        #region the code below equals this ^
         /*if(upgradeList == null)
         {
             upgradeList = new List<MainMenuController.BaseUpgrade>();
         }*/
-        
-        //InitUpgradeList();
+        #endregion
     }
 
     public void InitUpgradeList()
     {
         //load values to tempUpgrade
         tempUpgrade.upgradeName = "Strength";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
         tempUpgrade.upValues = new int[5];
 
 
@@ -46,7 +41,7 @@ public class UpgradeController : MonoBehaviour
 
         //--------------------------------------------
         tempUpgrade.upgradeName = "HP";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
         tempUpgrade.upValues = new int[5];
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);
@@ -54,7 +49,7 @@ public class UpgradeController : MonoBehaviour
 
         //--------------------------------------------
         tempUpgrade.upgradeName = "Armor";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
         tempUpgrade.upValues = new int[5];
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);
@@ -62,21 +57,21 @@ public class UpgradeController : MonoBehaviour
 
         //--------------------------------------------
         tempUpgrade.upgradeName = "Speed";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
         tempUpgrade.upValues = new int[5];
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);
         upgradeList.Add(tempUpgrade);
         //--------------------------------------------
         tempUpgrade.upgradeName = "Magnet";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
         tempUpgrade.upValues = new int[5];
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);
         upgradeList.Add(tempUpgrade);
         //--------------------------------------------
         tempUpgrade.upgradeName = "Inflation";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
         tempUpgrade.upValues = new int[5];
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);
@@ -91,13 +86,13 @@ public class UpgradeController : MonoBehaviour
             //GameObject temp;
             //temp = Instantiate(upgradeSquarePrefab, upgradeParentObj.transform);
             //set name and level of the prefab
-            if(bu.upgradeLevel != 5)
+            if(!bu.IsMaxLevel())
             {
-                upgradePrefabs[i].GetComponent<BaseUpgradeSquare>().SetUpgradeVisuals(bu.upgradeName, bu.upgradeLevel, upgradeCostValues[bu.upgradeLevel]);
+                upgradePrefabs[i].GetComponent<BaseUpgradeSquare>().SetUpgradeVisuals(bu.upgradeName, bu.UpgradeLevel, upgradeCostValues[bu.UpgradeLevel]);
             }
             else
             {
-                upgradePrefabs[i].GetComponent<BaseUpgradeSquare>().SetUpgradeVisuals(bu.upgradeName, bu.upgradeLevel, -1);
+                upgradePrefabs[i].GetComponent<BaseUpgradeSquare>().SetUpgradeVisuals(bu.upgradeName, bu.UpgradeLevel, -1);
             }
             
             i++;
@@ -108,7 +103,7 @@ public class UpgradeController : MonoBehaviour
     {
         MainMenuController.BaseUpgrade tempUpgrade = new();
         tempUpgrade.upgradeName = "";
-        tempUpgrade.upgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 0;
 
         //Get the upgrade from the upgrade list to update the data to be saved
         foreach(MainMenuController.BaseUpgrade bu in upgradeList)
@@ -119,46 +114,52 @@ public class UpgradeController : MonoBehaviour
             }
         }
 
-        //buy upgrade stuff
-        if(mainController.PlayerGold < upgradeCostValues[tempUpgrade.upgradeLevel])
+        //if not max level then you can see if you can buy
+        if(!tempUpgrade.IsMaxLevel())
         {
-            //cant buy
-            Debug.Log("Cant buy");
+            if(mainController.PlayerGold < upgradeCostValues[tempUpgrade.UpgradeLevel])
+            {
+                //cant buy
+                Debug.Log("Cant buy");
+            }
+            else
+            {
+                //subtract money
+                mainController.PlayerGold -= upgradeCostValues[tempUpgrade.UpgradeLevel];
+                
+                //up the level
+                tempUpgrade.UpgradeLevel++;
+
+                //update the values to be loaded into the fight zone
+                mainController.UpdatePlayerPrefs();
+
+                //Get the visual gameobject to update
+                foreach(GameObject go in upgradePrefabs)
+                {
+                    if(tempUpgrade.upgradeName == go.GetComponent<BaseUpgradeSquare>().baseUpgradeName)
+                    {
+                        //update price on upgrade
+                        BaseUpgradeSquare bus = go.GetComponent<BaseUpgradeSquare>();
+                        if(tempUpgrade.IsMaxLevel())
+                        {
+                            bus.SetUpgradeVisuals(tempUpgrade.UpgradeLevel, -1);
+                        }
+                        else
+                        {
+                            bus.SetUpgradeVisuals(tempUpgrade.UpgradeLevel, upgradeCostValues[tempUpgrade.UpgradeLevel]);
+                        }
+                         
+                        bus.UpdateBar(true);              
+                    }
+                }  
+
+                //save upgrade
+                mainController.SaveUpgradeValues();
+            }
         }
         else
         {
-            Debug.Log(upgradeCostValues[tempUpgrade.upgradeLevel]);
-            //subtract money
-            mainController.PlayerGold -= upgradeCostValues[tempUpgrade.upgradeLevel];
-        }
-
-        if(tempUpgrade.upgradeLevel > 0)
-        {
-            //increment level
-            tempUpgrade.upgradeLevel++;
-
-            //Get the gameobject to update
-            foreach(GameObject go in upgradePrefabs)
-            {
-                if(tempUpgrade.upgradeName == go.GetComponent<BaseUpgradeSquare>().baseUpgradeName)
-                {
-                    //update price on upgrade
-                    BaseUpgradeSquare bus = go.GetComponent<BaseUpgradeSquare>();
-                    bus.BaseUpgradeLevel++;
-                    bus.BaseCost = upgradeCostValues[tempUpgrade.upgradeLevel];
-                }
-            }
-
-            foreach(GameObject go in upgradePrefabs)
-            {
-                if(go.GetComponent<BaseUpgradeSquare>().baseUpgradeName.Equals(tempUpgrade.upgradeName))
-                {
-                    go.GetComponent<BaseUpgradeSquare>().UpdateBar(true);
-                }
-            }
-            mainController.UpdatePlayerPrefs();
-            mainController.SaveUpgradeValues();
-            //save upgrade
+            Debug.Log("Upgrade is Max level");
         }
     }
 

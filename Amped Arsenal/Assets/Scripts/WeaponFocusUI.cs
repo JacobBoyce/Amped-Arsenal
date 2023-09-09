@@ -70,7 +70,6 @@ public class WeaponFocusUI : MonoBehaviour
             
             //set image here
             UpgradeIcons tempUpgradeType = controller.GetUpIcon(up.weapUpType);
-            Debug.Log(tempUpgradeType.upType);
             tempSlot.upgradeSymbolImg.sprite = tempUpgradeType.upIcon;
 
             if (focusedWeap.IsMaxLvl())

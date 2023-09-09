@@ -15,7 +15,7 @@ D:/GitHubRepositories/Amped-Arsenal/Amped Arsenal
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-57226
+56696
 Successfully changed project path to: D:/GitHubRepositories/Amped-Arsenal/Amped Arsenal
 D:/GitHubRepositories/Amped-Arsenal/Amped Arsenal
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,11 +47,11 @@ D:/GitHubRepositories/Amped-Arsenal/Amped Arsenal
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [46780] Host "[IP] 192.168.0.40 [Port] 0 [Flags] 2 [Guid] 3681903003 [EditorId] 3681903003 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-9TH93UJ) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [46512] Host "[IP] 192.168.0.40 [Port] 0 [Flags] 2 [Guid] 2894879734 [EditorId] 2894879734 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-9TH93UJ) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [46780] Host "[IP] 192.168.0.40 [Port] 0 [Flags] 2 [Guid] 3681903003 [EditorId] 3681903003 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-9TH93UJ) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [46512] Host "[IP] 192.168.0.40 [Port] 0 [Flags] 2 [Guid] 2894879734 [EditorId] 2894879734 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-9TH93UJ) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
-Refreshing native plugins compatible for Editor in 114.05 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 116.31 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.15f1 (e8e88683f834)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/Resources/UnitySubsystems
@@ -67,53 +67,53 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56844
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56852
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.008269 seconds.
+Registered in 0.009146 seconds.
 Native extension for WindowsStandalone target not found
 [usbmuxd] Start listen thread
 [usbmuxd] Listen thread started
 Native extension for iOS target not found
 Native extension for Android target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 112.65 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 108.57 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.547 seconds
+- Completed reload, in  0.557 seconds
 Domain Reload Profiling:
-	ReloadAssembly (548ms)
-		BeginReloadAssembly (59ms)
+	ReloadAssembly (558ms)
+		BeginReloadAssembly (62ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (404ms)
-			LoadAssemblies (57ms)
+		EndReloadAssembly (408ms)
+			LoadAssemblies (60ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (79ms)
+			SetupTypeCache (80ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (19ms)
+			RebuildScriptCaches (20ms)
 			SetupLoadedEditorAssemblies (267ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (50ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (113ms)
+				RefreshPlugins (109ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (69ms)
-				ProcessInitializeOnLoadMethodAttributes (33ms)
+				ProcessInitializeOnLoadAttributes (73ms)
+				ProcessInitializeOnLoadMethodAttributes (34ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.004268 seconds.
+Registered in 0.004142 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image D:\GitHubRepositories\Amped-Arsenal\Amped Arsenal\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image D:\GitHubRepositories\Amped-Arsenal\Amped Arsenal\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
@@ -121,36 +121,36 @@ Native extension for WindowsStandalone target not found
 Native extension for iOS target not found
 Native extension for Android target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 115.09 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 110.49 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.404 seconds
+- Completed reload, in  1.360 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1405ms)
-		BeginReloadAssembly (220ms)
+	ReloadAssembly (1361ms)
+		BeginReloadAssembly (208ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
+			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (129ms)
-		EndReloadAssembly (1076ms)
-			LoadAssemblies (96ms)
+			CreateAndSetChildDomain (134ms)
+		EndReloadAssembly (1067ms)
+			LoadAssemblies (83ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (279ms)
+			SetupTypeCache (265ms)
 			ReleaseScriptCaches (1ms)
 			RebuildScriptCaches (73ms)
 			SetupLoadedEditorAssemblies (611ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (19ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (115ms)
-				BeforeProcessingInitializeOnLoad (110ms)
-				ProcessInitializeOnLoadAttributes (289ms)
-				ProcessInitializeOnLoadMethodAttributes (70ms)
-				AfterProcessingInitializeOnLoad (7ms)
+				RefreshPlugins (111ms)
+				BeforeProcessingInitializeOnLoad (109ms)
+				ProcessInitializeOnLoadAttributes (290ms)
+				ProcessInitializeOnLoadMethodAttributes (74ms)
+				AfterProcessingInitializeOnLoad (8ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (5ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
@@ -159,12 +159,12 @@ Shader 'MapMagic/TerrainPreviewHDRP': dependency 'BaseMapGenShader' shader 'Hidd
 Shader 'MapMagic/TerrainPreviewHDRP': dependency 'BaseMapShader' shader 'Hidden/HDRP/TerrainLit_Basemap' not found
 Shader 'MapMagic/TerrainPreviewHDRP': dependency 'BaseMapGenShader' shader 'Hidden/HDRP/TerrainLit_BasemapGen' not found
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
-Refreshing native plugins compatible for Editor in 1.79 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 1.64 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 7186 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 71 unused Assets / (5.2 MB). Loaded Objects now: 7649.
-Memory consumption went from 393.5 MB to 388.3 MB.
-Total: 5.765600 ms (FindLiveObjects: 0.673800 ms CreateObjectMapping: 0.501600 ms MarkObjects: 3.638100 ms  DeleteObjects: 0.951000 ms)
+Memory consumption went from 393.6 MB to 388.3 MB.
+Total: 5.855300 ms (FindLiveObjects: 0.600900 ms CreateObjectMapping: 0.524500 ms MarkObjects: 3.489100 ms  DeleteObjects: 1.240100 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -178,58 +178,28 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 543768.456708 seconds.
-  path: Assets/Scripts/Fight Zone/Entities/Player/PlayerController.cs
-  artifactKey: Guid(55ec96f5ec19b7a41ac877c556045d2d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/Fight Zone/Entities/Player/PlayerController.cs using Guid(55ec96f5ec19b7a41ac877c556045d2d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6f694bea4cea38ea96155a4c3d4a54dd') in 0.025094 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1218.840999 seconds.
-  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/Duplicate.png
-  artifactKey: Guid(825ef7f743e23714782c6f115c67934e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/Duplicate.png using Guid(825ef7f743e23714782c6f115c67934e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd7f9c2326be087998b33f59fa93aea7a') in 0.042202 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000023 seconds.
-  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/pro/GroupAdd.png
-  artifactKey: Guid(4f69f8206865a964db1f478316ab9efa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/pro/GroupAdd.png using Guid(4f69f8206865a964db1f478316ab9efa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '89587f79b0f0f8782105d6505a9b5929') in 0.007568 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/pro/Group.png
-  artifactKey: Guid(d60e7ed5b8694a341be2e14ff74ccc4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/pro/Group.png using Guid(d60e7ed5b8694a341be2e14ff74ccc4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c64db8765e2b66f8b0cb7b1968dea3a9') in 0.006769 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Group_pro.png
-  artifactKey: Guid(4998dc7de26a52744a437fa90fcdbca2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Group_pro.png using Guid(4998dc7de26a52744a437fa90fcdbca2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '85cfbb759ee061dca2099a692f51aaf2') in 0.007864 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000017 seconds.
-  path: Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Icons/FolderUp.png
-  artifactKey: Guid(72f3c7ea7e4f0a24f9e9dd0b3768cd45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Icons/FolderUp.png using Guid(72f3c7ea7e4f0a24f9e9dd0b3768cd45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87e5462b1f4bf9e2b9899edce26c5c09') in 0.011707 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Chevrons/TickUp.png
-  artifactKey: Guid(2b9f668d5981e5f40a62857a24b4ab44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Chevrons/TickUp.png using Guid(2b9f668d5981e5f40a62857a24b4ab44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c934c78ec983d6945c41a652af026365') in 0.005903 seconds 
+  Time since last request: 740088.353252 seconds.
+  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/pro/Standard.png
+  artifactKey: Guid(71eb1b703028c174ebd7a092fd9c455e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/pro/Standard.png using Guid(71eb1b703028c174ebd7a092fd9c455e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '70c05d8e78e524f22ab7ceba5ded2fff') in 0.140196 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000019 seconds.
-  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/GroupAdd.png
-  artifactKey: Guid(2c965e08847d14d4d8f165a91a1d817a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/GroupAdd.png using Guid(2c965e08847d14d4d8f165a91a1d817a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd2e8d9001a9808c26e523a3cc5befe78') in 0.005824 seconds 
+  path: Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Toggle/UncheckedActive.png
+  artifactKey: Guid(f9cf8b1f614a48941830fe18f35a9d88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Toggle/UncheckedActive.png using Guid(f9cf8b1f614a48941830fe18f35a9d88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4069ec1a4b641968db2f05f5f25f8a52') in 0.007152 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/GroupSelected.png
-  artifactKey: Guid(b49dbd10fa6124d4a83fb9f1a5afbc4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/GroupSelected.png using Guid(b49dbd10fa6124d4a83fb9f1a5afbc4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d0a75522728e86819db9216f64b5f90') in 0.006697 seconds 
+  Time since last request: 0.000020 seconds.
+  path: Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/Update.png
+  artifactKey: Guid(70453dae8c360eb48886731a2cd68434) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Assets/MapMagic/Core/Editor/Resources/MapMagic/Popup/Update.png using Guid(70453dae8c360eb48886731a2cd68434) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2fe46334d6ee33df4bffd31b32c11a27') in 0.005468 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Toggle/pro/UncheckedActive.png
+  artifactKey: Guid(ff8c4e67354db864eb68f0ee5647074b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Assets/MapMagic/Tools/GUI/Editor/Resources/DPUI/Toggle/pro/UncheckedActive.png using Guid(ff8c4e67354db864eb68f0ee5647074b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3119238c5d164c92be118bbde0211a6d') in 0.005394 seconds 
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 AssetImportWorker is now disconnected from the server
 Process exiting

@@ -105,7 +105,14 @@ public class MainMenuController : MonoBehaviour
         foreach(BaseUpgrade bu in upController.upgradeList)
         {
             //Debug.Log(upController.upVals[bu.upgradeLevel].upValues[bu.upgradeLevel]);
-            PlayerPrefs.SetInt(bu.upgradeName, bu.upValues[bu.upgradeLevel]);
+            if(bu.IsMaxLevel())
+            {
+                PlayerPrefs.SetInt(bu.upgradeName, bu.upValues[bu.UpgradeLevel-1]);
+            }
+            else
+            {
+                PlayerPrefs.SetInt(bu.upgradeName, bu.upValues[bu.UpgradeLevel]);
+            }
         }
     }
 
@@ -131,17 +138,54 @@ public class MainMenuController : MonoBehaviour
         Application.Quit();
     }
     public void Open()
-        {
-            data.OpenProfileLocation();
-        }
+    {
+        data.OpenProfileLocation();
+    }
+
+    public void DeleteFile()
+    {
+        data.DeleteData("MainSave");
+    }
 
     [System.Serializable]
     public class BaseUpgrade
     {
         [SerializeField]
         public string upgradeName;
-        [SerializeField]
-        public int upgradeLevel;
+
+        private int _upgradeLevel;
+        public int UpgradeLevel
+        {
+            get{return _upgradeLevel;}
+            set
+            {
+                if(value > 5)
+                {
+                    _upgradeLevel = 5;
+                }
+                else if (value < 0 )
+                {
+                    _upgradeLevel = 0;
+                }
+                else
+                {
+                    _upgradeLevel = value;
+                }
+            }
+        }
+
         public int[] upValues = new int[5];
+
+        public bool IsMaxLevel()
+        {
+            if(UpgradeLevel == 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
