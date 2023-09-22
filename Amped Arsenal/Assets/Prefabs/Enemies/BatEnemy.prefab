@@ -61,6 +61,11 @@ MonoBehaviour:
   wantPopUp: 0
   delaytimeToSlowDown: 0
   popForce: 0
+  thisSR: {fileID: 0}
+  wantFlash: 0
+  blinkTimer: 0
+  blinkDuration: 0
+  blinkIntesity: 0
 --- !u!1 &1432494565
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyState: 0
-  theSR: {fileID: 0}
   visuals: {fileID: 403880048}
   distance: 0
   attackRange: 4
@@ -196,7 +200,7 @@ MonoBehaviour:
     _stats: []
   spriteObj: {fileID: 2488580345735578964}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
-  blinkIntesity: 40
+  blinkIntesity: 4.5
   blinkDuration: 0.1
   blinkTimer: 0
   dpoofOffset: 3
@@ -256,9 +260,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f4f0bf0672f3a4b8f8d629213404f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterX: 0
-  shooterZ: 0
+  shootAngle: {x: 0, y: 0, z: 0}
+  offsetVector: {x: 0, y: 0, z: 0}
+  wantRandom: 0
+  addXOffset: 0
   randY: 0
+  offsetX: 0
   randPower: 0
   powerMax: 50
   powerMin: 50

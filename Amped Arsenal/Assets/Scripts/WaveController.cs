@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class WaveController : MonoBehaviour
 {
     public EnemySpawnController spawnController;
+    public int waveDifficulty;
     public TextMeshProUGUI countdownText, waveText;
     public Image countdownBarUI;
     public int curWave = 0;
@@ -34,6 +35,7 @@ public class WaveController : MonoBehaviour
 
 
     public bool toggleSpawning = false;
+
     
     [Header("Threat")]
     public int waveThreatLVL;

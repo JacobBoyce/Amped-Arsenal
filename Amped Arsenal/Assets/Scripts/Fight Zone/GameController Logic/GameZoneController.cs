@@ -89,6 +89,7 @@ public class GameZoneController : MonoBehaviour
         { 
             Instance = this; 
         } 
+        p1.inflationAmount = PlayerPrefs.GetInt("Inflation");
     }
 
 
@@ -142,6 +143,7 @@ public class GameZoneController : MonoBehaviour
                         + "\nSPD: " + p1._stats["spd"].Value
                         + "\nLUCK: " + p1._stats["luck"].Value
                         + "\nPULL: " + p1._stats["pull"].Value
+                        + "\nInf: " + PlayerPrefs.GetInt("Inflation")
                         + "\nXP: " + p1._stats["xp"].Value + " / " + p1._stats["xp"].Max;
     }
 

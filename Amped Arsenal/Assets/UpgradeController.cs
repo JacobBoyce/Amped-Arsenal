@@ -71,7 +71,7 @@ public class UpgradeController : MonoBehaviour
         upgradeList.Add(tempUpgrade);
         //--------------------------------------------
         tempUpgrade.upgradeName = "Inflation";
-        tempUpgrade.UpgradeLevel = 0;
+        tempUpgrade.UpgradeLevel = 1;
         tempUpgrade.upValues = new int[5];
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);

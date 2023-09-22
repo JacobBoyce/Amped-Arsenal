@@ -13,6 +13,7 @@ public class MainMenuController : MonoBehaviour
     public Data data;
     public UpgradeController upController;
     public int _playerGold = 0;
+    public int stageDifficulty = 1;
     public TextMeshProUGUI goldText;
 
     public int PlayerGold
@@ -30,12 +31,15 @@ public class MainMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        stageDifficulty = 1;
+ 
         data = new Data("MainSave");
 
         //load save and add to player prefs gold value
-        LoadBaseUpgradeStats();
+        LoadData();
         upController.LoadUpgradeList();
         UpdatePlayerPrefs();
+        
 
         //if just played bool is true then grab gold from player pref to save to playerGold
         if(PlayerPrefs.HasKey("Returned"))
@@ -55,25 +59,27 @@ public class MainMenuController : MonoBehaviour
             PlayerGold += PlayerPrefs.GetInt("Gold");
             SaveUpgradeValues();
             returnedFromPlaying = 0;
-            
         }
     }
 
-    public void LoadBaseUpgradeStats()
+    public void LoadData()
     {
         //init base upgrade list
         //upController.InitUpgradeList();
     
-        if (data.HasData("UpgradeList") && data.HasData("PlayerGold"))
+        if (data.HasData("UpgradeList") && data.HasData("PlayerGold") && data.HasData("StageDifficulty"))
         {
             //has save data
             
             upController.upgradeList = data.GetData<List<BaseUpgrade>>("UpgradeList");
             PlayerGold = data.GetData<int>("PlayerGold");
+            stageDifficulty = data.GetData<int>("StageDifficulty");
         }
         else
         {
             Debug.Log("no save data found");
+            data.SetData("StageDifficulty", stageDifficulty);
+            data.SetData("PlayerGold", PlayerGold);
             PlayerGold = 0;
         }
 
@@ -114,12 +120,14 @@ public class MainMenuController : MonoBehaviour
                 PlayerPrefs.SetInt(bu.upgradeName, bu.upValues[bu.UpgradeLevel]);
             }
         }
+        PlayerPrefs.SetInt("StageDifficulty", stageDifficulty);
     }
 
     public void SaveUpgradeValues()
     {
         data.SetData("UpgradeList", upController.upgradeList);
         data.SetData("PlayerGold", PlayerGold);
+        data.SetData("StageDifficulty", stageDifficulty);
         data.SaveProfile();
     }
 
@@ -144,7 +152,7 @@ public class MainMenuController : MonoBehaviour
 
     public void DeleteFile()
     {
-        data.DeleteData("MainSave");
+        data.DeleteProfile();
     }
 
     [System.Serializable]

@@ -70,7 +70,16 @@ public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPo
             if(ShopItemSelectionManager.instance.shopItems[i] == gameObject)
             {
                 ShopItemSelectionManager.instance.LastSelectedIndex = i;
-                ShopItemSelectionManager.instance.ShowToolTip(toolTip);
+                try
+                {
+                    ShopItemSelectionManager.instance.ShowToolTip(toolTip);
+                }
+                catch (System.Exception)
+                {
+                    
+                    throw;
+                }
+                
                 return;
             }
         }

@@ -22,6 +22,7 @@ public class PlayerController : Actor
     public event Action OnDamaged;
     public event Action OnHealed;
     public bool openShop = false;
+    public float inflationAmount = 0;
 
 
     [Header("UI")]
@@ -81,7 +82,8 @@ public class PlayerController : Actor
         //_stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
         //_stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
         
-        _stats["hp"].Value += PlayerPrefs.GetInt("HP");
+        _stats["hp"].IncreaseMaxBy(PlayerPrefs.GetInt("HP"));
+        _stats["hp"].Value = _stats["hp"].Max;
         _stats["str"].Value += PlayerPrefs.GetInt("Strength");
         _stats["def"].Value += PlayerPrefs.GetInt("Armor");
         _stats["spd"].Value += PlayerPrefs.GetInt("Speed");
@@ -154,7 +156,8 @@ public class PlayerController : Actor
 
     public void TakeDamage(float damage)
     {
-        Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+        float dmg = _stats["def"].Value / 10;
+        Set("hp", _stats["hp"].Value - Mathf.CeilToInt(damage * dmg));
         UpdateBar(_stats["hp"]);
 
         //trigger damage event list
@@ -166,7 +169,10 @@ public class PlayerController : Actor
         {
             Debug.Log("GameOver");
             //---------------------add player prefs inflation to equation here
-            PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (PlayerPrefs.GetInt("Inflation") / 10)));
+            Debug.Log("inflation percentage: " + (inflationAmount / 10) 
+            + "\ncurrent gold: " + _stats["gold"].Value
+            + "\n amount to take back: " + (_stats["gold"].Value * (inflationAmount / 10)));
+            PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (inflationAmount / 10)));
             PlayerPrefs.SetInt("Returned", 1);
             mainController.EndGame();
         }
