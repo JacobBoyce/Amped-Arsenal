@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: c92bc16f172670c48bd2dbf1bf2b4f5b, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: f7965c02c750e2143ae6c246a7b31ade, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -188,7 +188,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.2
   m_Range: 68.85
   m_SpotAngle: 133.87868
   m_InnerSpotAngle: 113.356155
@@ -227,7 +227,7 @@ Light:
     serializedVersion: 2
     m_Bits: 1048447
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -24966,7 +24966,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2211976692955812715, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.85
+      value: -12.4
       objectReference: {fileID: 0}
     - target: {fileID: 2211976692955812715, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26728,11 +26728,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnController: {fileID: 1358711794}
-  waveDifficulty: 0
   countdownText: {fileID: 422871670}
   waveText: {fileID: 780846407}
   countdownBarUI: {fileID: 1657357868}
-  curWave: 0
+  curWave: 1
+  maxWave: 20
+  startWaitTime: 5
   wavesActive: 0
   wasPeaceWave: 0
   enemyPrefabs:
@@ -26741,7 +26742,18 @@ MonoBehaviour:
   - {fileID: 7333900382644102603, guid: 94aa89fa10a847546b0596cc19e53ec9, type: 3}
   - {fileID: 4683092176483963480, guid: c2c951acc0dd8c14f8891c8abe9e54bf, type: 3}
   - {fileID: 3093724649887725232, guid: db879054a38bd984d939790d0a912599, type: 3}
-  toSpawnList: []
+  beginningSpawnList:
+  - {fileID: 3791055123043577848, guid: f8190eb99d111254d8dbd7bb8f51b906, type: 3}
+  - {fileID: 7333900382644102603, guid: 94aa89fa10a847546b0596cc19e53ec9, type: 3}
+  - {fileID: 126802570399370742, guid: 29d1c711bfe54234799fad2d38835b29, type: 3}
+  - {fileID: 3093724649887725232, guid: db879054a38bd984d939790d0a912599, type: 3}
+  - {fileID: 4683092176483963480, guid: c2c951acc0dd8c14f8891c8abe9e54bf, type: 3}
+  - {fileID: 126802570399370742, guid: 29d1c711bfe54234799fad2d38835b29, type: 3}
+  - {fileID: 3791055123043577848, guid: f8190eb99d111254d8dbd7bb8f51b906, type: 3}
+  - {fileID: 3093724649887725232, guid: db879054a38bd984d939790d0a912599, type: 3}
+  - {fileID: 126802570399370742, guid: 29d1c711bfe54234799fad2d38835b29, type: 3}
+  - {fileID: 4683092176483963480, guid: c2c951acc0dd8c14f8891c8abe9e54bf, type: 3}
+  midAndLateGameSpwnList: []
   esPoint:
   - {fileID: 2146409961}
   - {fileID: 600865627}
@@ -26751,15 +26763,11 @@ MonoBehaviour:
   str: 0.01
   def: 0.01
   zoneMultiplier: 1
-  maxWaveTimer: 5
-  mainCountdown: 0
+  maxWaveTimer: 30
+  mainCountdown: 30
   spawnRate: 0
   spawnRateMax: 0.5
   toggleSpawning: 0
-  waveThreatLVL: 10
-  tempThreat: 0
-  increaseThreatMin: 10
-  increaseThreatMax: 20
 --- !u!4 &875036074
 Transform:
   m_ObjectHideFlags: 0
@@ -32391,6 +32399,11 @@ MonoBehaviour:
   isPaused: 0
   statsVisible: 0
   gameTimerUIText: {fileID: 422871670}
+  lightsToToggle:
+  - {fileID: 1443672199}
+  - {fileID: 1409857466}
+  - {fileID: 15517058}
+  - {fileID: 526353069}
   thingToShoot: {fileID: 1586557235920538202, guid: 579acbac7fc24c444bf66e7a12e5bb74, type: 3}
   whereToShoot: {fileID: 1926189298}
   gameTimer: 0
@@ -50047,6 +50060,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 414244952, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2211976692955812712, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
       propertyPath: m_Name
       value: LoadLevelLamp_1
@@ -50115,6 +50132,10 @@ PrefabInstance:
       propertyPath: waveController
       value: 
       objectReference: {fileID: 875036073}
+    - target: {fileID: 2211976693737755119, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
 --- !u!4 &1845704428 stripped
@@ -52516,7 +52537,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2048
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -53790,7 +53811,7 @@ Terrain:
   m_DrawTreesAndFoliage: 1
   m_StaticShadowCaster: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: cc572978d130a404891216985531f99f, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -59119,6 +59140,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1388008975}
     m_Modifications:
+    - target: {fileID: 414244952, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2211976692955812712, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
       propertyPath: m_Name
       value: LoadLevelLamp
@@ -59179,6 +59204,10 @@ PrefabInstance:
       propertyPath: waveController
       value: 
       objectReference: {fileID: 875036073}
+    - target: {fileID: 2211976693737755119, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0fd17c93e2c1f6418dc309aca5b20de, type: 3}
 --- !u!1001 &7194117791424447712

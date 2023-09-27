@@ -7,16 +7,16 @@ using UnityEngine.UI;
 public class WaveController : MonoBehaviour
 {
     public EnemySpawnController spawnController;
-    public int waveDifficulty;
     public TextMeshProUGUI countdownText, waveText;
     public Image countdownBarUI;
-    public int curWave = 0;
-    private int seconds;
+    public int curWave = 0, maxWave;
+    public float startWaitTime;
     public bool wavesActive = false, wasPeaceWave = false;
 
     public List<GameObject> enemyPrefabs = new List<GameObject>();
 
-    public List<GameObject> toSpawnList = new List<GameObject>();
+    public List<GameObject> beginningSpawnList = new List<GameObject>();
+    public List<GameObject> midAndLateGameSpwnList = new List<GameObject>();
 
     [Header("Spawn Stuff")]
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
@@ -33,81 +33,59 @@ public class WaveController : MonoBehaviour
     public float mainCountdown;
     public float spawnRate, spawnRateMax;
 
-
+   
     public bool toggleSpawning = false;
 
-    
-    [Header("Threat")]
-    public int waveThreatLVL;
-    public int tempThreat, increaseThreatMin, increaseThreatMax;
 
-
-    
 
     // Start is called before the first frame update
     void Start()
     {
+        waveText.text = "Wave " + curWave + "/" + maxWave;
         mainCountdown = maxWaveTimer;
-        waveText.text = "Wave " + curWave + "/50";
     }
 
     // Update is called once per frame
     void Update()
     {
         #region Game Timer
-        //check if 0 if so restart the timer and start next wave, or if wave 5 then restart timer for peace time
+        //start the waves
         if(wavesActive == true)
         {
-            if(mainCountdown >= 0)
+            //check if current wave is less than the max amount
+            if(curWave < maxWave)
             {
-                mainCountdown -= Time.deltaTime;
-                countdownBarUI.fillAmount = 1 - (mainCountdown / maxWaveTimer);
-                seconds = Mathf.FloorToInt(mainCountdown);
-                string niceTime = string.Format("{0}", seconds);
-                //string niceTime = string.Format("{0:0}:{1:00}", Min, seconds);
-                countdownText.text = niceTime;
-            }
-            else
-            {
-                if(wasPeaceWave)
+                if(mainCountdown >= 0)
                 {
-                    //start waves
-                    curWave++;
-                    StartWave();
-                    //Debug.Log("Next wave");
-                    wasPeaceWave = false;
+                    //Countdown the wave time
+                    mainCountdown -= Time.deltaTime;
+                    //update the countdown bar UI
+                    countdownBarUI.fillAmount = 1 - (mainCountdown / maxWaveTimer);
+
+                    //seconds = Mathf.FloorToInt(mainCountdown);
+                    //string niceTime = string.Format("{0}", seconds);
+                    //string niceTime = string.Format("{0:0}:{1:00}", Min, seconds);
+                    //countdownText.text = niceTime;
                 }
                 else
                 {
-                    //check if wave is a multiple of 5 -> (start peace wave)
-                    if(curWave % 5 == 0 || wasPeaceWave == true)
-                    {
-                        //if its the first wave then start the actual waves after the first 30 sec peace period
-                        if(curWave == 0)
-                        {
-                            //start waves
-                            curWave++;
-                            StartWave();
-                            //Debug.Log("Next wave");
-                        }
-                        else
-                        {
-                            //tell shop keeper to come out
-                            wasPeaceWave = true;
-                            //Debug.Log("Peace wave");
-                        }
-                    }
-                    else
-                    {
-                        //call next wave
-                        curWave++;
-                        StartWave();
-                        //Debug.Log("Next wave");
-                    }
+                    //decide the next wave
+                    curWave++;
+                    mainCountdown = maxWaveTimer;
+                    StartNextWave();
                 }
-                waveText.text = "Wave " + curWave + "/50";
-                mainCountdown = maxWaveTimer;
             }
+            //if the end of the max waves
+            else if(curWave > maxWave)
+            {
+                //end game stuff
+                //open menu for player to choose to go to next lamp or go to the main menu
+                wavesActive = false;
+                PlayerPrefs.SetInt("StageDifficulty", PlayerPrefs.GetInt("StageDifficulty") + 1);
+            }
+
+                    //check if wave is a multiple of 5 -> (start peace wave)
+                    //if(curWave % 5 == 0 )
         }
         #endregion
     
@@ -130,10 +108,11 @@ public class WaveController : MonoBehaviour
         #endregion
     }
 
-    public void StartWave()
+    public void StartNextWave()
     {
-        //raise threat level
-        RaiseThreatLVL();
+        //update wave UI
+        waveText.text = "Wave " + curWave + "/" + maxWave;
+
         DecideWave();
         //spawn enemies
         toggleSpawning = true;
@@ -141,68 +120,94 @@ public class WaveController : MonoBehaviour
 
     private void DecideWave()
     {
-        //clear last waves enemy spawn list
-        //toSpawnList.Clear();
-        tempThreat = 0;
-
-        while(tempThreat < waveThreatLVL)
+        //if wave 1-10 use single enemy list defined by me
+        if(curWave >= 11 && curWave <= 15)
         {
-            //choose enemy from list add its threat stat to tempThreat
-            int randomChoice = Random.Range(0,enemyPrefabs.Count);
-            GameObject tempEnemy = enemyPrefabs[randomChoice];
-            //Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " chosen (" + randomChoice + ") // current threat level: " + tempThreat);
+            int tryCount = 0;
+            int enemiesSelected = 0;
+            int randomChoice;
+            midAndLateGameSpwnList.Clear();
 
-            //if the threat to add is less than the wave threat level, continue
-            if(tempThreat + tempEnemy.GetComponent<EnemyController>().threatLVL <= waveThreatLVL)
-            {
-                //add the threat level
-                tempThreat += tempEnemy.GetComponent<EnemyController>().threatLVL;
-                //add to spawnlist
-                toSpawnList.Add(tempEnemy);
-                //Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " added // current threat level: " + tempThreat);
+            randomChoice = Random.Range(0,enemyPrefabs.Count);
 
+            midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
+            Debug.Log("added: " + enemyPrefabs[randomChoice].GetComponent<EnemyController>().actorName);
+            enemiesSelected++;
+
+            while(enemiesSelected < 2 && tryCount < 200)
+            {  
+                randomChoice = Random.Range(0,enemyPrefabs.Count);
+                Debug.Log("Checking if this is in list already: " + enemyPrefabs[randomChoice].GetComponent<EnemyController>().actorName);
+                if(!midAndLateGameSpwnList.Contains(enemyPrefabs[randomChoice]))
+                {
+                    Debug.Log("added: " + enemyPrefabs[randomChoice].GetComponent<EnemyController>().actorName);
+                    midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
+                    enemiesSelected++;
+                }
+                Debug.Log("enemies selected Count: " + enemiesSelected);
+                tryCount++;
             }
-            else
-            {
-                //Debug.Log(tempEnemy.GetComponent<EnemyController>().actorName + " not chosen, rechoosing");
-                /*break loop and start again untill one is found to fill the threat level*/
+        }
+        else if(curWave >= 16 && curWave <= 20)
+        {
+            int tryCount = 0;
+            int enemiesSelected = 0;
+            int randomChoice;
+            midAndLateGameSpwnList.Clear();
+
+            randomChoice = Random.Range(0,enemyPrefabs.Count);
+
+            midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
+            enemiesSelected++;
+
+            while(enemiesSelected < 3 && tryCount < 200)
+            {  
+                randomChoice = Random.Range(0,enemyPrefabs.Count);
+
+                if(!midAndLateGameSpwnList.Contains(enemyPrefabs[randomChoice]))
+                {
+                    midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
+                    enemiesSelected++;
+                }
+                tryCount++;
             }
             
         }
+        //if wave 10-15 use 2 random enemies from the list
+        //if wave 15-20 use 3 or more random enemies from the list
+            //int randomChoice = Random.Range(0,enemyPrefabs.Count);
+            //GameObject tempEnemy = enemyPrefabs[randomChoice];
+ 
 
-        spawnRateMax = (maxWaveTimer - (maxWaveTimer * .25f)) / toSpawnList.Count; 
+        //spawnRateMax = (maxWaveTimer - (maxWaveTimer * .25f)) / toSpawnList.Count; 
     }
 
-    public void RaiseThreatLVL()
+
+
+    public IEnumerator StartWaveSystem()
     {
-        int rand = Random.Range(increaseThreatMin, increaseThreatMax);
-
-        waveThreatLVL += rand;
-
-    }
-
-    public void SwitchWaves()
-    {
+        yield return new WaitForSeconds(startWaitTime);
+        StartNextWave();
         wavesActive = true;
     }
 
     public void SpawnEnemy()
     {
-        //if tospawnlist is empty turn off togglespawning
-        if(toSpawnList.Count == 0)
+
+        int spnpoint = Random.Range(0, esPoint.Count);
+    
+        if(curWave <= 10)
         {
-            toggleSpawning = false;
+            tempPrefab = Instantiate(beginningSpawnList[curWave-1],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
         }
-        else
+        else if(curWave >= 11)
         {
-            int spnpoint = Random.Range(0, esPoint.Count);
-       
-            tempPrefab = Instantiate(toSpawnList[0],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
-            //upgrade enemy stats here
-            tempPrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,curWave,zoneMultiplier);
-            toSpawnList.RemoveAt(0);
-            //toSpawnIndex++;
+            int randEnemy = Random.Range(0, midAndLateGameSpwnList.Count);
+            tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
         }
+
+        //upgrade enemy stats here
+        tempPrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,curWave,zoneMultiplier);
     }
 
 
@@ -217,15 +222,12 @@ public class WaveController : MonoBehaviour
     }
     /*
     
-    -) decide threat level of each wave. 
-    -) controller decides how to fill that threat level with the values
-        of threat from each enemy
-            -) choices can be made by choosing the biomes enemies
-            -) then randomly choose an enemy from the list and add it to
-                the temporary threat level 
-                (this will match the wave threat level)
-            -) later we can choose a bias to make waves have more or less weaker or stronger enemies
-    -) decide how fast to spawn enemies
+    -) 20 waves
+    -) 30 second waves
+    -) spawn a specific enemy or defined group (SO?) at a specific spawn rate
+    -) rate increases each wave or depending on enemy type
+    -) every N waves spawn a mega creep
+    -) 
 
     */
 }

@@ -12,7 +12,7 @@ public class LobbyController : MonoBehaviour
     void Start()
     {
         levelDifficulty = PlayerPrefs.GetInt("StageDifficulty");
-        waveController.waveDifficulty = levelDifficulty;
+        waveController.zoneMultiplier = levelDifficulty;
 
         //set lamps activatable stuff here
     }
@@ -24,5 +24,7 @@ public class LobbyController : MonoBehaviour
             lamp.gameObject.SetActive(false);
         }
         globalLobbyLight.SetActive(false);
+
+        GameZoneController.Instance.ToggleFightZoneLights(true);
     }
 }

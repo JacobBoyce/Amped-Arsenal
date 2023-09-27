@@ -21,6 +21,7 @@ public class LampLoadLevel : MonoBehaviour
     private bool triggeredLoad = false;
 
     private float maxLightIntensity;
+    //private IEnumerator coroutine;
 
     public void Start()
     {
@@ -31,6 +32,8 @@ public class LampLoadLevel : MonoBehaviour
         aoeLight.intensity = 0;
         aoeLight.gameObject.SetActive(false);
         lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 1));
+
+        //coroutine = waveController.StartWaveSystem(5f);
     }
 
     public void Update()
@@ -53,7 +56,7 @@ public class LampLoadLevel : MonoBehaviour
                     p1.MovePlayerToField(moveToPos);
                     Debug.Log("move to battlefield");
 
-                    waveController.SwitchWaves();
+                    waveController.StartCoroutine("StartWaveSystem");
                     lobController.DeactivateLamps();
                     triggeredLoad = true;
                 }

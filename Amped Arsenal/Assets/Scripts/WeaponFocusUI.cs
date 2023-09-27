@@ -49,7 +49,6 @@ public class WeaponFocusUI : MonoBehaviour
             costUI.text = ((byte)focusedWeap.weapUpgrades.costValues[focusedWeap.level-1]).ToString();
         }        
 
-        Debug.Log(focusedWeap.weapUpgrades.UpgradeList.Count);
 
         for(int i = 0; i < focusedWeap.weapUpgrades.UpgradeList.Count; i ++)
         {

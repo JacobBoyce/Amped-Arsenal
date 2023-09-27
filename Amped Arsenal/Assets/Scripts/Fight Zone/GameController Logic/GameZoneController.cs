@@ -25,6 +25,8 @@ public class GameZoneController : MonoBehaviour
     public bool isPaused, statsVisible;
     public TextMeshProUGUI gameTimerUIText;
 
+    public List<GameObject> lightsToToggle;
+
     public GameObject thingToShoot, whereToShoot;
 
     public float gameTimer, gameTimerMax;
@@ -101,6 +103,8 @@ public class GameZoneController : MonoBehaviour
 
         //Apply base stats from main menu
         p1._stats["str"].Value += PlayerPrefs.GetInt("Strength");
+        
+        ToggleFightZoneLights(false);
     }
 
     // Update is called once per frame
@@ -146,7 +150,14 @@ public class GameZoneController : MonoBehaviour
                         + "\nInf: " + PlayerPrefs.GetInt("Inflation")
                         + "\nXP: " + p1._stats["xp"].Value + " / " + p1._stats["xp"].Max;
     }
-
+    
+    public void ToggleFightZoneLights(bool toggle)
+    {
+        foreach(GameObject go in lightsToToggle)
+        {
+            go.SetActive(toggle);
+        }
+    }
     public void OpenUpgrades()
     {
         
