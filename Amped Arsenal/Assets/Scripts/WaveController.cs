@@ -11,7 +11,7 @@ public class WaveController : MonoBehaviour
     public Image countdownBarUI;
     public int curWave = 0, maxWave;
     public float startWaitTime;
-    public bool wavesActive = false, wasPeaceWave = false;
+    public bool wavesActive = false, exfilPhase = false;
 
     public List<GameObject> enemyPrefabs = new List<GameObject>();
 
@@ -26,12 +26,15 @@ public class WaveController : MonoBehaviour
     public float hp;
     public float str,def;
     public int zoneMultiplier;
+    public float[] scaleLampLevel;
 
     //Time stuff
     [Header("Timers")]
     public int maxWaveTimer;
     public float mainCountdown;
-    public float spawnRate, spawnRateMax;
+    public float spawnRate, spawnRateMax, seconds;
+    public int min;
+    
 
    
     public bool toggleSpawning = false;
@@ -76,18 +79,39 @@ public class WaveController : MonoBehaviour
                 }
             }
             //if the end of the max waves
-            else if(curWave > maxWave)
+            else if(curWave >= maxWave)
             {
                 //end game stuff
                 //open menu for player to choose to go to next lamp or go to the main menu
                 wavesActive = false;
-                PlayerPrefs.SetInt("StageDifficulty", PlayerPrefs.GetInt("StageDifficulty") + 1);
+                waveText.gameObject.SetActive(false);
+                countdownText.gameObject.SetActive(true);
+
+
+                if(PlayerPrefs.GetInt("StageDifficulty") == zoneMultiplier)
+                {
+                    PlayerPrefs.SetInt("StageDifficulty", PlayerPrefs.GetInt("StageDifficulty") + 1);
+                }
+                
+               //start exfill phase
+               exfilPhase = true;
             }
 
-                    //check if wave is a multiple of 5 -> (start peace wave)
-                    //if(curWave % 5 == 0 )
+                //check if wave is a multiple of 5 -> (start peace wave)
+                //if(curWave % 5 == 0 )
         }
         #endregion
+
+        if(exfilPhase)
+        {
+            #region exfil timer
+                mainCountdown += Time.deltaTime;
+                seconds = Mathf.FloorToInt(mainCountdown);
+                //string niceTime = string.Format("{0}", seconds);
+                string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
+                countdownText.text = niceTime;
+            #endregion
+        }
     
         #region Spawner
 
@@ -104,7 +128,6 @@ public class WaveController : MonoBehaviour
                 SpawnEnemy();
             }
         }
-
         #endregion
     }
 
@@ -131,20 +154,17 @@ public class WaveController : MonoBehaviour
             randomChoice = Random.Range(0,enemyPrefabs.Count);
 
             midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
-            Debug.Log("added: " + enemyPrefabs[randomChoice].GetComponent<EnemyController>().actorName);
+
             enemiesSelected++;
 
             while(enemiesSelected < 2 && tryCount < 200)
             {  
                 randomChoice = Random.Range(0,enemyPrefabs.Count);
-                Debug.Log("Checking if this is in list already: " + enemyPrefabs[randomChoice].GetComponent<EnemyController>().actorName);
                 if(!midAndLateGameSpwnList.Contains(enemyPrefabs[randomChoice]))
                 {
-                    Debug.Log("added: " + enemyPrefabs[randomChoice].GetComponent<EnemyController>().actorName);
                     midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
                     enemiesSelected++;
                 }
-                Debug.Log("enemies selected Count: " + enemiesSelected);
                 tryCount++;
             }
         }
@@ -205,9 +225,22 @@ public class WaveController : MonoBehaviour
             int randEnemy = Random.Range(0, midAndLateGameSpwnList.Count);
             tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
         }
+        else if(exfilPhase)
+        {
+            int randEnemy = Random.Range(0, enemyPrefabs.Count);
+            tempPrefab = Instantiate(enemyPrefabs[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+
+        }
 
         //upgrade enemy stats here
-        tempPrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,curWave,zoneMultiplier);
+        tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+
+        if(exfilPhase)
+        {
+            //increase stats by exfil amount
+            tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+        }
+
     }
 
 

@@ -54,7 +54,6 @@ public class LampLoadLevel : MonoBehaviour
                 {
                     countdownText.text = "";
                     p1.MovePlayerToField(moveToPos);
-                    Debug.Log("move to battlefield");
 
                     waveController.StartCoroutine("StartWaveSystem");
                     lobController.DeactivateLamps();
@@ -73,6 +72,7 @@ public class LampLoadLevel : MonoBehaviour
                 inRange = true;
                 p1 = other.gameObject.GetComponent<PlayerController>();
                 aoeLight.gameObject.SetActive(true);
+                lobController.waveController.zoneMultiplier = levelNum;
             }
             else
             {

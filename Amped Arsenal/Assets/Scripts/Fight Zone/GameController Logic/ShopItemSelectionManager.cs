@@ -60,6 +60,9 @@ public class ShopItemSelectionManager : MonoBehaviour
 
     public void ShowToolTip(string tooltip)
     {
-        tooltipText.text = tooltip;
+        if(tooltipText != null)
+        {
+            tooltipText.text = tooltip;
+        }
     }
 }

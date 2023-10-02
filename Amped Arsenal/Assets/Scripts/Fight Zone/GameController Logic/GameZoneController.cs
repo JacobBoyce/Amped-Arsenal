@@ -13,6 +13,7 @@ public class GameZoneController : MonoBehaviour
     public static GameZoneController Instance{get; private set;}
     public GameObject joystickController, upgradeButton;
     public PlayerController p1;
+    public float exfilPercentAmount;
     public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel, chooseWeapApplyEffect;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
@@ -102,7 +103,7 @@ public class GameZoneController : MonoBehaviour
         ShowStats(statsVisible);
 
         //Apply base stats from main menu
-        p1._stats["str"].Value += PlayerPrefs.GetInt("Strength");
+        //p1._stats["str"].Value += PlayerPrefs.GetInt("Strength");
         
         ToggleFightZoneLights(false);
     }
@@ -246,5 +247,21 @@ public class GameZoneController : MonoBehaviour
     {
         //end level stuff
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void EndGameChoice(int choice)
+    {
+        //1 = continue
+        if(choice == 1)
+        {
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(p1._stats["gold"].Value * ((PlayerPrefs.GetInt("Inflation") / 10) + exfilPercentAmount)));
+            PlayerPrefs.SetInt("Returned", 1);
+            EndGame();
+        }
+        
     }
 }

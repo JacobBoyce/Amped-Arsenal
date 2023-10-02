@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 //using System;
 
 public class EnemyController : Actor
@@ -15,6 +17,7 @@ public class EnemyController : Actor
 
     public List<GameObject> drops = new List<GameObject>();
     int multiDropChance, dropIndex;
+    public TextMeshProUGUI lifeText;
 
     [Space(10)]
     [Header("Effects")]
@@ -30,9 +33,9 @@ public class EnemyController : Actor
     {
         //when setting stats pull from a level or scale and use here to instantiate
         _stats = new Stats();
-        _stats.AddStat("hp",   10, 1000);    // Max Health
+        _stats.AddStat("hp",   10);    // Max Health
         _stats.AddStat("attk",  1, 200);    // base attack damage to be scaled against strength
-        _stats.AddStat("str",   1, 1000);    // Multiply this by the damage of weapon being used. (Attk > 1)
+        _stats.AddStat("str",   1, 20);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",         1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",      3,50);    // Movement speed
         _stats.AddStat("luck",  10, 100);    // How lucky you are to get different upgrades or drops from enemies.
@@ -45,30 +48,47 @@ public class EnemyController : Actor
 
     public void SetStats()
     {
-        _stats["hp"].Value = hpMax;
-        _stats["attk"].Value = attk;
-        _stats["str"].Value = str;
-        _stats["def"].Value = def;
-        _stats["spd"].Value = spd;
-        _stats["xp"].Value = xp;
-        _stats["gold"].Value = gold;
+        _stats["hp"].Max = hpMax;
+        _stats["attk"].Max = attk;
+        _stats["str"].Max = str;
+        _stats["def"].Max = def;
+        _stats["spd"].Max = spd;
+        _stats["xp"].Max = xp;
+        _stats["gold"].Max = gold;
+        _stats.Fill();
     }
 
-    public void IncreaseStats(float _hp, float _str, float _def, int waveNum, int _zoneNum)
+    public void IncreaseStats(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
     {
-        float nHp, nStr, nDef;
+        float nHp;//, nStr, nDef;
 
-        nHp = _hp * _zoneNum;
-        nStr = _str * _zoneNum;
-        nDef = _def * _zoneNum;
+        nHp = (_hpScaleAmount * _zoneNum) * waveNum;
+        nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
+        //nStr = _str * _zoneNum;
+        //nDef = _def * _zoneNum;
+        
+        _stats["hp"].Max = nHp;
+        _stats["hp"].Fill();
+        //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
+        //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+        _stats["spd"].IncreaseMaxBy(.1f);
+    }
 
-        for (int i = 0; i < waveNum; i++)
-        {
-            _stats["hp"].Value = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
-            _stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
-            //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-            _stats["spd"].Value += .1f;
-        }
+    public void IncreaseStats(float _hpScaleAmount, float _str, float _def, float timer, int _zoneNum)
+    {
+        
+        float nHp;//, nStr, nDef;
+
+        nHp = (_hpScaleAmount * _zoneNum) * (20 + Mathf.RoundToInt(timer % 5)/2);
+        nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
+        //nStr = _str * _zoneNum;
+        //nDef = _def * _zoneNum;
+
+        _stats["hp"].Max = nHp;
+        _stats["hp"].Fill();
+        //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
+        //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+        _stats["spd"].IncreaseMaxBy(.1f);
     }
 
     public void Update()
@@ -77,6 +97,7 @@ public class EnemyController : Actor
         {
             VisualDamage();
         }
+        //lifeText.text = _stats["hp"].Value.ToString();
     }
     
     public bool HasEffect(EffectBase effect)
