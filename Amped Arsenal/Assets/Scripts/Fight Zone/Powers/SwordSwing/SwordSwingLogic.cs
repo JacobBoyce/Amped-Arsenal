@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SwordSwingLogic : MonoBehaviour
 {
+    public GameObject otherSword;
     public Animator swingAnimator;
     public int swingNum;
 
@@ -12,44 +14,40 @@ public class SwordSwingLogic : MonoBehaviour
 
     //public float damage = 3;
 
-    public void InitSword(SwordSwingController cont, WeaponMods mod, int initSwingNum)
+    public void InitSword(SwordSwingController cont, WeaponMods mod, GameObject self, GameObject other)
     {
         controller = cont;
         weapMod = mod;
-        SetSwingNum(initSwingNum);
+        otherSword = other;
     }
 
     //animator uses this to know how many times to swing
     public void UpdateSwingNumber()
     {
-        if(swingNum > 0)
+        if(controller.curSwingNum > 0)
         {
-            swingNum--;
-            SetSwingNum(swingNum);
+            controller.curSwingNum--;
+            this.gameObject.SetActive(false);
+            otherSword.SetActive(true);
+            otherSword.GetComponent<SwordSwingLogic>().TurnOn();
+            //StartCoroutine(WaitForAnimEnd());
         }
-        else if(swingNum == 0)
+        else if(controller.curSwingNum == 0)
         {
             //swingAnimator.SetInteger("swingNum", swingNum);
-            StartCoroutine(WaitForAnimEnd());
+            this.gameObject.SetActive(false);
         }
     }
 
     IEnumerator WaitForAnimEnd()
     {
         yield return new WaitForSeconds(.2f);
-        this.gameObject.SetActive(false);
+        
     }
 
     public void TurnOn()
     {
-        SetSwingNum(controller.swingNumber);
-        swingAnimator.SetBool("moreSwings", true);
-    }
-
-    public void SetSwingNum(int num)
-    {
-        swingNum = num;
-        swingAnimator.SetInteger("swingNum", swingNum);
+        swingAnimator.SetTrigger("Swing");
     }
 
     public void OnTriggerEnter(Collider collision)

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4473975344231072728
+--- !u!1 &2262015541885662519
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4473975344231072710}
-  - component: {fileID: 4473975344231072711}
-  - component: {fileID: -8741041357502373059}
+  - component: {fileID: 6445473795200758564}
+  - component: {fileID: 4192403773018303756}
+  - component: {fileID: 4251025071991675874}
   m_Layer: 0
   m_Name: SwingSwordObjCont
   m_TagString: Untagged
@@ -18,60 +18,70 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4473975344231072710
+--- !u!4 &6445473795200758564
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473975344231072728}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 2262015541885662519}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.75, y: -1.5400001, z: 5.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4473975344231072711
+--- !u!114 &4192403773018303756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473975344231072728}
+  m_GameObject: {fileID: 2262015541885662519}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e71bd5cb06842e478e03b84c7dd9975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wName: Sword
-  weapPrefab: {fileID: 5645462391194907905, guid: 31b82b731cfbef443ab388d4ec28626b, type: 3}
+  weapPrefab: {fileID: 6653096976603966008, guid: 8c5949d8ab1ace84b8fb394a222a62e9, type: 3}
   playerObj: {fileID: 0}
   shopItemInfo: {fileID: 11400000, guid: 4071ff1f8b893064fb68afe45c90f58d, type: 2}
   weapUpgrades: {fileID: 11400000, guid: c9c47e7808176284abf2362322ee657b, type: 2}
-  weapMod: {fileID: 0}
+  weapMod: {fileID: 4251025071991675874}
   curCooldown: 0
-  tickMaxCD: 10
+  tickMaxCD: 20
   damage: 5
+  maxSlots: 1
+  currentEquippedSlots: 0
+  effectSlots: []
   spawnDetails:
   - spawnpoint: 0
     needsParent: 1
+  - spawnpoint: 1
+    needsParent: 1
   level: 1
-  swingNumber: 1
+  maxLevel: 5
+  weapPrefabDown: {fileID: 5362975920839018744, guid: 228603323aff8a941a8df76bd262d0e7, type: 3}
+  curSwingNum: 0
+  maxSwingNum: 0
+  swangUp: 0
+  swangDown: 0
   swordObjs: []
   swordlogics: []
---- !u!114 &-8741041357502373059
+--- !u!114 &4251025071991675874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4473975344231072728}
+  m_GameObject: {fileID: 2262015541885662519}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b974b903e97f7e840a2daef718927cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  giveKnockback: 1
+  giveKnockback: 0
   eleType: 0

@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Den.Tools;
 using UnityEngine;
+using TMPro;
 
 public class UpgradeController : MonoBehaviour
 {
     public MainMenuController mainController;
     public GameObject upgradeParentObj, upgradeSquarePrefab;
+    public TextMeshProUGUI goldText;
     private MainMenuController.BaseUpgrade tempUpgrade = new MainMenuController.BaseUpgrade();
     [SerializeField]
     public List<MainMenuController.BaseUpgrade> upgradeList;
     public List<GameObject> upgradePrefabs = new();
+
     
     [SerializeField]
     public List<UpgradeValues> upVals;
@@ -18,6 +21,8 @@ public class UpgradeController : MonoBehaviour
 
     public void Awake()
     {
+        mainController = MainMenuController.Instance;
+        mainController.upController = this;
         upgradeList ??= new List<MainMenuController.BaseUpgrade>();
         #region the code below equals this ^
         /*if(upgradeList == null)
@@ -27,6 +32,15 @@ public class UpgradeController : MonoBehaviour
         #endregion
     }
 
+    public void OnEnable()
+    {
+        MainMenuController.Instance.LoadUpgrades();
+        LoadUpgradeList();
+        UpdatedGoldUI();
+    }
+
+    //init updrade list (depracated)
+    /*
     public void InitUpgradeList()
     {
         //load values to tempUpgrade
@@ -76,7 +90,7 @@ public class UpgradeController : MonoBehaviour
 
         //PlayerPrefs.SetInt(tempUpgrade.upgradeName,tempUpgrade.upgradeLevel);
         upgradeList.Add(tempUpgrade);
-    }
+    }*/
 
     public void LoadUpgradeList()
     {
@@ -117,7 +131,7 @@ public class UpgradeController : MonoBehaviour
         //if not max level then you can see if you can buy
         if(!tempUpgrade.IsMaxLevel())
         {
-            if(mainController.PlayerGold < upgradeCostValues[tempUpgrade.UpgradeLevel])
+            if(mainController._playerGold < upgradeCostValues[tempUpgrade.UpgradeLevel])
             {
                 //cant buy
                 Debug.Log("Cant buy");
@@ -125,7 +139,8 @@ public class UpgradeController : MonoBehaviour
             else
             {
                 //subtract money
-                mainController.PlayerGold -= upgradeCostValues[tempUpgrade.UpgradeLevel];
+                mainController._playerGold -= upgradeCostValues[tempUpgrade.UpgradeLevel];
+                UpdatedGoldUI();
                 
                 //up the level
                 tempUpgrade.UpgradeLevel++;
@@ -168,7 +183,10 @@ public class UpgradeController : MonoBehaviour
         mainController.SaveUpgradeValues();
     }
 
-    
+    public void UpdatedGoldUI()
+    {
+        goldText.text = mainController._playerGold.ToString();
+    }
 }
 
 [System.Serializable]

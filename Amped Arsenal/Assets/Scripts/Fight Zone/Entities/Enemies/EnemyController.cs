@@ -72,6 +72,7 @@ public class EnemyController : Actor
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseMaxBy(.1f);
+        _stats["spd"].Fill();
     }
 
     public void IncreaseStats(float _hpScaleAmount, float _str, float _def, float timer, int _zoneNum)
@@ -89,6 +90,7 @@ public class EnemyController : Actor
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseMaxBy(.1f);
+        _stats["spd"].Fill();
     }
 
     public void Update()

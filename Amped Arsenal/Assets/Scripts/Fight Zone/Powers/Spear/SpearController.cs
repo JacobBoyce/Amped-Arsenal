@@ -16,7 +16,7 @@ public class SpearController : WeaponBase
     }
     public void Update()
     {
-        if(curCooldown == tickMaxCD)
+        if(curCooldown >= tickMaxCD)
         {
             ActivateAbility();
         }        

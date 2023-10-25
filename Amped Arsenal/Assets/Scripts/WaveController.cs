@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Den.Tools;
 
 public class WaveController : MonoBehaviour
 {
     public EnemySpawnController spawnController;
+    public GameObject waveUIObj;
     public TextMeshProUGUI countdownText, waveText;
     public Image countdownBarUI;
     public int curWave = 0, maxWave;
     public float startWaitTime;
     public bool wavesActive = false, exfilPhase = false;
+    public ExfilLampLogic exfilLampObject;
+    public GameObject enemyParentObj;
 
     public List<GameObject> enemyPrefabs = new List<GameObject>();
 
@@ -33,12 +37,11 @@ public class WaveController : MonoBehaviour
     public int maxWaveTimer;
     public float mainCountdown;
     public float spawnRate, spawnRateMax, seconds;
-    public int min;
-    
-
-   
+    public int min;   
     public bool toggleSpawning = false;
 
+    public float delayStartMax, delayStart, delayExfilMax, delayExfil;
+    public bool startDelay, startExfilDelay;
 
 
     // Start is called before the first frame update
@@ -46,6 +49,9 @@ public class WaveController : MonoBehaviour
     {
         waveText.text = "Wave " + curWave + "/" + maxWave;
         mainCountdown = maxWaveTimer;
+
+        delayStart = delayStartMax;
+        delayExfil = delayExfilMax;
     }
 
     // Update is called once per frame
@@ -86,15 +92,21 @@ public class WaveController : MonoBehaviour
                 wavesActive = false;
                 waveText.gameObject.SetActive(false);
                 countdownText.gameObject.SetActive(true);
-
-
-                if(PlayerPrefs.GetInt("StageDifficulty") == zoneMultiplier)
+                mainCountdown = 0;
+                exfilLampObject.exfilTime = true;
+                
+                
+                //PlayerPrefs.GetInt("StageDifficulty") == zoneMultiplier
+                
+                if(MainMenuController.Instance.stageDifficulty == zoneMultiplier)
                 {
-                    PlayerPrefs.SetInt("StageDifficulty", PlayerPrefs.GetInt("StageDifficulty") + 1);
+                    MainMenuController.Instance.stageDifficulty++;
+                    MainMenuController.Instance.SaveProgress();
                 }
                 
                //start exfill phase
-               exfilPhase = true;
+               startExfilDelay = true;
+               toggleSpawning = false;
             }
 
                 //check if wave is a multiple of 5 -> (start peace wave)
@@ -102,17 +114,17 @@ public class WaveController : MonoBehaviour
         }
         #endregion
 
+        #region Exfil timer
         if(exfilPhase)
         {
-            #region exfil timer
-                mainCountdown += Time.deltaTime;
-                seconds = Mathf.FloorToInt(mainCountdown);
-                //string niceTime = string.Format("{0}", seconds);
-                string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
-                countdownText.text = niceTime;
-            #endregion
+            mainCountdown += Time.deltaTime;
+            seconds = Mathf.FloorToInt(mainCountdown);
+            //string niceTime = string.Format("{0}", seconds);
+            string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
+            countdownText.text = niceTime;
         }
-    
+        #endregion
+
         #region Spawner
 
         if(toggleSpawning)
@@ -129,13 +141,66 @@ public class WaveController : MonoBehaviour
             }
         }
         #endregion
+
+        #region Delay Start
+        if(startDelay)
+        {
+            if(delayStart > 0)
+            {
+                delayStart -= Time.deltaTime;
+                seconds = Mathf.FloorToInt(delayStart);
+                string niceTime = "Waves start in: " + string.Format("{0}", seconds);
+                //string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
+                countdownText.text = niceTime;
+            }
+            else
+            {
+                startDelay = false;
+
+                waveText.gameObject.SetActive(true);
+                countdownText.gameObject.SetActive(false);
+                curWave = 1;
+                spawnRateMax = 2;
+                spawnRate = spawnRateMax;
+                waveText.text = "Wave " + curWave + "/" + maxWave;
+                mainCountdown = maxWaveTimer;
+                seconds = 0;
+                min = 0;
+                waveUIObj.SetActive(true);
+                StartNextWave();
+                wavesActive = true;
+            }
+        }
+        #endregion
+   
+        #region Delay Exfil
+        if(startExfilDelay)
+        {
+            if(delayExfil > 0)
+            {
+                delayExfil -= Time.deltaTime;
+                seconds = Mathf.FloorToInt(delayExfil);
+                string niceTime = "Return to the camp to escape!\n" + string.Format("{0}", seconds);
+                //string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
+                countdownText.text = niceTime;
+            }
+            else
+            {
+                startExfilDelay = false;
+                seconds = 0;
+                exfilPhase = true;
+                toggleSpawning = true;
+                spawnRateMax = .05f;
+            }
+        }
+        #endregion
     }
 
     public void StartNextWave()
     {
         //update wave UI
         waveText.text = "Wave " + curWave + "/" + maxWave;
-
+        spawnRateMax -= .1f;
         DecideWave();
         //spawn enemies
         toggleSpawning = true;
@@ -201,16 +266,26 @@ public class WaveController : MonoBehaviour
 
         //spawnRateMax = (maxWaveTimer - (maxWaveTimer * .25f)) / toSpawnList.Count; 
     }
-
-
-
-    public IEnumerator StartWaveSystem()
+    public void StartWaveSystem()
     {
-        yield return new WaitForSeconds(startWaitTime);
-        StartNextWave();
-        wavesActive = true;
+        startDelay = true;
+        waveText.gameObject.SetActive(false);
+        countdownText.gameObject.SetActive(true);
+        
     }
 
+    public void DeactivateWaveSystem()
+    {
+        waveUIObj.SetActive(false);
+        wavesActive = false;
+        toggleSpawning = false;
+        exfilPhase = false;
+
+        foreach(Transform child in enemyParentObj.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
     public void SpawnEnemy()
     {
 
@@ -219,17 +294,19 @@ public class WaveController : MonoBehaviour
         if(curWave <= 10)
         {
             tempPrefab = Instantiate(beginningSpawnList[curWave-1],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+            tempPrefab.transform.parent = enemyParentObj.transform;
         }
         else if(curWave >= 11)
         {
             int randEnemy = Random.Range(0, midAndLateGameSpwnList.Count);
             tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+            tempPrefab.transform.parent = enemyParentObj.transform;
         }
         else if(exfilPhase)
         {
             int randEnemy = Random.Range(0, enemyPrefabs.Count);
             tempPrefab = Instantiate(enemyPrefabs[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
-
+            tempPrefab.transform.parent = enemyParentObj.transform;
         }
 
         //upgrade enemy stats here
@@ -242,8 +319,6 @@ public class WaveController : MonoBehaviour
         }
 
     }
-
-
     public void UpdateSpawnPoints()
     {
         foreach(EnemySpawnPoint es in esPoint)
@@ -253,14 +328,4 @@ public class WaveController : MonoBehaviour
             es.sPoint.transform.localPosition = new Vector3(x, 0, 0);
         }
     }
-    /*
-    
-    -) 20 waves
-    -) 30 second waves
-    -) spawn a specific enemy or defined group (SO?) at a specific spawn rate
-    -) rate increases each wave or depending on enemy type
-    -) every N waves spawn a mega creep
-    -) 
-
-    */
 }

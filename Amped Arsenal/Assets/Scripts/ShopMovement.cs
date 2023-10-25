@@ -5,6 +5,7 @@ using TMPro;
 
 public class ShopMovement : MonoBehaviour
 {
+    public GameObject startpos;
     [Header("Relevant Objects")]
     public Animator animCont;
     public Rigidbody thisRB;
@@ -29,6 +30,11 @@ public class ShopMovement : MonoBehaviour
     public void Start()
     {
         StartCoroutine("WaitLogic");
+    }
+
+    public void OnEnable()
+    {
+        transform.position = startpos.transform.position;
     }
 
     IEnumerator WaitLogic()

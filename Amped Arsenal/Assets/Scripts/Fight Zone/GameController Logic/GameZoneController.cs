@@ -11,6 +11,7 @@ using UnityEngine.SceneManagement;
 public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
+    public Image fadeImage;
     public GameObject joystickController, upgradeButton;
     public PlayerController p1;
     public float exfilPercentAmount;
@@ -93,6 +94,11 @@ public class GameZoneController : MonoBehaviour
             Instance = this; 
         } 
         p1.inflationAmount = PlayerPrefs.GetInt("Inflation");
+        fadeImage.color = Color.black;
+        MainMenuController.Instance._currentFadeImage = fadeImage;
+        //MainMenuController.Instance._fadeOutStartColor.a = 0f;
+        MainMenuController.Instance.StartFadeIn();
+        
     }
 
 

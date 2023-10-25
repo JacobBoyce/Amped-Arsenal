@@ -21,7 +21,7 @@ public class AxeController : WeaponBase
     }
     public void Update()
     {
-        if(curCooldown == tickMaxCD)
+        if(curCooldown >= tickMaxCD)
         {
             ActivateAbility();
         }
@@ -72,6 +72,7 @@ public class AxeController : WeaponBase
         for(int i = 0; i < spawnDetails.Count; i++)
         {    
             axeParent = Instantiate(weapPrefab);
+            axeParent.transform.SetParent(this.gameObject.transform);
             if(spawnDetails[i].needsParent)
             {
                 axeParent.gameObject.transform.SetParent(playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform);

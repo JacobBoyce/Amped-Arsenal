@@ -17,7 +17,7 @@ public class LampLoadLevel : MonoBehaviour
     private PlayerController p1;
 
     public float cd, cdMax;
-    public bool inRange = false;
+    public bool inRange = false, usable = true;
     private bool triggeredLoad = false;
 
     private float maxLightIntensity;
@@ -31,14 +31,14 @@ public class LampLoadLevel : MonoBehaviour
         maxLightIntensity = aoeLight.intensity;
         aoeLight.intensity = 0;
         aoeLight.gameObject.SetActive(false);
-        lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 1));
+        lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
 
         //coroutine = waveController.StartWaveSystem(5f);
     }
 
     public void Update()
     {
-        if(inRange == true)
+        if(inRange == true && usable == true)
         {
             if(cd > 0)
             {
@@ -46,20 +46,54 @@ public class LampLoadLevel : MonoBehaviour
                 formatTime = cd.ToString("0");
                 countdownText.text = formatTime;
                 aoeLight.intensity = (1 - (cd / cdMax)) * maxLightIntensity;
-                lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (cd / cdMax)) * Mathf.Pow(2, 3)));
+                lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (cd / cdMax)) * Mathf.Pow(2, 5)));
             }
             else
             {
                 if(triggeredLoad == false)
                 {
+                    inRange = false;
+                    usable = false;
                     countdownText.text = "";
-                    p1.MovePlayerToField(moveToPos);
+                    lobController.levelDifficulty = levelNum;
 
-                    waveController.StartCoroutine("StartWaveSystem");
-                    lobController.DeactivateLamps();
-                    triggeredLoad = true;
+                    //move player
+                    StartCoroutine(MovePlayer());
+                    //p1.MovePlayerToField(moveToPos, true);
                 }
             }
+        }
+    }
+
+    public IEnumerator MovePlayer()
+    {
+        MainMenuController.Instance.StartFadeOut();
+        //Time.timeScale = 0;
+        while(MainMenuController.Instance.IsFadingOut)
+        {
+            yield return null;
+        }
+
+        //Time.timeScale = 1;
+        p1.MovePlayerToField(moveToPos, true);
+        
+        //end loop
+        triggeredLoad = true;
+        StartCoroutine(AfterMovePlayer());
+
+        waveController.waveUIObj.SetActive(true);
+        waveController.StartWaveSystem();
+    }
+
+    public IEnumerator AfterMovePlayer()
+    {
+        MainMenuController.Instance.StartFadeIn();
+        lobController.ToggleLamps(false);
+
+        //Time.timeScale = 0;
+        while(MainMenuController.Instance.IsFadingIn)
+        {
+            yield return null;
         }
     }
 
@@ -67,12 +101,18 @@ public class LampLoadLevel : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            if(levelNum <= lobController.levelDifficulty)
+            if(usable)
             {
-                inRange = true;
-                p1 = other.gameObject.GetComponent<PlayerController>();
-                aoeLight.gameObject.SetActive(true);
-                lobController.waveController.zoneMultiplier = levelNum;
+                if(levelNum <= MainMenuController.Instance.stageDifficulty)
+                {
+                    inRange = true;
+                    p1 = other.gameObject.GetComponent<PlayerController>();
+                    aoeLight.gameObject.SetActive(true);
+                }
+                else
+                {
+                    countdownText.text = "X";
+                }
             }
             else
             {
@@ -85,12 +125,20 @@ public class LampLoadLevel : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            inRange = false;
-            aoeLight.gameObject.SetActive(false);
-            lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 1));
-            cd = cdMax;
-            countdownText.text = levelName;
-            aoeLight.intensity = 0;
+            if(usable)
+            {
+                inRange = false;
+                aoeLight.gameObject.SetActive(false);
+                lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
+                cd = cdMax;
+                countdownText.text = levelName;
+                aoeLight.intensity = 0;
+            }
+            else
+            {
+                countdownText.text = "";
+            }
         }
+        
     }
 }

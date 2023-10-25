@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class SwordSwingController : WeaponBase
 {
+    [Space(10)]
+    public GameObject weapPrefabDown;
     //one prefab all references set, when spawned move to proper position deacitvate and activate on cooldown stuff
-    public int swingNumber;
+    public int curSwingNum, maxSwingNum;
+    public bool swangUp, swangDown;
 
     public List<GameObject> swordObjs = new List<GameObject>();
     public List<SwordSwingLogic> swordlogics = new List<SwordSwingLogic>();
@@ -20,7 +23,7 @@ public class SwordSwingController : WeaponBase
     }
     public void Update()
     {
-        if(curCooldown == tickMaxCD)
+        if(curCooldown >= tickMaxCD)
         {
             ActivateAbility();
         }
@@ -37,36 +40,37 @@ public class SwordSwingController : WeaponBase
     public override void ActivateAbility()
     {
         curCooldown = 0;
-        for(int i = 0; i < spawnDetails.Count; i++)
-        {
-            swordObjs[i].SetActive(true);
-            swordlogics[i].TurnOn();
-            
-
-            //playerObj.SpawnWeapon(weapPrefab, spawnDetails[i].spawnpoint, spawnDetails[i].needsParent);
-            //
-
-        }
+        curSwingNum = maxSwingNum;
+        swordObjs[0].SetActive(true);
+        swordlogics[0].TurnOn();
     }
 
     public override void SetSpawnDetails()
     {
-        for(int i = 0; i < spawnDetails.Count; i++)
-        {
-            GameObject tempWeapSpawn = Instantiate(weapPrefab);
+        GameObject tempWeapSpawnUp = Instantiate(weapPrefab);
 
-            //set parent if it says to
-            if(spawnDetails[i].needsParent)
-            {
-                //set to spawn point
-                tempWeapSpawn.gameObject.transform.SetParent(playerObj.spawnPoints[spawnDetails[i].spawnpoint].transform);
-            }
+        GameObject tempWeapSpawnDown = Instantiate(weapPrefabDown);
 
-            tempWeapSpawn.GetComponent<SwordSwingLogic>().InitSword(this, weapMod, swingNumber);
+        //Swing Up Object
+        tempWeapSpawnUp.gameObject.transform.SetParent(playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform);
+        tempWeapSpawnUp.gameObject.transform.localPosition = Vector3.zero;
 
-            swordObjs.Add(tempWeapSpawn);
-            swordlogics.Add(tempWeapSpawn.GetComponent<SwordSwingLogic>());
-        }
+        tempWeapSpawnUp.GetComponent<SwordSwingLogic>().InitSword(this, weapMod, tempWeapSpawnUp, tempWeapSpawnDown);
+
+        swordObjs.Add(tempWeapSpawnUp);
+        swordlogics.Add(tempWeapSpawnUp.GetComponent<SwordSwingLogic>());
+        tempWeapSpawnUp.SetActive(false);
+
+        //Swing Down object
+        tempWeapSpawnDown.gameObject.transform.SetParent(playerObj.spawnPoints[spawnDetails[1].spawnpoint].transform);
+        tempWeapSpawnDown.gameObject.transform.localPosition = Vector3.zero;
+        
+        tempWeapSpawnDown.GetComponent<SwordSwingLogic>().InitSword(this, weapMod, tempWeapSpawnDown, tempWeapSpawnUp);
+        
+        swordObjs.Add(tempWeapSpawnDown);
+        swordlogics.Add(tempWeapSpawnDown.GetComponent<SwordSwingLogic>());
+        tempWeapSpawnDown.SetActive(false);
+        
         UpdateValues();
     }
 
@@ -78,7 +82,7 @@ public class SwordSwingController : WeaponBase
 
     public void UpdateValues()
     {
-        swingNumber = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.AMOUNT).upValues[level - 1];
+        maxSwingNum = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.AMOUNT).upValues[level - 1];
         tickMaxCD = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.COOLDOWN).upValues[level - 1];
         damage = (int)weapUpgrades.UpgradeList.Find(x => x.weapUpType == WeapUpgrade.WeaponUpgrade.DAMAGE).upValues[level - 1];
     }

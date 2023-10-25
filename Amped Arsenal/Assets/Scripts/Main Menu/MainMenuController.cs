@@ -7,58 +7,107 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Den.Tools;
 
 public class MainMenuController : MonoBehaviour
 {
+    public static MainMenuController Instance{get; private set;}
     public Data data;
     public UpgradeController upController;
     public int _playerGold = 0;
     public int stageDifficulty = 1;
-    public TextMeshProUGUI goldText;
 
-    public int PlayerGold
+    [Header("Fade Stuff"), Space(10)]
+    [Range(0.1f, 10f), SerializeField] private float _fadeOutSpeed = 5f;
+    [Range(0.1f, 10f), SerializeField] private float _fadeInSpeed = 5f;
+    [SerializeField] public Color _fadeOutStartColor;
+    [SerializeField] public Image _currentFadeImage;
+
+    public bool IsFadingOut {get; private set;}
+    public bool IsFadingIn {get; private set;}
+
+    public void Awake()
     {
-        get{return _playerGold;}
-        set
-        {
-            _playerGold = value;          
-            UpdateGoldGUI();
-        }
+        DontDestroyOnLoad(this.gameObject);
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this.gameObject); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        } 
+        
+        data = new Data("MainSave");
     }
-
-    public int returnedFromPlaying = 0;
     
-    // Start is called before the first frame update
     void Start()
     {
-        stageDifficulty = 1;
- 
-        data = new Data("MainSave");
+        _fadeOutStartColor.a = 0f;
 
         //load save and add to player prefs gold value
         LoadData();
-        upController.LoadUpgradeList();
         UpdatePlayerPrefs();
-        
+    }
 
-        //if just played bool is true then grab gold from player pref to save to playerGold
-        if(PlayerPrefs.HasKey("Returned"))
+    public void Update()
+    {
+        if(IsFadingOut)
         {
-            returnedFromPlaying = PlayerPrefs.GetInt("Returned");
-            PlayerPrefs.SetInt("Returned", 0);
-        } 
-        else
-        {
-            Debug.Log("returned doesnt exist, creating var now");
-            PlayerPrefs.SetInt("Returned", 0);
+            if(_currentFadeImage.color.a < 1f)
+            {
+                _fadeOutStartColor.a += Time.unscaledDeltaTime * _fadeOutSpeed;
+                _currentFadeImage.color = _fadeOutStartColor;
+            }
+            else
+            {
+                IsFadingOut = false;
+
+            }
         }
 
-        //create gold saving between scenes
-        if(returnedFromPlaying == 1)
+        if(IsFadingIn)
         {
-            PlayerGold += PlayerPrefs.GetInt("Gold");
-            SaveUpgradeValues();
-            returnedFromPlaying = 0;
+            if(_currentFadeImage.color.a > 0f)
+            {
+                _fadeOutStartColor.a -= Time.unscaledDeltaTime * _fadeInSpeed;
+                _currentFadeImage.color = _fadeOutStartColor;
+            }
+            else
+            {
+                IsFadingIn = false;
+            }
+        }
+    }
+
+    public void StartFadeOut()
+    {
+        _currentFadeImage.color = _fadeOutStartColor;
+        IsFadingOut = true;
+    }
+
+    public void StartFadeIn()
+    {
+        if(_currentFadeImage.color.a >= 1f)
+        {
+            _currentFadeImage.color = _fadeOutStartColor;
+            IsFadingIn = true;
+        }
+    }
+    public void LoadUpgrades()
+    {
+        if(data.HasData("UpgradeList"))
+        {
+            upController.upgradeList = data.GetData<List<BaseUpgrade>>("UpgradeList");
+        }
+
+        for(int i = 0; i < upController.upgradeList.Count; i++)
+        {
+            for(int j = 0; j < upController.upVals[i].upValues.Length; j++)
+            {
+                upController.upgradeList[i].upValues[j] = upController.upVals[i].upValues[j];
+            }
+            
         }
     }
 
@@ -72,29 +121,18 @@ public class MainMenuController : MonoBehaviour
             //has save data
             
             upController.upgradeList = data.GetData<List<BaseUpgrade>>("UpgradeList");
-            PlayerGold = data.GetData<int>("PlayerGold");
+            _playerGold = data.GetData<int>("PlayerGold");
             stageDifficulty = data.GetData<int>("StageDifficulty");
         }
         else
         {
             Debug.Log("no save data found");
-            data.SetData("StageDifficulty", stageDifficulty);
-            data.SetData("PlayerGold", PlayerGold);
-            PlayerGold = 0;
+            data.SetData("StageDifficulty", 1);
+            data.SetData("PlayerGold", _playerGold);
+            _playerGold = 0;
         }
 
-        //load upvalues to the upgrade list
-        /*for(int i = 0; i < upController.upgradeList.Count; i++)
-        {
-            //upController.upgradeList[i].upValues = new int[5];
-            for(int k = 0; k < upController.upgradeList[i].upValues.Length; k++)
-            {
-                upController.upgradeList[i].upValues[k] = upController.upVals[j].upValues[k];
-            }
-            //System.Array.Copy(upController.upVals[j].upValues, bu.upValues, 5);
-            j++;
-        }*/
-
+        //sets the unseen values of each upgrade
         for(int i = 0; i < upController.upgradeList.Count; i++)
         {
             for(int j = 0; j < upController.upVals[i].upValues.Length; j++)
@@ -120,25 +158,36 @@ public class MainMenuController : MonoBehaviour
                 PlayerPrefs.SetInt(bu.upgradeName, bu.upValues[bu.UpgradeLevel]);
             }
         }
-        PlayerPrefs.SetInt("StageDifficulty", stageDifficulty);
     }
 
     public void SaveUpgradeValues()
     {
         data.SetData("UpgradeList", upController.upgradeList);
-        data.SetData("PlayerGold", PlayerGold);
+        data.SetData("PlayerGold", _playerGold);
+        data.SetData("StageDifficulty", stageDifficulty);
+        data.SaveProfile();
+    }
+
+    public void SaveProgress()
+    {
         data.SetData("StageDifficulty", stageDifficulty);
         data.SaveProfile();
     }
 
     public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        StartCoroutine("LoadSceneCoroutine", sceneName);
     }
 
-    public void UpdateGoldGUI()
+    public IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        goldText.text = PlayerGold.ToString();
+        StartFadeOut();
+        while(IsFadingOut)
+        {
+            yield return null;
+        }
+
+        SceneManager.LoadSceneAsync(sceneName);
     }
 
     public void ExitGame()
@@ -154,6 +203,8 @@ public class MainMenuController : MonoBehaviour
     {
         data.DeleteProfile();
     }
+
+
 
     [System.Serializable]
     public class BaseUpgrade

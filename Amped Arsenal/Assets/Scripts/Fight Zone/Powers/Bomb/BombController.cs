@@ -18,7 +18,7 @@ public class BombController : WeaponBase
     }
     public void Update()
     {
-        if(curCooldown == tickMaxCD)
+        if(curCooldown >= tickMaxCD)
         {
             ActivateAbility();
         }        

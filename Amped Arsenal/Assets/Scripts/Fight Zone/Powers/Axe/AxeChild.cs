@@ -33,6 +33,7 @@ public class AxeChild : MonoBehaviour
         moveOut = false;
         UpdateValues(speed, distFP);
         curAxe = Instantiate(axePrefab, transform.position, transform.rotation);
+        curAxe.transform.SetParent(cont.axeParent.transform);
         curAxe.GetComponent<AxeLogic>().UpdateInfo(cont, mod);
         visuals = curAxe.GetComponent<AxeLogic>().visuals;
         curAxe.GetComponent<FollowObject>().SetValues(gameObject, 100f);

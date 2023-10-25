@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using System.Linq;
 
 public class PlayerController : Actor
 {
@@ -67,6 +68,7 @@ public class PlayerController : Actor
 
     public void Awake()
     {
+
         playerObj = this;
         _stats = new Stats();
         _stats.AddStat("hp",       100);    // Max Health
@@ -97,6 +99,11 @@ public class PlayerController : Actor
     public void Start()
     {
         UpdateBar(_stats["hp"]);
+
+        if(PlayerPrefs.GetInt("FinishedLampLevel") >= 1)
+        {
+            goldText.text = PlayerPrefs.GetInt("CurrentGold").ToString();
+        }
     }
 
     public void Update()
@@ -108,7 +115,7 @@ public class PlayerController : Actor
             //HealPlayer(1);
             foreach(GameObject weap in equippedWeapons)
             {
-                if(weap.GetComponent<WeaponBase>().wName.Equals("Axe"))
+                if(weap.GetComponent<WeaponBase>().wName.Equals("Sword"))
                 {
                     //weap.GetComponent<WeaponBase>().AddEffectToWeapon(FindRelic("Poison").);
                 }
@@ -118,8 +125,8 @@ public class PlayerController : Actor
         
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            //AddWeaponToCache("SwordSwing");
-            AddWeaponToCache("Bomb");
+            AddWeaponToCache("Sword");
+            //AddWeaponToCache("Bomb");
         }
 
         if(Input.GetKeyDown(KeyCode.G))
@@ -272,9 +279,27 @@ public class PlayerController : Actor
         //relic.ApplyRelic(this, weapname);
     }
 
-    public void MovePlayerToField(GameObject moveToPos)
+    public void MovePlayerToField(GameObject moveToPos, bool toggleWeaponsAndRelics)
     {
         transform.position = moveToPos.transform.position;
+
+        ToggleEquipables(toggleWeaponsAndRelics);
+    }
+
+    public void ToggleEquipables(bool toggle)
+    {
+        if(toggle)
+        {
+            //activate
+            equippedWeapsObj.SetActive(true);
+            equippedRelicsObj.SetActive(true);
+        }
+        else
+        {
+            //deactivate
+            equippedWeapsObj.SetActive(false);
+            equippedRelicsObj.SetActive(false);
+        }
     }
 
     #region action button
