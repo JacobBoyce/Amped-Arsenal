@@ -48,8 +48,7 @@ public class MainMenuLamp : MonoBehaviour
                     Debug.Log("returning with " + temp + " gold");
                     MainMenuController.Instance._playerGold += temp;
                     triggeredLoad = true;
-                    SceneManager.LoadSceneAsync("MainMenu");
-                    
+                    GameSceneManager.instance.LoadMainMenu();
                 }
             }
         }

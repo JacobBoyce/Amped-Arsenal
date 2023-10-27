@@ -10,9 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2449548140866376569}
   - component: {fileID: 2521431648599352322}
+  - component: {fileID: 7440165410516779857}
+  - component: {fileID: 9088764147579888418}
+  - component: {fileID: 158097165341394213}
+  - component: {fileID: 3093220813460673065}
   m_Layer: 0
   m_Name: Sword_Thumb
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,6 +88,62 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &7440165410516779857
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2848864018040479338}
+  m_Material: {fileID: 13400000, guid: 1e0335ea713e9464a99977e523951254, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.62, y: 6.13, z: 9.02}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9088764147579888418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2848864018040479338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78e1fc7b4c688b4e882a8297ecc1cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapMod: {fileID: 158097165341394213}
+--- !u!114 &158097165341394213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2848864018040479338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b974b903e97f7e840a2daef718927cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giveKnockback: 1
+  eleType: 0
+--- !u!54 &3093220813460673065
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2848864018040479338}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6088051726921846743
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +155,7 @@ GameObject:
   - component: {fileID: 2769981815901835352}
   m_Layer: 0
   m_Name: Visuals
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,11 +185,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1892122148352437291}
-  - component: {fileID: 7131573885748188740}
-  - component: {fileID: 2551297263560513274}
+  - component: {fileID: 2295352395699181456}
+  - component: {fileID: 6608775735336702991}
   m_Layer: 0
   m_Name: SwordObjectUp
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6653096976603966008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8884506, y: -13.225958, z: 17.87381}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -150,7 +210,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7131573885748188740
+--- !u!114 &2295352395699181456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6653096976603966008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca729b1187ac2045b1effeac70edafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  otherSword: {fileID: 0}
+  swingAnimator: {fileID: 6608775735336702991}
+  swingNum: 0
+  controller: {fileID: 0}
+  weapMod: {fileID: 158097165341394213}
+--- !u!95 &6608775735336702991
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -170,20 +247,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2551297263560513274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6653096976603966008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ca729b1187ac2045b1effeac70edafb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  otherSword: {fileID: 0}
-  swingAnimator: {fileID: 7131573885748188740}
-  swingNum: 0
-  controller: {fileID: 0}
-  weapMod: {fileID: 0}

@@ -18,6 +18,7 @@ public class SwordSwingLogic : MonoBehaviour
     {
         controller = cont;
         weapMod = mod;
+        GetComponentInChildren<SwordCollisionTrigger>().weapMod = mod;
         otherSword = other;
     }
 
@@ -50,16 +51,8 @@ public class SwordSwingLogic : MonoBehaviour
         swingAnimator.SetTrigger("Swing");
     }
 
-    public void OnTriggerEnter(Collider collision)
+    public void CollisionWithEnemy(EnemyController ec)
     {
-        EnemyController ec = collision.GetComponent<EnemyController>();
-
-        if(ec != null)
-        {
-            controller.SendDamage(ec);
-            
-            //to remove any knock back
-            //ec.SendMessage("DetectIfKnockback");
-        }
+        controller.SendDamage(ec);
     }
 }

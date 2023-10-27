@@ -10,6 +10,7 @@ public class LobbyController : MonoBehaviour
     public int levelDifficulty;
     public List<LampLoadLevel> lamps;
     public GameObject globalLobbyLight, mainMenuLightLamp;
+    public List<GameObject> uiToInitAfterLoadingScreen;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,23 @@ public class LobbyController : MonoBehaviour
         //if player pref is true then show main menu lamp
 
         mainMenuLightLamp.SetActive(false);
+
+        foreach(GameObject go in uiToInitAfterLoadingScreen)
+        {
+            go.SetActive(false);
+        }
+    }
+
+    public void Update()
+    {
+        if(GameSceneManager.instance.triggerEndLoadingScreen)
+        {
+            GameSceneManager.instance.triggerEndLoadingScreen = false;
+            foreach(GameObject go in uiToInitAfterLoadingScreen)
+            {
+                go.SetActive(true);
+            }
+        }
     }
 
     public void ToggleLamps(bool toggle)
