@@ -25,6 +25,7 @@ public class WaveController : MonoBehaviour
     [Header("Spawn Stuff")]
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
     private GameObject tempPrefab;
+    public bool spawnLargeTrigger = false;
 
     [Header("Stat Scaling")]
     public float hp;
@@ -204,6 +205,7 @@ public class WaveController : MonoBehaviour
         DecideWave();
         //spawn enemies
         toggleSpawning = true;
+        spawnLargeTrigger = false;
     }
 
     private void DecideWave()
@@ -288,7 +290,6 @@ public class WaveController : MonoBehaviour
     }
     public void SpawnEnemy()
     {
-
         int spnpoint = Random.Range(0, esPoint.Count);
     
         if(curWave <= 10)
@@ -309,15 +310,28 @@ public class WaveController : MonoBehaviour
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
 
-        //upgrade enemy stats here
-        tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
-
-        if(exfilPhase)
+        if(curWave > 8 && (curWave % 3) == 0)
         {
-            //increase stats by exfil amount
-            tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+            if(spawnLargeTrigger == false)
+            {
+                Debug.Log("Spawn Large enemy!");
+                spawnLargeTrigger = true;
+                tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+            }
         }
-
+        else
+        {
+            if(exfilPhase)
+            {
+                //increase stats by exfil amount
+                tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,mainCountdown,zoneMultiplier);
+            }
+            else
+            {
+                //upgrade enemy stats here
+                tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+            }
+        }
     }
     public void UpdateSpawnPoints()
     {

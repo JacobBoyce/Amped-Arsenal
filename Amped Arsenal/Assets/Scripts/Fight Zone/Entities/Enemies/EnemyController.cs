@@ -93,6 +93,25 @@ public class EnemyController : Actor
         _stats["spd"].Fill();
     }
 
+    public void CreateLargeEnemy(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
+    {
+        float nHp;//, nStr, nDef;
+
+        nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
+        nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
+        //nStr = _str * _zoneNum;
+        //nDef = _def * _zoneNum;
+        
+        _stats["hp"].Max = nHp;
+        _stats["hp"].Fill();
+        //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
+        //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+        _stats["spd"].IncreaseMaxBy(.1f);
+        _stats["spd"].Fill();
+
+        transform.localScale = new Vector3(2f,2f,2f);
+    }
+
     public void Update()
     {
         if(tookDamage)

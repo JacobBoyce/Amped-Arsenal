@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Numerics;
 
 public class WeaponFocusUI : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class WeaponFocusUI : MonoBehaviour
 
         //show stats of weapon
         //levelContainer.SetActive(true);
-        lvlUpFrom.text = focusedWeap.level.ToString();
+        //lvlUpFrom.text = focusedWeap.level.ToString();
 
         if(focusedWeap.IsMaxLvl())
         {
@@ -54,6 +55,7 @@ public class WeaponFocusUI : MonoBehaviour
         {
             GameObject tempSlotPrefab = Instantiate(statsUpSlotPrefab);
             tempSlotPrefab.transform.SetParent(upgradeSlotParent.transform);
+            tempSlotPrefab.GetComponent<RectTransform>().localScale = new UnityEngine.Vector3(1f,1f,1f);
             
             upInfoSlot.Add(tempSlotPrefab);
         }
@@ -123,7 +125,7 @@ public class WeaponFocusUI : MonoBehaviour
 
     public void ClearFocusUI()
     {
-        lvlUpFrom.text = "";
+        //lvlUpFrom.text = "";
         //lvlUpTo.text = "";
         upgradeWeaponImg.enabled = false;
         //levelContainer.SetActive(true);

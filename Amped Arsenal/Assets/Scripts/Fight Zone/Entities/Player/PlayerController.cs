@@ -12,6 +12,7 @@ public class PlayerController : Actor
     public WeaponLib weapLib;
     public RelicLib relLib;
     public EffectLib effectLib;
+    public EquippedHUD eHUD;
     private GameObject instObj, tempObj, tempRelicObj;
 
     public List<GameObject> equippedWeapons = new();
@@ -248,6 +249,7 @@ public class PlayerController : Actor
             tempObj.GetComponent<WeaponBase>().playerObj = this;
             //equip weapon to list
             equippedWeapons.Add(tempObj);
+            eHUD.ApplyImage(tempObj.GetComponent<WeaponBase>().shopItemInfo.splashImg);
         }
         else
         {
