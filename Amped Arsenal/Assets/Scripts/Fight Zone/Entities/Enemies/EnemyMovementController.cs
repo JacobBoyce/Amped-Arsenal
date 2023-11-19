@@ -17,7 +17,7 @@ public class EnemyMovementController : MonoBehaviour
     private GameObject target;
 
     private EnemyController eController;
-    private Rigidbody thisRB;
+    public Rigidbody thisRB;
     public GameObject visuals;
     //public ParticleSystem dustCloud;
     
@@ -164,13 +164,13 @@ public class EnemyMovementController : MonoBehaviour
 
             
             case EnemyStates.STAGGER:
-                if(stagCD < stagCDMax)
+                if(stagCD > 0)
                 {
-                    stagCD += Time.deltaTime;
+                    stagCD -= Time.deltaTime;
                 }
                 else
                 {
-                    stagCD = 0;
+                    stagCD = stagCDMax;
                     thisRB.velocity = Vector3.zero;
                     isStaggered = false;
                     enemyState = EnemyStates.MOVE;

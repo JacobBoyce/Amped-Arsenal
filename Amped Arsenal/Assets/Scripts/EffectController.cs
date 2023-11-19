@@ -6,7 +6,7 @@ public class EffectController : MonoBehaviour
 {
     public List<GameObject> effectObjs = new List<GameObject>();
     public EnemyController enemyCont;
-    public GameObject effectParent;
+    public GameObject effectParent, uiSatusEffectParent, uiStatusEffectPrefab, effectSpwnPointOnEnemy;
 
     public void AddEffect(GameObject effectPrefab, EnemyController en)
     {
@@ -18,7 +18,7 @@ public class EffectController : MonoBehaviour
         tempEffect.GetComponent<EffectBase>().enemy = enemyCont;
         tempEffect.GetComponent<EffectBase>().CallEffect();
         effectObjs.Add(tempEffect);
-
+        //add to ui if it has ui effect
     }
 
     public void RemoveEffect(string eName)
@@ -29,7 +29,7 @@ public class EffectController : MonoBehaviour
             {
                 Destroy(go);
                 effectObjs.Remove(go);
-               
+               //remove ui on enemy for effect
             }
         }
     }

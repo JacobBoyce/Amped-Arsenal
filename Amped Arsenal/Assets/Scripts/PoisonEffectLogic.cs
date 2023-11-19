@@ -76,8 +76,11 @@ public class PoisonEffectLogic : EffectBase
         tickAmtDuration = 0;
         //cd = maxCd;
         activate = true;
-        //change enemy color
-        //enemy.spriteR.color = new Color(0.9104829f, 0.5613208f, 1, 1);
+        
+        //check which SpawnEffectType
+            //Particle
+            //UIeffect
+            //onBodyEffect
         
 
         //start the cooldown to be removed from the actor (bool)

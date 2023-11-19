@@ -561,9 +561,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f4f0bf0672f3a4b8f8d629213404f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooterX: 0
-  shooterZ: 0
+  shootAngle: {x: 0, y: 0, z: 0}
+  offsetVector: {x: 0, y: 0, z: 0}
+  wantRandom: 0
+  addXOffset: 0
   randY: 0
+  offsetX: 0
   randPower: 0
   powerMax: 45
   powerMin: 50
@@ -586,7 +589,7 @@ MonoBehaviour:
   cdMax: 10
   inRange: 0
   done: 0
-  relicToSpawn: {fileID: 1567514489769515535, guid: 83c7bd9b17c49bd4f8118dfafe1df5ab, type: 3}
+  relicToSpawn: {fileID: 1166438386067960082, guid: 326f46bb849bc6f4cbee855226f0f7c5, type: 3}
   spawnRewardPoint: {fileID: 7627170642565750893}
 --- !u!1 &6583690298222057817
 GameObject:
