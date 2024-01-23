@@ -62,7 +62,7 @@ public class AxeController : WeaponBase
         if(!currentlySpinning)
         {
             //Choose which axes are activated and send to the parent to spawn the axes or turn them on
-            axeParent.GetComponent<AxeParent>().UpdateAndActivateAxes(rotSpeed, speedOut, distanceFromPlayer, numAxes);
+            axeParent.GetComponent<AxeParent>().UpdateAndActivateAxes(rotSpeed, speedOut, distanceFromPlayer, numAxes, weapMod);
             currentlySpinning = true;
         }
     }

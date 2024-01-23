@@ -89,6 +89,7 @@ public class Stat
                 IncreaseMaxBy(tempMod.modAmount);
             }
         }
+        Fill();
 
         mods.Add(tempMod);
     }
@@ -111,7 +112,7 @@ public class Stat
                 IncreaseMaxBy(tempMod.modAmount);
             }
         }
-
+        Fill();
         mods.Add(tempMod);
     }
 
@@ -124,14 +125,30 @@ public class Stat
         {
             if(tempMod.modType == Modifier.ChangeType.PERCENT)
             {
-                Max = Max - tempMod.amtChanged;
+                if(tempMod.amtChanged < 0)
+                {
+                    Max = Max + Mathf.Abs(tempMod.amtChanged);
+                }
+                else
+                {
+                    Max = Max - tempMod.amtChanged;
+                }
+                
                 //DecreaseMaxByPercent(tempMod.modAmount);
             }
             else if(tempMod.modType == Modifier.ChangeType.INT)
             {
-                DecreaseMaxBy(tempMod.modAmount);
+                if(tempMod.amtChanged < 0)
+                {
+                    IncreaseMaxBy(tempMod.amtChanged);
+                }
+                else
+                {
+                    DecreaseMaxBy(tempMod.amtChanged);
+                }
             }
         }
+        Fill();
 
         mods.Remove(tempMod);
     }

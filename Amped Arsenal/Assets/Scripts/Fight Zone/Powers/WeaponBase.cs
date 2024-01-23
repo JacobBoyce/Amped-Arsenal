@@ -41,17 +41,18 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
             if(playerObj._stats["luck"].Value / playerObj._stats["luck"].Max >= rand)
             {
-                //Debug.Log("apply: " + eff.GetComponent<EffectBase>().effectName);
+                //Debug.Log("try to apply effect - " + eff.GetComponent<EffectBase>().effectName);
                 //check if can apply new or update cd of effect
                 if(enemy.HasEffect(eff.GetComponent<EffectBase>()))
                 {
+                    //Debug.Log("Already has the effect - resetting cooldown");
                     //update cooldown
-                    //Debug.Log("Enemy is afflicted with - " + eff.GetComponent<EffectBase>().effectName);
                     //effect controller method call for updateCooldown
                     enemy.UpdateEffect(eff);
                 }
                 else
                 {
+                    //Debug.Log("Doesnt have the effect, adding it now");
                     //instastiate effect base effectPrefab
                     //Instantiate();
                     //Debug.Log("Enemy is NOT afflicted with - " + eff.GetComponent<EffectBase>().effectName);

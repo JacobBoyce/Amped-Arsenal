@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponMods : MonoBehaviour
 {
     public bool giveKnockback;
+    public int knockbackModAmount;
 
     public enum ElementType
     {

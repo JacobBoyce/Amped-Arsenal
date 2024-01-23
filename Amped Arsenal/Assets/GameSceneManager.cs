@@ -19,7 +19,16 @@ public class GameSceneManager : MonoBehaviour
 
     public bool startLoadingBuffer = false, loadingBufferDone, triggerEndLoadingScreen = false;
     public float loadBuffCD = 0, loadBuffCDMax;
-    
+    //public ProgressBar pBar
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void LoadPersistentSceneFirst()
+    {
+        //Scene currentScene = SceneManager.GetActiveScene();
+        //SceneManager.UnloadSceneAsync(currentScene.buildIndex);
+        SceneManager.LoadSceneAsync(0, LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        //instance.LoadGame(SceneIndexes.MANAGER);
+    }
     private void Awake()
     {
         if(instance == null)
@@ -31,7 +40,6 @@ public class GameSceneManager : MonoBehaviour
             Destroy(this);
         }
         loadBuffCD = 0;
-        SceneManager.LoadSceneAsync((int)SceneIndexes.MAINMENU, LoadSceneMode.Additive);
     }
 
     List<AsyncOperation> scenesLoading = new List<AsyncOperation>();

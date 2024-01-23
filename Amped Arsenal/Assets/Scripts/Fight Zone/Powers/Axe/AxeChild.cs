@@ -31,20 +31,24 @@ public class AxeChild : MonoBehaviour
     public void InitStuff(AxeController cont, WeaponMods mod,float speed,float distFP)
     {
         moveOut = false;
-        UpdateValues(speed, distFP);
         curAxe = Instantiate(axePrefab, transform.position, transform.rotation);
         curAxe.transform.SetParent(cont.axeParent.transform);
         curAxe.GetComponent<AxeLogic>().UpdateInfo(cont, mod);
+        UpdateValues(speed, distFP, mod);
         visuals = curAxe.GetComponent<AxeLogic>().visuals;
         curAxe.GetComponent<FollowObject>().SetValues(gameObject, 100f);
         ToggleAxe(false);
         //curAxe.SetActive(false);
     }
 
-    public void UpdateValues(float speed,float distFP)
+    public void UpdateValues(float speed, float distFP, WeaponMods mod)
     {
         distFromParent = distFP;
         speedOut = speed;
+        Debug.Log("Controllers knockback " + mod.knockbackModAmount);
+        curAxe.GetComponent<AxeLogic>().weapMod.giveKnockback = mod.giveKnockback;
+        curAxe.GetComponent<AxeLogic>().weapMod.knockbackModAmount = mod.knockbackModAmount;
+        curAxe.GetComponent<AxeLogic>().weapMod.eleType = mod.eleType;
     }
 
     public void TurnOnSpawnAxe()

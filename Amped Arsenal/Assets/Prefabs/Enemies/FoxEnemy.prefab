@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyState: 0
+  thisRB: {fileID: 0}
   visuals: {fileID: 6308662264049801497}
   distance: 0
   attackRange: 4
@@ -67,6 +68,9 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 8
+  avoidWeapons:
+    serializedVersion: 2
+    m_Bits: 0
   rayDistance: 1.5
   fallSpeed: 2
   grounded: 0
@@ -85,6 +89,7 @@ MonoBehaviour:
   actorName: Fox
   _stats:
     _stats: []
+  movementController: {fileID: 2224875518314080338}
   spriteObj: {fileID: 3273841455136933226}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
   blinkIntesity: 4.5
@@ -97,6 +102,7 @@ MonoBehaviour:
   drops:
   - {fileID: 1809617224858193442, guid: 63af3d9bfb0f8f0408dc3189cd9be17d, type: 3}
   - {fileID: 3644600517433400055, guid: cfd6d216cac1bbc4f93d7c5cb59be2f9, type: 3}
+  lifeText: {fileID: 0}
   effectCont: {fileID: 7216645320666032866}
   hpMax: 8
   attk: 2
@@ -308,6 +314,9 @@ MonoBehaviour:
   effectObjs: []
   enemyCont: {fileID: 5492058842159626694}
   effectParent: {fileID: 3550090071117261620}
+  uiSatusEffectParent: {fileID: 0}
+  uiStatusEffectPrefab: {fileID: 0}
+  effectSpwnPointOnEnemy: {fileID: 0}
 --- !u!1 &6308662264049801497
 GameObject:
   m_ObjectHideFlags: 0

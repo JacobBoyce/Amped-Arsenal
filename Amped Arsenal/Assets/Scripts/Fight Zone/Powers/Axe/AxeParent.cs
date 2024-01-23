@@ -10,6 +10,7 @@ public class AxeParent : MonoBehaviour
     private List<AxeChild> axes = new List<AxeChild>();
 
 
+
     // Update is called once per frame
     void Update()
     {
@@ -17,7 +18,7 @@ public class AxeParent : MonoBehaviour
         transform.Rotate(new Vector3(0, rotationSpeed * Time.deltaTime,0));
     }
 
-    public void InitAxes(AxeController cont, WeaponMods mod,float rotSpeed, float distFP, float spo)
+    public void InitAxes(AxeController cont, WeaponMods mod, float rotSpeed, float distFP, float spo)
     {
         controller = cont;
         rotationSpeed = rotSpeed;
@@ -27,18 +28,18 @@ public class AxeParent : MonoBehaviour
         {
             //have the init spawn the axe then keep it deactive
             //then have a bool set in the child to run on the axe
-            go.GetComponent<AxeChild>().InitStuff(controller, mod,spo, distFromPlayer);
+            go.GetComponent<AxeChild>().InitStuff(controller, mod, spo, distFromPlayer);
             axes.Add(go.GetComponent<AxeChild>());
         }
     }
 
-    public void UpdateAndActivateAxes(float rotSpeed, float spo, float distFP, int axeNum)
+    public void UpdateAndActivateAxes(float rotSpeed, float spo, float distFP, int axeNum, WeaponMods mod)
     {
         rotationSpeed = rotSpeed;
         distFromPlayer = distFP;
         foreach(AxeChild go in axes)
         {
-            go.UpdateValues(spo, distFromPlayer);
+            go.UpdateValues(spo, distFromPlayer, mod);
         }
         //determine what level, to deceide which axes to turn on.
         ActivateSpecficAxes(axeNum);

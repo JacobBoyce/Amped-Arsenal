@@ -10,6 +10,7 @@ public class EffectController : MonoBehaviour
 
     public void AddEffect(GameObject effectPrefab, EnemyController en)
     {
+        //Debug.Log("instantiate effect and set its parent\ncall its activate method and add it to the list.");
         GameObject tempEffect = Instantiate(effectPrefab);
         tempEffect.transform.SetParent(effectParent.transform);
         tempEffect.transform.localPosition = Vector3.zero;
@@ -19,38 +20,63 @@ public class EffectController : MonoBehaviour
         tempEffect.GetComponent<EffectBase>().CallEffect();
         effectObjs.Add(tempEffect);
         //add to ui if it has ui effect
+        //effect itself adds it to the list
     }
 
+    public void RemoveEffect(string eName, GameObject uiEffect)
+    {
+        GameObject temp1 = null, temp2;
+        temp2 = uiEffect;
+        
+        if(effectObjs.Count > 0)
+        {
+            foreach(GameObject go in effectObjs)
+            {
+                if(go.GetComponent<EffectBase>().effectName.Equals(eName) == true)
+                {
+                    temp1 = go;
+                    //effectObjs.Remove(go);
+                    Destroy(temp1);
+                    Destroy(temp2);
+                //remove ui on enemy for effect
+                }
+            }
+        }
+    }
     public void RemoveEffect(string eName)
     {
-        foreach(GameObject go in effectObjs)
+        GameObject temp1;
+        if(effectObjs.Count > 0)
         {
-            if(go.GetComponent<EffectBase>().effectName.Equals(eName) == true)
+            foreach(GameObject go in effectObjs)
             {
-                Destroy(go);
-                effectObjs.Remove(go);
-               //remove ui on enemy for effect
+                if(go.GetComponent<EffectBase>().effectName.Equals(eName) == true)
+                {
+                    temp1 = go;
+                    //effectObjs.Remove(go);
+                    Destroy(go);
+                    
+                //remove ui on enemy for effect
+                }
             }
         }
     }
 
     public void UpdateEffect(GameObject effect)
     {
-        //GameObject tempEffect = GetEffect(effect.GetComponent<EffectBase>().effectName);
-        //EffectBase _effect = tempEffect.GetComponent<EffectBase>();
-
-        foreach(GameObject go in effectObjs)
+        if(effectObjs.Count > 0)
         {
-            if(go.GetComponent<EffectBase>().effectName.Equals(effect.GetComponent<EffectBase>().effectName) == true)
+            foreach(GameObject go in effectObjs)
             {
-                //Debug.Log("Reset Cooldown of " + go.GetComponent<EffectBase>().effectName + " effect");
-                go.GetComponent<EffectBase>().tickAmtDuration = 0;
+                if(go.GetComponent<EffectBase>().effectName.Equals(effect.GetComponent<EffectBase>().effectName) == true)
+                {
+                    Debug.Log("Reset Cooldown of " + go.GetComponent<EffectBase>().effectName + " effect");
+                    go.GetComponent<EffectBase>().tickAmtDuration = 0;
+                }
             }
         }
-
-       
-        //_effect.tickAmtDuration = 0;
     }
+
     //tick
     public GameObject GetEffect(string eName)
     {

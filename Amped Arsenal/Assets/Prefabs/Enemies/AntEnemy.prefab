@@ -452,13 +452,16 @@ MonoBehaviour:
   facingRight: 0
   knockbackAmount: 40
   stagCD: 0
-  stagCDMax: 0.3
+  stagCDMax: 0.5
   isStaggered: 0
   knockbackCalc: 1
   dir: {x: 0, y: 0, z: 0}
   layers:
     serializedVersion: 2
     m_Bits: 8
+  avoidWeapons:
+    serializedVersion: 2
+    m_Bits: 0
   rayDistance: 1.5
   fallSpeed: 2
   grounded: 0
@@ -477,6 +480,7 @@ MonoBehaviour:
   actorName: Ant
   _stats:
     _stats: []
+  movementController: {fileID: 41604279069339930}
   spriteObj: {fileID: 3682981137545698338}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
   blinkIntesity: 4.5
@@ -491,7 +495,7 @@ MonoBehaviour:
   - {fileID: 3644600517433400055, guid: cfd6d216cac1bbc4f93d7c5cb59be2f9, type: 3}
   lifeText: {fileID: 155113344}
   effectCont: {fileID: 8815015681239692202}
-  hpMax: 100
+  hpMax: 10
   attk: 1
   str: 1
   def: 1

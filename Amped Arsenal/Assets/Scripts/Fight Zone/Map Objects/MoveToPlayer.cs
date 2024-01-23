@@ -9,18 +9,26 @@ public class MoveToPlayer : MonoBehaviour
         XP,
         GOLD
     }
+    
 
     public DropItem itemType;
     public float speed, rateOfSpeed, distance, distToLamp;
     public int amount;
     public bool inRangeOfPlayer = false, inRangeOfLamp = false, givenXp = false;
+    private bool addedValue = false;
     private PlayerController p1;
     public GameObject visuals, partSys; //visuals;
     public AbsorbLamp lamp;
 
+    [Header("Sounds Vars")]
+    public AudioSource pickupSound;
+    [Range(0.1f, 0.5f)]
+    public float pitchMultiplier;
+
     public void Start()
     {
         p1 = PlayerController.playerObj;
+
         //get lamp from game controller or event controller
         // lamp = gamezonecontroller.instance.absorblamp
         foreach (GameObject go in POIController.Instance.spawnedEvents)
@@ -95,19 +103,24 @@ public class MoveToPlayer : MonoBehaviour
         //when I touch the player
         if(other.tag.Equals("Player"))
         {
-            CallVisuals();
-            
-            //add value to player
-            if(itemType == DropItem.XP)
+            if(addedValue == false)
             {
-                p1.AddXP(amount);
+                addedValue = true;
+                CallVisuals();
+                pickupSound.pitch = Random.Range(1 - pitchMultiplier, 1 + pitchMultiplier);
+                pickupSound.PlayOneShot(pickupSound.clip);
+                //add value to player
+                if(itemType == DropItem.XP)
+                {
+                    p1.AddXP(amount);
+                }
+                else if(itemType == DropItem.GOLD)
+                {
+                    p1.AddGold(amount);
+                }
+                Destroy(this.gameObject,1f);
+                
             }
-            else if(itemType == DropItem.GOLD)
-            {
-                p1.AddGold(amount);
-            }
-            
-            Destroy(this.gameObject,1f);
         }        
     }
 }

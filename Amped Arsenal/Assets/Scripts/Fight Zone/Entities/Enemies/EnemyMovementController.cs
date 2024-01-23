@@ -35,7 +35,7 @@ public class EnemyMovementController : MonoBehaviour
 
     [Space(10)]
     [Header("Ground Detection")]
-    public LayerMask layers;
+    public LayerMask layers, avoidWeapons;
     public float rayDistance, fallSpeed;
     public bool grounded;
 
@@ -50,17 +50,26 @@ public class EnemyMovementController : MonoBehaviour
         enemyState = EnemyStates.INIT;
         thisRB = GetComponent<Rigidbody>();
         thisRB.constraints = RigidbodyConstraints.FreezeRotation;
+        stagCD = stagCDMax;
     }
 
     // Update is called once per frame
     void Update()
     {
         dir = target.transform.position - transform.position;
-        //Debug.Log(dir);
-        // ignore any height difference:
-        
         // calculate velocity limited to the desired speed:
         var velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
+        //if user has fear effect then inverse the movement
+
+        if (eController.HasEffect("Fear"))
+        {
+            dir *= -1;
+            velocity *= -1;
+        }
+
+        //turn off colosion with weapons after getting hit. once stagger ends turn collisions back on?
+        
+        
         dir.y = 0;
         //velocity.y = 0;
 
@@ -125,7 +134,11 @@ public class EnemyMovementController : MonoBehaviour
 
             case EnemyStates.MOVE:
                 inRange = distance > attackRange ? false : true;
-                
+                if(isStaggered)
+                {
+                    enemyState = EnemyStates.STAGGER;
+                    break;
+                }
                 if(isDead)
                 {
                     enemyState = EnemyStates.DEAD;
@@ -135,13 +148,25 @@ public class EnemyMovementController : MonoBehaviour
                 {
                     dir = target.transform.position - transform.position;
                     velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
+                    if (eController.HasEffect("Fear"))
+                    {
+                        dir *= -1;
+                        velocity *= -1;
+                    }
+
                     dir.y = 0;
                     //velocity.y = 0;
                     thisRB.velocity = velocity;
+                    
                 }
                 //IN RANGE
                 else
                 {
+                    if(isStaggered)
+                    {
+                        enemyState = EnemyStates.STAGGER;
+                        break;
+                    }
                     //animC.SetBool("inRange", true);
                     eController.AttackPlayer(target.GetComponent<PlayerController>());
                     enemyState = EnemyStates.ATTACK;
@@ -159,6 +184,11 @@ public class EnemyMovementController : MonoBehaviour
                     attackCooldown = 0;
                     //animC.SetBool("inRange", false);                    
                     enemyState = EnemyStates.MOVE;
+                }
+                if(isStaggered)
+                {
+                    enemyState = EnemyStates.STAGGER;
+                    break;
                 }
             break;
 
@@ -196,6 +226,14 @@ public class EnemyMovementController : MonoBehaviour
     {
         if(collision.tag == "Weapon")
         {
+            if(isStaggered)
+            {   
+                Physics.IgnoreCollision(collision.GetComponent<Collider>(), GetComponent<Collider>(), true);
+            }
+            else
+            {
+                Physics.IgnoreCollision(collision.GetComponent<Collider>(), GetComponent<Collider>(), false);
+            }
             if(eController.AmDead())
             {
                 enemyState = EnemyStates.DEAD;
@@ -214,7 +252,17 @@ public class EnemyMovementController : MonoBehaviour
                     {
                         Vector3 direction = collision.transform.position - transform.position;
                         direction.y = 0;
-                        thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
+                        if(collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount > 0)
+                        {
+                            Debug.Log("adding extra knockback");
+                            thisRB.AddForce(-direction.normalized * (knockbackAmount + collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount), ForceMode.Impulse);
+                        }
+                        else
+                        {
+                            Debug.Log("applying normal knockback");
+                            thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
+                        }
+                        
                     }
                 }
             }

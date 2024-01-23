@@ -7,6 +7,7 @@ using TMPro;
 
 public class EnemyController : Actor
 {
+    public EnemyMovementController movementController;
     public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
     public bool tookDamage, spawnedXp = false;
@@ -131,6 +132,29 @@ public class EnemyController : Actor
             {
                 if(eff.GetComponent<EffectBase>().effectName.Equals(effect.effectName))
                 {
+                    Debug.Log(eff.GetComponent<EffectBase>().effectName + " == " + effect.effectName);
+                    flag = true;
+                }
+            }
+        }
+        else
+        {
+            flag = false;
+        }
+        return flag;
+    }
+
+    public bool HasEffect(string effect)
+    {
+        bool flag = false;
+
+        if(effectCont.effectObjs.Count != 0)
+        {
+            foreach(GameObject eff in effectCont.effectObjs)
+            {
+                if(eff.GetComponent<EffectBase>().effectName.Equals(effect))
+                {
+                    Debug.Log(eff.GetComponent<EffectBase>().effectName + " == " + effect);
                     flag = true;
                 }
             }
@@ -165,12 +189,19 @@ public class EnemyController : Actor
 
     public void AddEffect(GameObject effect)
     {
+        //Debug.Log("enemy telling its effect controller to add the effect");
         effectCont.AddEffect(effect, this);
     }
 
     public void RemoveEffect(string eName)
     {
+        //Debug.Log("Enemy telling effect controller to remove the effect");
         effectCont.RemoveEffect(eName);
+    }
+    public void RemoveEffect(string eName, GameObject uiEffect)
+    {
+        //Debug.Log("Enemy telling effect controller to remove the effect");
+        effectCont.RemoveEffect(eName, uiEffect);
     }
 
     public void UpdateEffect(GameObject effect)

@@ -47,6 +47,9 @@ MonoBehaviour:
   effectObjs: []
   enemyCont: {fileID: 8779101310253857394}
   effectParent: {fileID: 1415265565824564343}
+  uiSatusEffectParent: {fileID: 0}
+  uiStatusEffectPrefab: {fileID: 0}
+  effectSpwnPointOnEnemy: {fileID: 0}
 --- !u!1 &2141589356178418176
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyState: 0
+  thisRB: {fileID: 0}
   visuals: {fileID: 7748675441640103456}
   distance: 0
   attackRange: 4
@@ -218,6 +222,9 @@ MonoBehaviour:
   layers:
     serializedVersion: 2
     m_Bits: 8
+  avoidWeapons:
+    serializedVersion: 2
+    m_Bits: 0
   rayDistance: 1.6
   fallSpeed: 2
   grounded: 0
@@ -236,6 +243,7 @@ MonoBehaviour:
   actorName: Larva
   _stats:
     _stats: []
+  movementController: {fileID: 8421874947014893682}
   spriteObj: {fileID: 2141589356178418176}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
   blinkIntesity: 4.5
@@ -248,6 +256,7 @@ MonoBehaviour:
   drops:
   - {fileID: 1809617224858193442, guid: 63af3d9bfb0f8f0408dc3189cd9be17d, type: 3}
   - {fileID: 3644600517433400055, guid: cfd6d216cac1bbc4f93d7c5cb59be2f9, type: 3}
+  lifeText: {fileID: 0}
   effectCont: {fileID: 8676859760198110596}
   hpMax: 15
   attk: 2
@@ -265,7 +274,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4683092176483963480}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
