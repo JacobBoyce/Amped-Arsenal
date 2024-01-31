@@ -30,7 +30,7 @@ public class ShootReward : MonoBehaviour
 
         randY = Random.Range(0,360);
         randPower = Random.Range(powerMin, powerMax); //15 and 20
-        shooter.transform.eulerAngles = new Vector3(shooterX, shooterY, shooterZ);
+        shooter.transform.eulerAngles = new Vector3(shooterX, randY, shooterZ);
 
 
         if(wantRandom)

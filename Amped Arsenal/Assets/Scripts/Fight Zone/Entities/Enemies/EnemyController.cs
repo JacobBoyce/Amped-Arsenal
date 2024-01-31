@@ -132,7 +132,7 @@ public class EnemyController : Actor
             {
                 if(eff.GetComponent<EffectBase>().effectName.Equals(effect.effectName))
                 {
-                    Debug.Log(eff.GetComponent<EffectBase>().effectName + " == " + effect.effectName);
+                    //Debug.Log(eff.GetComponent<EffectBase>().effectName + " == " + effect.effectName);
                     flag = true;
                 }
             }
@@ -184,6 +184,7 @@ public class EnemyController : Actor
             curDamageColor = dmgColor;
             blinkTimer = blinkDuration;
             Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+            AmDead();
         }
     }
 
@@ -220,7 +221,7 @@ public class EnemyController : Actor
     public bool AmDead()
     {
         bool isDead = false;
-        isDead = _stats["hp"].Value <= 0 ? true : false;
+        isDead = _stats["hp"].Value <= 0;
         if(isDead && spawnedXp == false)
         {
             spawnedXp = true;

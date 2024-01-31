@@ -13,6 +13,7 @@ public class GameZoneController : MonoBehaviour
     public static GameZoneController Instance{get; private set;}
     public Image fadeImage;
     public GameObject joystickController, upgradeButton;
+    public RelicLib relicLibrary;
     public PlayerController p1;
     public float exfilPercentAmount;
     public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel, chooseWeapApplyEffect;
@@ -40,8 +41,7 @@ public class GameZoneController : MonoBehaviour
         {
             if (minutes == value) return;
             minutes = value;
-            if (OnMinutesChanged != null)
-                OnMinutesChanged(minutes);
+            OnMinutesChanged?.Invoke(minutes);
         }
     }
 

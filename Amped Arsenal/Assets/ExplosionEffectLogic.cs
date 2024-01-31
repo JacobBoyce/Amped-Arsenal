@@ -9,11 +9,15 @@ public class ExplosionEffectLogic : EffectBase
     public float intensity;
     public bool activate;
     public float explRadius;
+    public GameObject explAnimObj;
+    public List<GameObject> animsTODestroy;
     public AnimationClip animClip;
 
     public void Start()
     {
-        explRadius = GetComponent<SphereCollider>().radius;
+        //.5 is good
+        GetComponent<SphereCollider>().radius = explRadius;
+        animsTODestroy = new();
 
         foreach (AnimationClip clip in GetComponent<Animator>().runtimeAnimatorController.animationClips)
         {
@@ -32,7 +36,7 @@ public class ExplosionEffectLogic : EffectBase
             //if(tickAmtDuration == tickMaxDuration)
             //{
                 enemy.RemoveEffect(this.effectName);
-                Destroy(this.gameObject);
+                //Destroy(this.gameObject,1f);
             //}
         }
     }
@@ -48,13 +52,16 @@ public class ExplosionEffectLogic : EffectBase
 
     public void DelayDelete()
     {
-        activate = true;        
+        foreach(GameObject go in animsTODestroy) Destroy(go);  
+        activate = true;   
     }
 
     public void OnTriggerEnter(Collider collision)
     {
         EnemyController ec = collision.GetComponent<EnemyController>();
-        
+        GameObject tempExpl = Instantiate(explAnimObj, ec.gameObject.transform);
+        tempExpl.transform.SetLocalPositionAndRotation(new Vector3(0,0,0), Quaternion.Euler(0,0,0));
+        animsTODestroy.Add(tempExpl);
         // if ec is not null
         ec?.TakeDamageFromEffect(damage, damageColor);
     }
