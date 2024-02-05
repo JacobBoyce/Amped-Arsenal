@@ -9,8 +9,8 @@ public class EnemySpawnController : MonoBehaviour
 
     public GameZoneController controller;
     public GameObject enemyPrefab, tempePrefab;
-    public List<GameObject> enemyPrefabs = new List<GameObject>();
-    public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
+    public List<GameObject> enemyPrefabs = new();
+    public List<EnemySpawnPoint> esPoint = new();
     //private Quaternion rotation;
 
     public float spawnRate, spawnRateMax;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class EnemyMovementController : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class EnemyMovementController : MonoBehaviour
     public float stagCD, stagCDMax;
     public bool isStaggered, knockbackCalc = true;
     public Vector3 dir;
-    float velocity, initTimer = 0, initTimerMax = .5f;
+    public float launchPower, initTimer = 0, initTimerMax = .5f;
 
     [Space(10)]
     [Header("Ground Detection")]
@@ -51,6 +52,10 @@ public class EnemyMovementController : MonoBehaviour
         thisRB = GetComponent<Rigidbody>();
         thisRB.constraints = RigidbodyConstraints.FreezeRotation;
         stagCD = stagCDMax;
+        GetComponent<BoxCollider>().isTrigger = true;
+
+        // launch up
+        thisRB?.AddForce(Vector3.up * launchPower, ForceMode.Impulse);
     }
 
     // Update is called once per frame
@@ -73,23 +78,26 @@ public class EnemyMovementController : MonoBehaviour
         dir.y = 0;
         //velocity.y = 0;
 
-        RaycastHit hit;
-        Ray ray = new Ray(transform.position, Vector3.down);
+        Ray ray = new(transform.position, Vector3.down);
 
-        grounded = Physics.Raycast(ray, out hit, rayDistance, layers);
+        grounded = Physics.Raycast(ray, out RaycastHit hit, rayDistance, layers);
 
-        if(!grounded)
+        if(enemyState != EnemyStates.INIT)
         {
-            thisRB.useGravity = true;
-            thisRB.constraints = RigidbodyConstraints.None;
-            thisRB.constraints = RigidbodyConstraints.FreezeRotation;
+            if(!grounded)
+            {
+                thisRB.useGravity = true;
+                thisRB.constraints = RigidbodyConstraints.None;
+                thisRB.constraints = RigidbodyConstraints.FreezeRotation;
+            }
+            else
+            {
+                velocity.y = 0;
+                thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+                thisRB.useGravity = false;
+            }
         }
-        else
-        {
-            velocity.y = 0;
-            thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-            thisRB.useGravity = false;
-        }
+        
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
         //flip sprite
@@ -128,12 +136,13 @@ public class EnemyMovementController : MonoBehaviour
                 else
                 {
                     thisRB.constraints = RigidbodyConstraints.FreezeRotation;// | RigidbodyConstraints.FreezePositionY;
+                    GetComponent<BoxCollider>().isTrigger = false;
                     enemyState = EnemyStates.MOVE;
                 }
             break;
 
             case EnemyStates.MOVE:
-                inRange = distance > attackRange ? false : true;
+                inRange = distance <= attackRange;
                 if(isStaggered)
                 {
                     enemyState = EnemyStates.STAGGER;
@@ -156,8 +165,10 @@ public class EnemyMovementController : MonoBehaviour
 
                     dir.y = 0;
                     //velocity.y = 0;
-                    thisRB.velocity = velocity;
-                    
+                    if(grounded)
+                    {
+                        thisRB.velocity = velocity;
+                    }
                 }
                 //IN RANGE
                 else

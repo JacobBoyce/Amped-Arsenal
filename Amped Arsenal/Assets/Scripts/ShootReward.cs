@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ShootReward : MonoBehaviour
 {
-    public Vector3 shootAngle, offsetVector;
+
     private float shooterX, shooterY, shooterZ; 
-    public bool wantRandom, addXOffset;
+    public bool wantRandom;
 
     [Header("RandY chooses a random angle")]
-    public float randY, offsetX;
+    public float randY;
 
     [Header("randPower is the result of randomly choosing between min and max")]
     public float randPower;
@@ -21,6 +21,52 @@ public class ShootReward : MonoBehaviour
         Up
     };
     public ShootType sType;
+
+    public GameObject DecideReward(GameObject pointToShootFrom)
+    {
+        GameObject relicToSpawn = null;
+        // if player has all 6 weapons and all 6 weapons have mods already then spawn from relic list
+        int weapsWithMods = 0;
+        foreach(GameObject weap in GameZoneController.Instance.p1.equippedWeapons)
+        {
+            if(weap.GetComponent<WeaponBase>().weapMod != null)
+            {
+                weapsWithMods++;
+            }
+        }
+
+        //if all weapons have mods on them, then only spawn relics
+        if(weapsWithMods == 6)
+        {
+            //pull from relic list and not mod list
+            relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];
+        }
+        else
+        {
+            // 50/50 chance to pull fom both lists
+            int randomRelicWeapModList = Random.Range(1,3);
+            Debug.Log(randomRelicWeapModList);
+            if(randomRelicWeapModList == 1)
+            {
+                relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];
+            }
+            else
+            {
+                relicToSpawn = GameZoneController.Instance.relicLibrary.weapModList[Random.Range(0,GameZoneController.Instance.relicLibrary.weapModList.Count)];
+            }
+        }
+                
+        GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, pointToShootFrom.transform.rotation);
+
+        return tempRelicSpawned;
+    }
+
+    public void GiveRewardAndYeetIt(GameObject pointToShootFrom)
+    {
+        
+        //shoot it
+        ShootObject(pointToShootFrom, DecideReward(pointToShootFrom), ShootType.Facing);
+    }
 
     public void ShootObject(GameObject shooter, GameObject objToShoot, ShootType shootingType)
     {

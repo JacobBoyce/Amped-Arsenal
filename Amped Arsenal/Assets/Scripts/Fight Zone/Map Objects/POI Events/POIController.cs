@@ -6,9 +6,9 @@ public class POIController : MonoBehaviour
 {
     public static POIController Instance { get; private set; }
 
-    public List<GameObject> pois = new List<GameObject>();
+    public List<GameObject> poiLocations = new List<GameObject>();
 
-    public List<GameObject> lampPrefabs = new List<GameObject>();
+    public List<GameObject> eventPrefabs = new List<GameObject>();
 
     public List<GameObject> spawnedEvents = new List<GameObject>();
 
@@ -28,12 +28,12 @@ public class POIController : MonoBehaviour
     void Start()
     {
         int i = 0;
-        foreach (GameObject go in lampPrefabs)
+        foreach (GameObject go in eventPrefabs)
         {
             //if (go.tag.Equals("ALamp"))
             //{
                 GameObject temp;
-                temp = Instantiate(go, new Vector3(pois[i].transform.position.x, 0, pois[i].transform.position.z), pois[i].transform.rotation);
+                temp = Instantiate(go, new Vector3(poiLocations[i].transform.position.x, 0, poiLocations[i].transform.position.z), poiLocations[i].transform.rotation);
                 spawnedEvents.Add(temp);
                 i++;
             //}

@@ -46,10 +46,8 @@ public class FreeLampLogic : MonoBehaviour
                 countdownText.text = "";
                 //spawn artifact
 
-                // get random relic
-                relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];
-                tempRelicSpawned = Instantiate(relicToSpawn , spawnRewardPoint.transform.position, spawnRewardPoint.transform.rotation);
-                GetComponent<ShootReward>().ShootObject(spawnRewardPoint, tempRelicSpawned, ShootReward.ShootType.Facing);
+                // get random relic and spawn reward
+                GetComponent<ShootReward>().GiveRewardAndYeetIt(spawnRewardPoint);
             }
         }
     }

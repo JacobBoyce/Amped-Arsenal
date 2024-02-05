@@ -456,6 +456,9 @@ MonoBehaviour:
   isStaggered: 0
   knockbackCalc: 1
   dir: {x: 0, y: 0, z: 0}
+  launchPower: 55
+  initTimer: 0
+  initTimerMax: 1
   layers:
     serializedVersion: 2
     m_Bits: 8
@@ -546,13 +549,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootAngle: {x: 0, y: 0, z: 0}
   offsetVector: {x: 0, y: 0, z: 0}
-  wantRandom: 0
+  wantRandom: 1
   addXOffset: 0
   randY: 0
   offsetX: 0
   randPower: 0
-  powerMax: 50
-  powerMin: 50
+  powerMax: 25
+  powerMin: 25
   sType: 1
 --- !u!1 &4412910636485349254
 GameObject:
