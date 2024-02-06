@@ -15,6 +15,7 @@ public class MainMenuLamp : MonoBehaviour
     public string exfilMessage;
     private string formatTime;
     private float maxLightIntensity;
+    public Color initColor;
 
     public void Start()
     {
@@ -22,9 +23,10 @@ public class MainMenuLamp : MonoBehaviour
         countdownText.text = exfilMessage;
 
         maxLightIntensity = aoeLight.intensity;
-        aoeLight.intensity = 0;
-        aoeLight.gameObject.SetActive(false);
-        lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
+        aoeLight.intensity = maxLightIntensity/4;
+        //aoeLight.gameObject.SetActive(false);
+        //lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
+        initColor = lightMat.material.GetColor("_EmissionColor");
     }
 
     public void Update()
@@ -36,8 +38,8 @@ public class MainMenuLamp : MonoBehaviour
                 cd -= Time.deltaTime;
                 formatTime = cd.ToString("0");
                 countdownText.text = formatTime;
-                aoeLight.intensity = (1 - (cd / cdMax)) * maxLightIntensity;
-                lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (cd / cdMax)) * Mathf.Pow(2, 5)));
+                aoeLight.intensity = (.25f + (1 - (cd / cdMax))) * maxLightIntensity;
+                //lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (cd / cdMax)) * Mathf.Pow(2, 5)));
             }
             else
             {
@@ -60,7 +62,6 @@ public class MainMenuLamp : MonoBehaviour
         {
             inRange = true;
             p1 = other.gameObject.GetComponent<PlayerController>();
-            aoeLight.gameObject.SetActive(true);
         }
     }
 
@@ -70,10 +71,9 @@ public class MainMenuLamp : MonoBehaviour
         {
             inRange = false;
             countdownText.text = exfilMessage;
-            aoeLight.gameObject.SetActive(false);
-            lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
+            aoeLight.intensity = maxLightIntensity/4;
+            //lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
             cd = cdMax;
-            aoeLight.intensity = 0;
         }
     }
 }

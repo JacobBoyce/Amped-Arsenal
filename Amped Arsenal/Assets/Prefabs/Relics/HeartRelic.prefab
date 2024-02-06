@@ -4953,6 +4953,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8056377477945800607}
   - component: {fileID: 8056377477945800604}
+  - component: {fileID: 7757267007107867392}
   m_Layer: 14
   m_Name: Heart
   m_TagString: Relic
@@ -5027,6 +5028,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7757267007107867392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056377477945800605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4114fe7f06656c345a180db3fb6c3533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wantBillboard: 1
+  wantBob: 0
+  islocal: 0
+  floatStrength: 0
+  speed: 0
+  offset: 0
+  deathDeleteTimer: 0
+  islocalShake: 0
+  damaged: 0
+  shakeStr: 0
+  shakeSpeed: 0
+  shakeDur: 0
+  rbObj: {fileID: 0}
+  wantPopUp: 0
+  delaytimeToSlowDown: 0
+  popForce: 0
+  thisSR: {fileID: 0}
+  wantFlash: 0
+  blinkTimer: 0
+  blinkDuration: 0
+  blinkIntesity: 0
 --- !u!1 &8056377478772937274
 GameObject:
   m_ObjectHideFlags: 0

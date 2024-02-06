@@ -9,7 +9,7 @@ public class LobbyController : MonoBehaviour
     public ExfilLampLogic exfilLamp;
     public int levelDifficulty;
     public List<LampLoadLevel> lamps;
-    public GameObject globalLobbyLight, mainMenuLightLamp;
+    public GameObject globalLobbyLight, mainMenuLightLamp, middleSpawnPoint;
     public List<GameObject> uiToInitAfterLoadingScreen;
     // Start is called before the first frame update
     void Start()

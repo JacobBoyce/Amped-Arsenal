@@ -20,6 +20,7 @@ public class GameZoneController : MonoBehaviour
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
     public ShopMenuAnimController shopAnimeController;
+    public LobbyController lobCont;
     public List<GameObject> mainUIComponents = new();
     public List<GameObject> gamePlayUIComponents = new();
     public bool isUpgrading;

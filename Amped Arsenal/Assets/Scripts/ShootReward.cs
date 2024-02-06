@@ -63,7 +63,6 @@ public class ShootReward : MonoBehaviour
 
     public void GiveRewardAndYeetIt(GameObject pointToShootFrom)
     {
-        
         //shoot it
         ShootObject(pointToShootFrom, DecideReward(pointToShootFrom), ShootType.Facing);
     }
