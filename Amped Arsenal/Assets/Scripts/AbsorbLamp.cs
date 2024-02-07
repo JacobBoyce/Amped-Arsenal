@@ -9,16 +9,18 @@ public class AbsorbLamp : MonoBehaviour
     public bool ableToAbsorb;
     public GameObject spawnRewardPoint;
     public Light lampLight;
-    private MoveToPlayer tempXp;
-    public GameObject testPrefab, tempRewardObj;
-
     public TextMeshProUGUI countdownText;
 
     public void Start()
     {
         absorbAmountMax = absorbAmount;
+        
+        lightIntensityMax = lampLight.intensity;
         lampLight.intensity = 0;
+
         countdownText.text = absorbAmount.ToString();
+
+        
     }
 
     public void UpdateCount()

@@ -6,27 +6,27 @@ using TMPro;
 public class FreeLampLogic : MonoBehaviour
 {
     public TextMeshProUGUI countdownText;
-    public Light lampLight, aoeLight;
+    public Light aoeLight;
     public MeshRenderer lightMat;
     private string formatTime;
     public float countdown, cdMax;
     public bool inRange, done = false;
     private float maxLightIntensity;
 
-    public GameObject relicToSpawn, spawnRewardPoint;
-    private GameObject tempRelicSpawned;
+    public GameObject spawnRewardPoint;
+
+    public Color initColor;
     // Start is called before the first frame update
     void Start()
     {
         countdown = cdMax;
         formatTime = countdown.ToString("0");
         countdownText.text = formatTime;
-        lampLight.intensity = 14;
 
         maxLightIntensity = aoeLight.intensity;
-        aoeLight.intensity = 0;
-        aoeLight.gameObject.SetActive(false);
-        lightMat.material.SetColor("_EmissionColor", lightMat.material.color * Mathf.Pow(2, 4));
+        aoeLight.intensity = maxLightIntensity/4;
+ 
+        initColor = lightMat.material.GetColor("_EmissionColor");
     }
 
     // Update is called once per frame
@@ -37,8 +37,8 @@ public class FreeLampLogic : MonoBehaviour
             countdown -= Time.deltaTime;
             formatTime = countdown.ToString("0");
             countdownText.text = formatTime;
-            aoeLight.intensity = (1 - (countdown / cdMax)) * maxLightIntensity;
-            lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (countdown / cdMax)) * Mathf.Pow(2, 5)));
+            aoeLight.intensity = (.25f + (1 - (countdown / cdMax))) * maxLightIntensity;
+            //lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (countdown / cdMax)) * Mathf.Pow(2, 5)));
             if (countdown <= 0)
             {
                 //aoeLight.intensity = 0;
@@ -65,7 +65,8 @@ public class FreeLampLogic : MonoBehaviour
         if (other.tag == "Player")
         {
             inRange = false;
+            aoeLight.intensity = maxLightIntensity/4;
+            countdown = cdMax;
         }
     }
-
 }
