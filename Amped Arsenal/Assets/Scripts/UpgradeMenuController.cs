@@ -63,7 +63,26 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
             {
                 //populate ui
                 WeaponBase tempWeap = go.GetComponent<WeaponBase>();
-                equippedUICont.UpdateWeapUI(slotNum, tempWeap);
+                
+                bool canUpgrade = false;
+
+                //check if upgradeable
+                if (tempWeap != null && !tempWeap.IsMaxLvl())
+                {
+                    if (tempWeap.weapUpgrades.costValues[tempWeap.level - 1] <= playerCont._stats["xp"].Value)
+                    {
+                        // can be upgraded
+                        canUpgrade = true;
+                    }
+                }
+                if(tempWeap.IsMaxLvl())
+                {
+                    //set to "deselected"
+                    canUpgrade = false;
+                }
+
+                equippedUICont.UpdateWeapUI(slotNum, tempWeap, canUpgrade);
+                
                 slotNum++;
             }
         }
@@ -79,6 +98,25 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
                 WeaponBase tempWeap = go.GetComponent<WeaponBase>();
 
                 weapFocus.UpdateFocusUI(tempWeap,playerCont);
+            }
+        }
+    }
+
+    public void CheckUpgradeableWeaps()
+    {
+        foreach(GameObject go in playerCont.equippedWeapons)
+        {
+            WeaponBase weap = go.GetComponent<WeaponBase>();
+            if (weap != null && !weap.IsMaxLvl())
+            {
+                if (weap.weapUpgrades.costValues[weap.level - 1] <= playerCont._stats["xp"].Value)
+                {
+                    // can be upgraded
+                }
+            }
+            if(weap.IsMaxLvl())
+            {
+                //set to "deselected"
             }
         }
     }

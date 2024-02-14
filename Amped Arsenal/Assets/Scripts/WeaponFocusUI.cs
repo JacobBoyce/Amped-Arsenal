@@ -41,6 +41,8 @@ public class WeaponFocusUI : MonoBehaviour
             //lvlUpTo.text = (focusedWeap.level).ToString();
             //disable cost of upgrade button
             upgradeButton.interactable = false;
+            // ------- set cost string to  empty -------- 
+            costUI.text = "";
         }
         else
         {
@@ -51,6 +53,7 @@ public class WeaponFocusUI : MonoBehaviour
         }        
 
 
+        // CREATES LEVEL UP BARS THAT SHOWS THE WEAPON STATS
         for(int i = 0; i < focusedWeap.weapUpgrades.UpgradeList.Count; i ++)
         {
             GameObject tempSlotPrefab = Instantiate(statsUpSlotPrefab);
@@ -71,7 +74,7 @@ public class WeaponFocusUI : MonoBehaviour
             
             //set image here
             UpgradeIcons tempUpgradeType = controller.GetUpIcon(up.weapUpType);
-            tempSlot.upgradeSymbolImg.sprite = tempUpgradeType.upIcon;
+            tempSlot.upgradeName = tempUpgradeType.upType.ToString();
 
             if (focusedWeap.IsMaxLvl())
             {
@@ -125,13 +128,11 @@ public class WeaponFocusUI : MonoBehaviour
 
     public void ClearFocusUI()
     {
-        //lvlUpFrom.text = "";
-        //lvlUpTo.text = "";
+
         upgradeWeaponImg.enabled = false;
-        //levelContainer.SetActive(true);
+
         weapName.text = "";
-        //disable upgrade button
-        //Debug.Log("turnoff on focus off");
+
         upgradeButton.interactable = false;
         costUI.text = "";
 

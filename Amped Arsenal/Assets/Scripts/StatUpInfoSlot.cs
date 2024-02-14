@@ -6,7 +6,7 @@ using TMPro;
 
 public class StatUpInfoSlot : MonoBehaviour
 {
-    public Image upgradeSymbolImg;
+    public string upgradeName;
     public Image upgradeCurrent, upgradeTo;
     public float minVal, maxVal, curVal, nextVal;
 

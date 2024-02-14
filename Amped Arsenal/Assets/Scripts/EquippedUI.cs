@@ -13,19 +13,19 @@ public class EquippedUI : MonoBehaviour
         allSlots.AddRange(weapUI);
     }
 
-    public void UpdateWeapUI(int idNum, WeaponBase wb)
+    public void UpdateWeapUI(int idNum, WeaponBase wb, bool canUpgrade)
     {
         weapUI[idNum].weapName = wb.wName;
         weapUI[idNum].weapImg.sprite = wb.shopItemInfo.splashImg;
+        weapUI[idNum].weapImg.enabled = true;
         weapUI[idNum].lvl.text = wb.level.ToString();
 
-        weapUI[idNum].weapImg.enabled = true;
-        weapUI[idNum].weapLvlBadge.SetActive(true);
+        weapUI[idNum].UpgradeableCheck(canUpgrade);
     }
 
-    public void UpdateAccUI()
+    public void UpdateUI()
     {
-
+        
     }
 
     public void ClearSlots()
@@ -44,21 +44,20 @@ public class EquippedUI : MonoBehaviour
         {
             if(selectedOne.indentity == ws.indentity)
             {
-                if(ws.selectBorder.activeSelf != true)
-                {
+                //if(!ws.isSelected)
+                //{
                     //select it
-                    ws.selectBorder.SetActive(true);
+                    ws.Select();
                     controller.weapFocus.ClearFocusUI();
                     //populate focusUI
                     controller.PopulateFocusUI(ws);
                     //set it to focus
-                }
+                //}
             }
             else
             {
                 //deselect it
-                ws.selectBorder.SetActive(false);
-                
+                ws.Deselect();                
             }
         }
     }

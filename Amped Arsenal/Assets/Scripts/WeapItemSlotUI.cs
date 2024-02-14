@@ -9,16 +9,56 @@ public class WeapItemSlotUI : MonoBehaviour
     public int indentity;
     public string weapName;
     public GameObject selectBorder;
+    public Image weapUIObj;
+    [SerializeField]
+    private Sprite deselected, upgradable, selected, upgradableANDselected;
+    public bool isSelected = false, isUpgradeable = false;
     public Image weapImg;
     public GameObject weapLvlBadge;
     public TextMeshProUGUI lvl;
 
+
     public void ClearStuff()
     {
         weapName = "";
-        selectBorder.SetActive(false);
+        //selectBorder.SetActive(false);
+        Deselect();
         weapImg.enabled = false;
-        weapLvlBadge.SetActive(false);
         lvl.text = "";
+    }
+
+    public void Deselect()
+    {
+        isSelected = false;
+
+        if(!isUpgradeable)
+        {
+            weapUIObj.sprite = deselected;
+        }
+        else
+        {
+            weapUIObj.sprite = upgradable;
+        }
+    }
+
+    public void Select()
+    {
+        isSelected = true;
+
+        if(!isUpgradeable)
+        {
+            weapUIObj.sprite = selected;
+        }
+        else
+        {
+            weapUIObj.sprite = upgradableANDselected;
+        }
+    }
+
+    public void UpgradeableCheck(bool canUpgrade)
+    {
+        isUpgradeable = canUpgrade;
+        Deselect();
+
     }
 }

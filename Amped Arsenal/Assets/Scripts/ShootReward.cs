@@ -45,7 +45,7 @@ public class ShootReward : MonoBehaviour
         {
             // 50/50 chance to pull fom both lists
             int randomRelicWeapModList = Random.Range(1,3);
-            Debug.Log(randomRelicWeapModList);
+            //Debug.Log(randomRelicWeapModList);
             if(randomRelicWeapModList == 1)
             {
                 relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];

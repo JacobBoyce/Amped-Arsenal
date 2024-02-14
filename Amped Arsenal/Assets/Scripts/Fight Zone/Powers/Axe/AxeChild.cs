@@ -45,7 +45,7 @@ public class AxeChild : MonoBehaviour
     {
         distFromParent = distFP;
         speedOut = speed;
-        Debug.Log("Controllers knockback " + mod.knockbackModAmount);
+        //Debug.Log("Controllers knockback " + mod.knockbackModAmount);
         curAxe.GetComponent<AxeLogic>().weapMod.giveKnockback = mod.giveKnockback;
         curAxe.GetComponent<AxeLogic>().weapMod.knockbackModAmount = mod.knockbackModAmount;
         curAxe.GetComponent<AxeLogic>().weapMod.eleType = mod.eleType;

@@ -16,7 +16,7 @@ public class AxeLogic : MonoBehaviour
     public void UpdateInfo(AxeController acont, WeaponMods mod)
     {
         controller = acont;
-        Debug.Log("Controllers knockback " + controller.weapMod.knockbackModAmount);
+        //Debug.Log("Controllers knockback " + controller.weapMod.knockbackModAmount);
         weapMod.giveKnockback = controller.weapMod.giveKnockback;
         weapMod.knockbackModAmount = controller.weapMod.knockbackModAmount;
         weapMod.eleType = controller.weapMod.eleType;

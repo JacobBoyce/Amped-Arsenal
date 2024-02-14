@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.WSA;
 
 public class EnemyMovementController : MonoBehaviour
@@ -20,6 +21,7 @@ public class EnemyMovementController : MonoBehaviour
     private EnemyController eController;
     public Rigidbody thisRB;
     public GameObject visuals;
+    public NavMeshAgent nMA;
     //public ParticleSystem dustCloud;
     
     public float distance;
@@ -47,6 +49,7 @@ public class EnemyMovementController : MonoBehaviour
         knockbackCalc = true;
         target = PlayerController.playerObj.gameObject;
         eController = gameObject.GetComponent<EnemyController>();
+        nMA = GetComponent<NavMeshAgent>();
         //animC.GetComponentInChildren<Animator>();
         enemyState = EnemyStates.INIT;
         thisRB = GetComponent<Rigidbody>();
@@ -55,12 +58,13 @@ public class EnemyMovementController : MonoBehaviour
         GetComponent<BoxCollider>().isTrigger = true;
 
         // launch up
-        thisRB?.AddForce(Vector3.up * launchPower, ForceMode.Impulse);
+        //thisRB?.AddForce(Vector3.up * launchPower, ForceMode.Impulse);
     }
 
     // Update is called once per frame
     void Update()
     {
+        nMA.destination = target.transform.position;// - transform.position;
         dir = target.transform.position - transform.position;
         // calculate velocity limited to the desired speed:
         var velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
@@ -167,7 +171,7 @@ public class EnemyMovementController : MonoBehaviour
                     //velocity.y = 0;
                     if(grounded)
                     {
-                        thisRB.velocity = velocity;
+                        //thisRB.velocity = velocity;
                     }
                 }
                 //IN RANGE
@@ -265,12 +269,12 @@ public class EnemyMovementController : MonoBehaviour
                         direction.y = 0;
                         if(collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount > 0)
                         {
-                            Debug.Log("adding extra knockback");
+                            //Debug.Log("adding extra knockback");
                             thisRB.AddForce(-direction.normalized * (knockbackAmount + collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount), ForceMode.Impulse);
                         }
                         else
                         {
-                            Debug.Log("applying normal knockback");
+                            //Debug.Log("applying normal knockback");
                             thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
                         }
                         
