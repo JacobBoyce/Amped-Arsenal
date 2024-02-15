@@ -7,9 +7,12 @@ using System.Numerics;
 
 public class WeaponFocusUI : MonoBehaviour
 {
-    public Image upgradeWeaponImg;
+    
     public Button upgradeButton;
-    public TextMeshProUGUI weapName, lvlUpFrom, lvlUpTo, costUI;
+    public Image buttonImage;
+    public Image upgradeWeaponImg, modImg;
+    public TextMeshProUGUI weapName, weapLvl, modName, costUI;
+    public Sprite cantBuyImg, canBuyImg;
 
     public UpgradeMenuController controller;
     public GameObject levelContainer, upgradeSlotParent, statsUpSlotPrefab;
@@ -30,6 +33,14 @@ public class WeaponFocusUI : MonoBehaviour
         upgradeWeaponImg.enabled = true;
         //set weapon name
         weapName.text = focusedWeap.wName;
+        weapLvl.text = focusedWeap.level.ToString();
+
+        if(focusedWeap.effectSlots.Count > 0)
+        {
+            modImg.sprite = focusedWeap.effectSlots[0].GetComponent<EffectBase>().modRelicImg;
+            modName.text = focusedWeap.effectSlots[0].GetComponent<EffectBase>().effectName;
+        }
+        
 
         //show stats of weapon
         //levelContainer.SetActive(true);
@@ -116,11 +127,15 @@ public class WeaponFocusUI : MonoBehaviour
             {
                 //Debug.Log("turnon on init");
                 upgradeButton.interactable = true;
+                buttonImage.sprite = canBuyImg;
+                // make button green
             }
             else
             {
                 //Debug.Log("turnoff on init");
                 upgradeButton.interactable = false;
+                buttonImage.sprite = cantBuyImg;
+                // make button red
                 //costUI.text = "Cost: ";
             }
         }        

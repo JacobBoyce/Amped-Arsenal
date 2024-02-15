@@ -17,7 +17,7 @@ public class EffectBase : MonoBehaviour
     public float damage = .5f;
     public int tickAmtDuration, tickMaxDuration;
 
-    //public SpawnEffectTypes swpnEffect;
+    public Sprite modRelicImg;
     
     public ParticleSystem partSys;
     public Image uiEffectImg;

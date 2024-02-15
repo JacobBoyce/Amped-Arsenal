@@ -58,7 +58,13 @@ public class WeapItemSlotUI : MonoBehaviour
     public void UpgradeableCheck(bool canUpgrade)
     {
         isUpgradeable = canUpgrade;
-        Deselect();
-
+        if(isSelected)
+        {
+            Select();
+        }
+        else
+        {
+            Deselect();
+        }
     }
 }
