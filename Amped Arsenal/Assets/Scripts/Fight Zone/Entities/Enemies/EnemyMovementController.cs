@@ -52,8 +52,8 @@ public class EnemyMovementController : MonoBehaviour
         nMA = GetComponent<NavMeshAgent>();
         //animC.GetComponentInChildren<Animator>();
         enemyState = EnemyStates.INIT;
-        thisRB = GetComponent<Rigidbody>();
-        thisRB.constraints = RigidbodyConstraints.FreezeRotation;
+        //thisRB = GetComponent<Rigidbody>();
+        //thisRB.constraints = RigidbodyConstraints.FreezeRotation;
         stagCD = stagCDMax;
         GetComponent<BoxCollider>().isTrigger = true;
 
@@ -64,7 +64,7 @@ public class EnemyMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nMA.destination = target.transform.position;// - transform.position;
+        //nMA.destination = target.transform.position;// - transform.position;
         dir = target.transform.position - transform.position;
         // calculate velocity limited to the desired speed:
         var velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
@@ -86,7 +86,7 @@ public class EnemyMovementController : MonoBehaviour
 
         grounded = Physics.Raycast(ray, out RaycastHit hit, rayDistance, layers);
 
-        if(enemyState != EnemyStates.INIT)
+        /*if(enemyState != EnemyStates.INIT)
         {
             if(!grounded)
             {
@@ -100,7 +100,7 @@ public class EnemyMovementController : MonoBehaviour
                 thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
                 thisRB.useGravity = false;
             }
-        }
+        }*/
         
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
@@ -139,7 +139,7 @@ public class EnemyMovementController : MonoBehaviour
                 }
                 else
                 {
-                    thisRB.constraints = RigidbodyConstraints.FreezeRotation;// | RigidbodyConstraints.FreezePositionY;
+                    //thisRB.constraints = RigidbodyConstraints.FreezeRotation;// | RigidbodyConstraints.FreezePositionY;
                     GetComponent<BoxCollider>().isTrigger = false;
                     enemyState = EnemyStates.MOVE;
                 }
@@ -163,8 +163,13 @@ public class EnemyMovementController : MonoBehaviour
                     velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
                     if (eController.HasEffect("Fear"))
                     {
-                        dir *= -1;
-                        velocity *= -1;
+                        //dir *= -1;
+                        //velocity *= -1;
+                        nMA.destination = -target.transform.position;
+                    }
+                    else
+                    {
+                        nMA.destination = target.transform.position;
                     }
 
                     dir.y = 0;
@@ -216,7 +221,7 @@ public class EnemyMovementController : MonoBehaviour
                 else
                 {
                     stagCD = stagCDMax;
-                    thisRB.velocity = Vector3.zero;
+                    //thisRB.velocity = Vector3.zero;
                     isStaggered = false;
                     enemyState = EnemyStates.MOVE;
                     knockbackCalc = true;
@@ -263,22 +268,22 @@ public class EnemyMovementController : MonoBehaviour
                     enemyState = EnemyStates.STAGGER;
 
                     //calculate knockback
-                    if(knockbackCalc == true)
-                    {
-                        Vector3 direction = collision.transform.position - transform.position;
-                        direction.y = 0;
-                        if(collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount > 0)
-                        {
-                            //Debug.Log("adding extra knockback");
-                            thisRB.AddForce(-direction.normalized * (knockbackAmount + collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount), ForceMode.Impulse);
-                        }
-                        else
-                        {
-                            //Debug.Log("applying normal knockback");
-                            thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
-                        }
+                    // if(knockbackCalc == true)
+                    // {
+                    //     Vector3 direction = collision.transform.position - transform.position;
+                    //     direction.y = 0;
+                    //     if(collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount > 0)
+                    //     {
+                    //         //Debug.Log("adding extra knockback");
+                    //         thisRB.AddForce(-direction.normalized * (knockbackAmount + collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount), ForceMode.Impulse);
+                    //     }
+                    //     else
+                    //     {
+                    //         //Debug.Log("applying normal knockback");
+                    //         thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
+                    //     }
                         
-                    }
+                    //}
                 }
             }
             visuals.GetComponentInChildren<VisualEffects>().damaged = true; 

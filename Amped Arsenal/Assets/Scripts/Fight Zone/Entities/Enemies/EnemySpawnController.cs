@@ -11,9 +11,11 @@ public class EnemySpawnController : MonoBehaviour
     public GameObject enemyPrefab, tempePrefab;
     public List<GameObject> enemyPrefabs = new();
     public List<EnemySpawnPoint> esPoint = new();
+    public LayerMask _layersToNotSpawnOn;
     //private Quaternion rotation;
 
     public float spawnRate, spawnRateMax;
+    public int randomIndex;
 
     public int waveNum, checkMinChange, zoneMultiplier;
 
@@ -39,8 +41,8 @@ public class EnemySpawnController : MonoBehaviour
             else
             {
                 spawnRate = 0;
-                UpdateSpawnPoints();
-                SpawnEnemy();
+                ChooseValidSpawnLocation();
+                //SpawnEnemy();
             }
         }
         
@@ -54,24 +56,90 @@ public class EnemySpawnController : MonoBehaviour
         //}
     }
 
-    public void SpawnEnemy()
+    public void ChooseValidSpawnLocation()
+    {
+        bool isSpawnPosValid;
+        int attemptCount;
+        int maxAttempts = 200;
+        randomIndex = 0;
+        List<int> triedLocations = new();
+
+        isSpawnPosValid = false;
+        attemptCount = 0;
+        Collider[] colliders;
+
+        //for i = 0; i < 4; i++
+        //
+
+        //find suitable spawn location
+        while(!isSpawnPosValid && attemptCount < maxAttempts)
+        {
+            bool isInvalidCollision = false;
+            randomIndex = Random.Range(0, esPoint.Count);
+
+            if (!triedLocations.Contains(randomIndex))
+            {
+                triedLocations.Add(randomIndex);
+
+                //loop this 50 times, then get new spawn rectangle
+                while(!isInvalidCollision && attemptCount < triedLocations.Count*50)
+                {
+                    isInvalidCollision = false;
+                    UpdateSpawnPoints(esPoint[randomIndex]);
+
+                    colliders = Physics.OverlapSphere(esPoint[randomIndex].sPoint.transform.position, 2f);
+
+                    foreach(Collider col in colliders)
+                    {
+                        if(((1 << col.gameObject.layer) & _layersToNotSpawnOn) !=0)
+                        {
+                            isInvalidCollision = true;
+                            break;
+                        }
+                    }
+
+                    if(isInvalidCollision)
+                    {
+                        attemptCount++;
+                    }
+                }
+            }
+
+            if(!isInvalidCollision)
+            {   
+                isSpawnPosValid = true;
+                break;          
+            }
+        }
+
+        if(!isSpawnPosValid)
+        {
+            Debug.Log("couldnt find valid spawn position for - enemy to spawn");
+        }
+        else
+        {
+            //spawnstuff
+            SpawnEnemy(randomIndex);
+        }
+    }
+
+    public void SpawnEnemy(int randomInd)
     {
         int index = Random.Range(0, enemyPrefabs.Count);
-        int spnpoint = Random.Range(0, esPoint.Count);
        
-        tempePrefab = Instantiate(enemyPrefabs[index],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+        tempePrefab = Instantiate(enemyPrefabs[index],esPoint[randomInd].sPoint.transform.position, esPoint[randomInd].sPoint.transform.rotation);
         //upgrade enemy stats here
         tempePrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,waveNum,zoneMultiplier);
     }
 
 
-    public void UpdateSpawnPoints()
+    public void UpdateSpawnPoints(EnemySpawnPoint es)
     {
-        foreach(EnemySpawnPoint es in esPoint)
-        {
+        //foreach(EnemySpawnPoint es in esPoint)
+        //{
             Vector3 range = es.transform.localScale / 2.0f;
             float x = Random.Range(-range.z, range.z); //z because the value needs to be between -.5 and .5 (which y and z are)
             es.sPoint.transform.localPosition = new Vector3(x, 0, 0);
-        }
+        //}
     }
 }
