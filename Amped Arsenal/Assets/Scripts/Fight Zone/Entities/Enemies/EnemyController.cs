@@ -30,6 +30,11 @@ public class EnemyController : Actor
     public float attk, str, def, spd, xp, gold;
     public int threatLVL;
 
+    [Header("Sounds Vars")]
+    public AudioSource damagedSound;
+    [Range(0.1f, 0.5f)]
+    public float pitchMultiplier;
+
     void Awake()
     {
         //when setting stats pull from a level or scale and use here to instantiate
@@ -120,6 +125,7 @@ public class EnemyController : Actor
             VisualDamage();
         }
         //lifeText.text = _stats["hp"].Value.ToString();
+        lifeText.text = movementController.enemyState.ToString();
     }
     
     public bool HasEffect(EffectBase effect)
@@ -168,6 +174,7 @@ public class EnemyController : Actor
 
     public void TakeDamage(float damage)
     {
+        damagedSound.PlayOneShot(damagedSound.clip);
         if(!AmDead())
         {
             tookDamage = true;

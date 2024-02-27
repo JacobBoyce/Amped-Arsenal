@@ -31,6 +31,7 @@ public class WeaponFocusUI : MonoBehaviour
         //set weapon image
         upgradeWeaponImg.sprite = focusedWeap.shopItemInfo.splashImg;
         upgradeWeaponImg.enabled = true;
+        modImg.enabled = false;
         //set weapon name
         weapName.text = focusedWeap.wName;
         weapLvl.text = focusedWeap.level.ToString();
@@ -39,6 +40,7 @@ public class WeaponFocusUI : MonoBehaviour
         {
             modImg.sprite = focusedWeap.effectSlots[0].GetComponent<EffectBase>().modRelicImg;
             modName.text = focusedWeap.effectSlots[0].GetComponent<EffectBase>().effectName;
+            modImg.enabled = true;
         }
         
 
@@ -145,6 +147,7 @@ public class WeaponFocusUI : MonoBehaviour
     {
 
         upgradeWeaponImg.enabled = false;
+        modImg.enabled = false;
 
         weapName.text = "";
 

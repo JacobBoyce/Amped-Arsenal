@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.WSA;
+using Vector3 = UnityEngine.Vector3;
 
 public class EnemyMovementController : MonoBehaviour
 {
@@ -48,22 +51,22 @@ public class EnemyMovementController : MonoBehaviour
     {
         knockbackCalc = true;
         target = PlayerController.playerObj.gameObject;
+        GetComponent<BoxCollider>().isTrigger = true;
         eController = gameObject.GetComponent<EnemyController>();
         nMA = GetComponent<NavMeshAgent>();
+        nMA.speed = eController._stats["spd"].Value;
         //animC.GetComponentInChildren<Animator>();
         enemyState = EnemyStates.INIT;
         //thisRB = GetComponent<Rigidbody>();
         //thisRB.constraints = RigidbodyConstraints.FreezeRotation;
         stagCD = stagCDMax;
-        GetComponent<BoxCollider>().isTrigger = true;
-
-        // launch up
-        //thisRB?.AddForce(Vector3.up * launchPower, ForceMode.Impulse);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+/*
         //nMA.destination = target.transform.position;// - transform.position;
         dir = target.transform.position - transform.position;
         // calculate velocity limited to the desired speed:
@@ -75,7 +78,8 @@ public class EnemyMovementController : MonoBehaviour
             dir *= -1;
             velocity *= -1;
         }
-
+        */
+/*
         //turn off colosion with weapons after getting hit. once stagger ends turn collisions back on?
         
         
@@ -100,10 +104,10 @@ public class EnemyMovementController : MonoBehaviour
                 thisRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
                 thisRB.useGravity = false;
             }
-        }*/
+        }
         
         //transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-
+*/
         //flip sprite
         if(!isDead)
         {
@@ -129,7 +133,7 @@ public class EnemyMovementController : MonoBehaviour
         {
             distance = Vector3.Distance(target.transform.position, transform.position);
         }
-        
+       
         switch(enemyState)
         {
             case EnemyStates.INIT:
@@ -160,7 +164,7 @@ public class EnemyMovementController : MonoBehaviour
                 if(!inRange)
                 {
                     dir = target.transform.position - transform.position;
-                    velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
+                    //velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
                     if (eController.HasEffect("Fear"))
                     {
                         //dir *= -1;
@@ -222,9 +226,12 @@ public class EnemyMovementController : MonoBehaviour
                 {
                     stagCD = stagCDMax;
                     //thisRB.velocity = Vector3.zero;
-                    isStaggered = false;
-                    enemyState = EnemyStates.MOVE;
-                    knockbackCalc = true;
+                    if(!knockbackCalc)
+                    {
+                        isStaggered = false;
+                        enemyState = EnemyStates.MOVE;
+                        //knockbackCalc = true;
+                    }
                 }
             break;
 
@@ -259,6 +266,14 @@ public class EnemyMovementController : MonoBehaviour
                 enemyState = EnemyStates.DEAD;
                 return;
             }
+
+            if(collision.gameObject.GetComponent<WeaponBase>().effectSlots[0].GetComponent<EffectBase>().effectName == "Knockback")
+            {
+                Vector3 direction = collision.transform.position - transform.position;
+                direction.y = 0;
+                StartCoroutine("ApplyKnockback", direction);
+            }
+
             if(collision.gameObject.GetComponent<WeaponMods>().giveKnockback)
             {
                 Rigidbody rb = collision.GetComponent<Rigidbody>();
@@ -288,5 +303,31 @@ public class EnemyMovementController : MonoBehaviour
             }
             visuals.GetComponentInChildren<VisualEffects>().damaged = true; 
         }
+    }
+
+    private IEnumerator ApplyKnockback(Vector3 force)
+    {
+        Debug.Log("KNOCKBACKINNNNNG!!!!");
+        knockbackCalc = true;
+        yield return null;
+        nMA.enabled = false;
+        thisRB.useGravity = true;
+        thisRB.isKinematic = false;
+        thisRB.AddForce(force);
+
+        yield return new WaitForFixedUpdate();
+        yield return new WaitUntil(() => thisRB.velocity.magnitude < .05f);
+        yield return new WaitForSeconds(.25f);
+
+        thisRB.velocity = Vector3.zero;
+        thisRB.angularVelocity = Vector3.zero;
+        thisRB.useGravity = false;
+        thisRB.isKinematic = true;
+        nMA.Warp(transform.position);
+        nMA.enabled = true;
+
+        yield return null;
+        knockbackCalc = false;
+        enemyState = EnemyStates.MOVE;
     }
 }

@@ -43,6 +43,8 @@ public class WaveController : MonoBehaviour
 
     public float delayStartMax, delayStart, delayExfilMax, delayExfil;
     public bool startDelay, startExfilDelay;
+    private int randomIndex;
+    public LayerMask _layersToNotSpawnOn;
 
 
     // Start is called before the first frame update
@@ -137,8 +139,7 @@ public class WaveController : MonoBehaviour
             else
             {
                 spawnRate = 0;
-                UpdateSpawnPoints();
-                SpawnEnemy();
+                ChooseValidSpawnLocation();
             }
         }
         #endregion
@@ -288,25 +289,24 @@ public class WaveController : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-    public void SpawnEnemy()
+    public void SpawnEnemy(int spwnIndex)
     {
-        int spnpoint = Random.Range(0, esPoint.Count);
     
         if(curWave <= 10)
         {
-            tempPrefab = Instantiate(beginningSpawnList[curWave-1],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+            tempPrefab = Instantiate(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
         else if(curWave >= 11)
         {
             int randEnemy = Random.Range(0, midAndLateGameSpwnList.Count);
-            tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+            tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
         else if(exfilPhase)
         {
             int randEnemy = Random.Range(0, enemyPrefabs.Count);
-            tempPrefab = Instantiate(enemyPrefabs[randEnemy],esPoint[spnpoint].sPoint.transform.position, esPoint[spnpoint].sPoint.transform.rotation);
+            tempPrefab = Instantiate(enemyPrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
 
@@ -333,13 +333,85 @@ public class WaveController : MonoBehaviour
             }
         }
     }
-    public void UpdateSpawnPoints()
+
+    public void ChooseValidSpawnLocation()
     {
-        foreach(EnemySpawnPoint es in esPoint)
+        bool isSpawnPosValid;
+        int maxAttemptsPerLocation = 50;
+        int maxTotalAttempts = 200;
+        int totalAttempts = 0;
+        randomIndex = 0;
+        List<int> triedLocations = new();
+
+        isSpawnPosValid = false;
+        Collider[] colliders;
+
+        //for i = 0; i < 4; i++
+        //
+
+        //find suitable spawn location
+        while (!isSpawnPosValid && totalAttempts < maxTotalAttempts)
         {
+            bool isInvalidCollision = false;
+            randomIndex = Random.Range(0, esPoint.Count);
+
+            if (!triedLocations.Contains(randomIndex))
+            {
+                triedLocations.Add(randomIndex);
+
+                int attemptsOnCurrentLocation = 0;
+                while (!isInvalidCollision && attemptsOnCurrentLocation < maxAttemptsPerLocation)
+                {
+                    isInvalidCollision = false;
+                    UpdateSpawnPoints(esPoint[randomIndex]);
+
+                    colliders = Physics.OverlapSphere(esPoint[randomIndex].sPoint.transform.position, 2f);
+
+                    foreach (Collider col in colliders)
+                    {
+                        if (((1 << col.gameObject.layer) & _layersToNotSpawnOn) != 0)
+                        {
+                            isInvalidCollision = true;
+                            break;
+                        }
+                    }
+
+                    if (isInvalidCollision)
+                    {
+                        attemptsOnCurrentLocation++;
+                        totalAttempts++;
+                    }
+                    else
+                    {
+                        isSpawnPosValid = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                totalAttempts++;
+            }
+        }
+
+        if(!isSpawnPosValid)
+        {
+            Debug.Log("couldnt find valid spawn position for - enemy to spawn");
+        }
+        else
+        {
+            //spawnstuff
+            SpawnEnemy(randomIndex);
+        }
+    }
+
+    public void UpdateSpawnPoints(EnemySpawnPoint es)
+    {
+        //foreach(EnemySpawnPoint es in esPoint)
+        //{
             Vector3 range = es.transform.localScale / 2.0f;
             float x = Random.Range(-range.z, range.z); //z because the value needs to be between -.5 and .5 (which y and z are)
             es.sPoint.transform.localPosition = new Vector3(x, 0, 0);
-        }
+        //}
     }
 }

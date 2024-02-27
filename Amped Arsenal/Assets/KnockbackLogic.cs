@@ -38,5 +38,15 @@ public class KnockbackLogic : EffectBase
         
         //This starts the countdown for the effect to be removed
         activate = true;
+
+        enemy.movementController.enemyState = EnemyMovementController.EnemyStates.STAGGER;
+        enemy.movementController.isStaggered = true;
+        enemy.movementController.knockbackCalc = true;
+        enemy.movementController.stagCD = tickMaxDuration;
     }
+
+    //private IEnumerator ApplyKnockback()
+    //{
+
+    //}
 }

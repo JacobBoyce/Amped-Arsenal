@@ -13,7 +13,7 @@ public class WeapItemSlotUI : MonoBehaviour
     [SerializeField]
     private Sprite deselected, upgradable, selected, upgradableANDselected;
     public bool isSelected = false, isUpgradeable = false;
-    public Image weapImg;
+    public Image weapImg, lvlBar;
     public GameObject weapLvlBadge;
     public TextMeshProUGUI lvl;
 
@@ -25,6 +25,7 @@ public class WeapItemSlotUI : MonoBehaviour
         Deselect();
         weapImg.enabled = false;
         lvl.text = "";
+        lvlBar.fillAmount = 0;
     }
 
     public void Deselect()

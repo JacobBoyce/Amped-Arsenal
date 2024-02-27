@@ -47,7 +47,7 @@ public class RootEffectLogic : EffectBase
 
         //add enemy stop
         enemy.GetComponent<EnemyMovementController>().stagCD = tickMaxDuration;
-        enemy.GetComponent<EnemyMovementController>().thisRB.isKinematic = true;
+        //enemy.GetComponent<EnemyMovementController>().thisRB.isKinematic = true;
         enemy.GetComponent<EnemyMovementController>().isStaggered = true;
         enemy.GetComponent<EnemyMovementController>().enemyState = EnemyMovementController.EnemyStates.STAGGER;
 

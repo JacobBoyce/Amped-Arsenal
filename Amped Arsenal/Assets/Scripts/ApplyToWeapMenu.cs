@@ -24,10 +24,11 @@ public class ApplyToWeapMenu : MonoBehaviour
         foreach(GameObject weapObj in player.equippedWeapons)
         {
             WeaponBase tempWeap = weapObj.GetComponent<WeaponBase>();
+            WeapChoicePrefab choicePrefab = weapOptions[i].GetComponent<WeapChoicePrefab>();
 
-                weapOptions[i].GetComponent<WeapChoicePrefab>().weapName.text = tempWeap.wName;
-                weapOptions[i].GetComponent<WeapChoicePrefab>().weapImg.sprite = tempWeap.shopItemInfo.splashImg;
-                weapOptions[i].GetComponent<WeapChoicePrefab>().weapImg.gameObject.SetActive(true);
+                choicePrefab.weapName.text = tempWeap.wName;
+                choicePrefab.weapImg.sprite = tempWeap.shopItemInfo.splashImg;
+                choicePrefab.weapImg.gameObject.SetActive(true);
 
             if(tempWeap.currentEquippedSlots < tempWeap.maxSlots)
             {
@@ -63,17 +64,17 @@ public class ApplyToWeapMenu : MonoBehaviour
             WeapChoicePrefab wcp = ws.GetComponent<WeapChoicePrefab>();
             if(weapChoice.weapName.Equals(wcp.weapName) == true)
             {
-                if(wcp.selectionBorder.activeSelf != true)
+                if(wcp.isSelected != true)
                 {
                     //select it
-                    wcp.selectionBorder.SetActive(true);
+                    wcp.Select();
                     selectedWeap = wcp;
                 }
             }
             else
             {
                 //deselect it
-                wcp.selectionBorder.SetActive(false);
+                wcp.Deselect();
                 
             }
         }

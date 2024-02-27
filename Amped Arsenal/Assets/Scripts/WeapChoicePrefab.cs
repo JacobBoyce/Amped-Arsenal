@@ -6,7 +6,21 @@ using UnityEngine.UI;
 
 public class WeapChoicePrefab : MonoBehaviour
 {
-    public GameObject selectionBorder;
-    public Image weapImg;
+    public Image weapImg, bgImg;
     public TextMeshProUGUI weapName;
+    [SerializeField]
+    private Sprite deselected, selected;
+    public bool isSelected = false;
+
+    public void Select()
+    {
+        bgImg.sprite = selected;
+        isSelected = true;
+    }
+
+    public void Deselect()
+    {
+        bgImg.sprite = deselected;
+        isSelected = false;
+    }
 }
