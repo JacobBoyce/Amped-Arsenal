@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &155113346
 RectTransform:
   m_ObjectHideFlags: 0
@@ -488,7 +488,7 @@ MonoBehaviour:
   movementController: {fileID: 41604279069339930}
   spriteObj: {fileID: 3682981137545698338}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
-  blinkIntesity: 4.5
+  blinkIntesity: 3
   blinkDuration: 0.1
   blinkTimer: 0
   dpoofOffset: 3
@@ -538,8 +538,8 @@ MonoBehaviour:
   wantRandom: 1
   randY: 0
   randPower: 0
-  powerMax: 25
-  powerMin: 25
+  powerMax: 10
+  powerMin: 10
   sType: 1
 --- !u!195 &1595604239
 NavMeshAgent:

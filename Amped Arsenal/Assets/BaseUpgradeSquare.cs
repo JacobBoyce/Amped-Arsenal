@@ -18,6 +18,8 @@ public class BaseUpgradeSquare : MonoBehaviour
     public Image lvlFillBar;
     public float timeToFill, cd;
     private float barLevel;
+    [SerializeField]
+    private int maxLvl = 10;
     private int _baseCost;
     public bool lerpBar = false, useLastLevel = false;
 
@@ -36,9 +38,9 @@ public class BaseUpgradeSquare : MonoBehaviour
         get{return _baseUpgradeLevel;}
         set
         {
-            if(value > 5)
+            if(value > maxLvl)
             {
-                _baseUpgradeLevel = 5;
+                _baseUpgradeLevel = maxLvl;
             }
             else if (value < 0 )
             {
@@ -82,7 +84,7 @@ public class BaseUpgradeSquare : MonoBehaviour
         lerpBar = true;
         cd = 0;
         useLastLevel = useLast;
-        barLevel = (float)(BaseUpgradeLevel / 5f);
+        barLevel = (float)(BaseUpgradeLevel / 10f);
     }
 
     public void Update()

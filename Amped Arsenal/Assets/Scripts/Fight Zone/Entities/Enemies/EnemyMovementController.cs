@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.WSA;
 using Vector3 = UnityEngine.Vector3;
 
 public class EnemyMovementController : MonoBehaviour

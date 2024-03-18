@@ -188,7 +188,7 @@ public class EnemyController : Actor
         if(!AmDead())
         {
             tookDamage = true;
-            curDamageColor = dmgColor;
+            //curDamageColor = dmgColor;
             blinkTimer = blinkDuration;
             Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
             AmDead();
@@ -234,7 +234,8 @@ public class EnemyController : Actor
             spawnedXp = true;
             SpawnDrop();
             Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
-            Destroy(this.gameObject);
+            spriteObj.SetActive(false);
+            Destroy(this.gameObject, .5f);
         }
         return isDead;
     }

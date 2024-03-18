@@ -17,7 +17,7 @@ public class UpgradeController : MonoBehaviour
     
     [SerializeField]
     public List<UpgradeValues> upVals;
-    public int[] upgradeCostValues = new int[5];
+    public int[] upgradeCostValues;
 
     public void Awake()
     {

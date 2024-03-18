@@ -137,7 +137,7 @@ public class MainMenuController : MonoBehaviour
         {
             for(int j = 0; j < upController.upVals[i].upValues.Length; j++)
             {
-                upController.upgradeList[i].upValues[j] = upController.upVals[i].upValues[j];
+               upController.upgradeList[i].upValues[j] = upController.upVals[i].upValues[j];
             }
             
         }
@@ -213,14 +213,15 @@ public class MainMenuController : MonoBehaviour
         public string upgradeName;
 
         private int _upgradeLevel;
+        private int maxLvl = 10;
         public int UpgradeLevel
         {
             get{return _upgradeLevel;}
             set
             {
-                if(value > 5)
+                if(value > maxLvl)
                 {
-                    _upgradeLevel = 5;
+                    _upgradeLevel = maxLvl;
                 }
                 else if (value < 0 )
                 {
@@ -233,11 +234,11 @@ public class MainMenuController : MonoBehaviour
             }
         }
 
-        public int[] upValues = new int[5];
+        public int[] upValues;
 
         public bool IsMaxLevel()
         {
-            if(UpgradeLevel == 5)
+            if(UpgradeLevel == maxLvl)
             {
                 return true;
             }
