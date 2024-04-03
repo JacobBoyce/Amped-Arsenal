@@ -1,10 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class LampLoadLevel : MonoBehaviour
 {
+    public GameZoneController gzController;
     public WaveController waveController;
     public LobbyController lobController;
     public GameObject moveToPos;
@@ -20,7 +20,7 @@ public class LampLoadLevel : MonoBehaviour
     public bool inRange = false, usable = true;
     private bool triggeredLoad = false;
 
-    private float maxLightIntensity;
+    private float maxLightIntensity, baseLightIntensity;
     public Color initColor;
     //private IEnumerator coroutine;
 
@@ -28,9 +28,8 @@ public class LampLoadLevel : MonoBehaviour
     {
         cd = cdMax;
         countdownText.text = levelName;
-
-        maxLightIntensity = aoeLight.intensity;
-        aoeLight.intensity = maxLightIntensity;
+        maxLightIntensity = 200;
+        baseLightIntensity = 100;
         //aoeLight.gameObject.SetActive(false);
         initColor = lightMat.material.GetColor("_EmissionColor");
         //lightMat.material.SetColor("_EmissionColor", initColor /** Mathf.Pow(2, 4)*/);
@@ -47,7 +46,7 @@ public class LampLoadLevel : MonoBehaviour
                 cd -= Time.deltaTime;
                 formatTime = cd.ToString("0");
                 countdownText.text = formatTime;
-                aoeLight.intensity = (.25f + (1 - (cd / cdMax))) * maxLightIntensity;
+                aoeLight.intensity = baseLightIntensity + (((1 - (cd / cdMax))) * maxLightIntensity);
                 //lightMat.material.SetColor("_EmissionColor", initColor * (1 - (cd / cdMax)) * Mathf.Pow(2, 2));
             }
             else
@@ -69,9 +68,9 @@ public class LampLoadLevel : MonoBehaviour
 
     public IEnumerator MovePlayer()
     {
-        MainMenuController.Instance.StartFadeOut();
+        gzController.StartFadeOut();
         //Time.timeScale = 0;
-        while(MainMenuController.Instance.IsFadingOut)
+        while(gzController.IsFadingOut)
         {
             yield return null;
         }
@@ -89,11 +88,11 @@ public class LampLoadLevel : MonoBehaviour
 
     public IEnumerator AfterMovePlayer()
     {
-        MainMenuController.Instance.StartFadeIn();
+        gzController.StartFadeIn();
         lobController.ToggleLamps(false);
 
         //Time.timeScale = 0;
-        while(MainMenuController.Instance.IsFadingIn)
+        while(gzController.IsFadingIn)
         {
             yield return null;
         }
@@ -109,7 +108,6 @@ public class LampLoadLevel : MonoBehaviour
                 {
                     inRange = true;
                     p1 = other.gameObject.GetComponent<PlayerController>();
-                    aoeLight.gameObject.SetActive(true);
                 }
                 else
                 {
@@ -130,7 +128,7 @@ public class LampLoadLevel : MonoBehaviour
             if(usable)
             {
                 inRange = false;
-                aoeLight.intensity = maxLightIntensity;
+                aoeLight.intensity = baseLightIntensity;
                 //lightMat.material.SetColor("_EmissionColor", initColor /** Mathf.Pow(2, 4)*/);
                 cd = cdMax;
                 countdownText.text = levelName;

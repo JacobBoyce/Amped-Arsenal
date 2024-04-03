@@ -1,11 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.IO;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.InputSystem.OnScreen;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameZoneController : MonoBehaviour
@@ -31,7 +27,17 @@ public class GameZoneController : MonoBehaviour
 
     public List<GameObject> lightsToToggle;
 
-    public GameObject thingToShoot, whereToShoot;
+    [Header("Fade Stuff"), Space(10)]
+    [Range(0.1f, 10f), SerializeField] private float _fadeOutSpeed = 5f;
+    [Range(0.1f, 10f), SerializeField] private float _fadeInSpeed = 5f;
+    [SerializeField] public Color _fadeOutStartColor;
+
+    public bool IsFadingOut {get; private set;}
+    public bool IsFadingIn {get; private set;}
+
+    [Space(10)]
+    public GameObject thingToShoot;
+    public GameObject whereToShoot;
 
     public float gameTimer, gameTimerMax;
     public int minutes, seconds;
@@ -96,9 +102,8 @@ public class GameZoneController : MonoBehaviour
         } 
         p1.inflationAmount = PlayerPrefs.GetInt("Inflation");
         fadeImage.color = Color.black;
-        MainMenuController.Instance._currentFadeImage = fadeImage;
         //MainMenuController.Instance._fadeOutStartColor.a = 0f;
-        MainMenuController.Instance.StartFadeIn();
+        StartFadeIn();
         
     }
 
@@ -118,6 +123,36 @@ public class GameZoneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        #region Fade Stuff
+
+            if(IsFadingOut)
+        {
+            if(fadeImage.color.a < 1f)
+            {
+                _fadeOutStartColor.a += Time.unscaledDeltaTime * _fadeOutSpeed;
+                fadeImage.color = _fadeOutStartColor;
+            }
+            else
+            {
+                IsFadingOut = false;
+
+            }
+        }
+
+        if(IsFadingIn)
+        {
+            if(fadeImage.color.a > 0f)
+            {
+                _fadeOutStartColor.a -= Time.unscaledDeltaTime * _fadeInSpeed;
+                fadeImage.color = _fadeOutStartColor;
+            }
+            else
+            {
+                IsFadingIn = false;
+            }
+        }
+
+        #endregion
         /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             //turn on upgrade screen and turn off other ui
@@ -159,6 +194,20 @@ public class GameZoneController : MonoBehaviour
                         + "\nXP: " + p1._stats["xp"].Value + " / " + p1._stats["xp"].Max;
     }
     
+    public void StartFadeOut()
+    {
+        fadeImage.color = _fadeOutStartColor;
+        IsFadingOut = true;
+    }
+
+    public void StartFadeIn()
+    {
+        if(fadeImage.color.a >= 1f)
+        {
+            fadeImage.color = _fadeOutStartColor;
+            IsFadingIn = true;
+        }
+    }
     public void ToggleFightZoneLights(bool toggle)
     {
         foreach(GameObject go in lightsToToggle)

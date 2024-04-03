@@ -34,6 +34,7 @@ public class POIController : MonoBehaviour
             //{
                 GameObject temp;
                 temp = Instantiate(go, new Vector3(poiLocations[i].transform.position.x, 0, poiLocations[i].transform.position.z), poiLocations[i].transform.rotation);
+                
                 spawnedEvents.Add(temp);
                 i++;
             //}

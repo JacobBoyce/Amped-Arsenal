@@ -1,12 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
-using DataManagement;
 
 public class ExfilLampLogic : MonoBehaviour
 {
+    public GameZoneController gzController;
     public WaveController waveController;
     public LobbyController lobController;
     
@@ -58,9 +56,10 @@ public class ExfilLampLogic : MonoBehaviour
 
     public IEnumerator MovePlayer()
     {
-        MainMenuController.Instance.StartFadeOut();
+        //gzController.StartFadeOut();
+        gzController.StartFadeOut();
         //Time.timeScale = 0;
-        while(MainMenuController.Instance.IsFadingOut)
+        while(gzController.IsFadingOut)
         {
             yield return null;
         }
@@ -75,9 +74,9 @@ public class ExfilLampLogic : MonoBehaviour
 
     public IEnumerator AfterMovePlayer()
     {
-        MainMenuController.Instance.StartFadeIn();
+        gzController.StartFadeIn();
         //Time.timeScale = 0;
-        while(MainMenuController.Instance.IsFadingIn)
+        while(gzController.IsFadingIn)
         {
             yield return null;
         }
