@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpearController : WeaponBase
 {
     public int pierceNum, speed, range;
-    //public List<GameObject> axes = new List<GameObject>();
+    public List<GameObject> spears = new();
     void Start()
     {
         TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 
@@ -13,6 +13,18 @@ public class SpearController : WeaponBase
             curCooldown++;
         };
         //SetSpawnDetails();
+        SpawnDetails();
+    }
+
+    public void SpawnDetails()
+    {
+        for(int i = 0; i < playerObj.rotatingSpawnPoints.Count; i++)
+        {
+            GameObject tempSpear = Instantiate(weapPrefab, playerObj.rotatingSpawnPoints[i].transform.position, playerObj.rotatingSpawnPoints[i].transform.rotation);
+            //tempSpear.transform.SetParent(playerObj.rotatingSpawnPoints[i].transform);
+            spears.Add(tempSpear);
+            tempSpear.SetActive(false);
+        }
     }
     public void Update()
     {
@@ -37,8 +49,9 @@ public class SpearController : WeaponBase
         curCooldown = 0;
         for(int i = 0; i < playerObj.rotatingSpawnPoints.Count; i++)
         {
-            GameObject tempSpear = Instantiate(weapPrefab, playerObj.rotatingSpawnPoints[i].transform.position, playerObj.rotatingSpawnPoints[i].transform.rotation);
-            tempSpear.GetComponentInChildren<SpearLogic>().InitSpear(this, weapMod);
+            spears[i].transform.position = playerObj.rotatingSpawnPoints[i].transform.position;
+            spears[i].GetComponentInChildren<SpearLogic>().InitSpear(this, weapMod);
+            spears[i].SetActive(true);
         }
     }
 

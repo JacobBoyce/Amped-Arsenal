@@ -233,11 +233,19 @@ public class EnemyController : Actor
         {
             spawnedXp = true;
             SpawnDrop();
-            Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
+            //Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
+            ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
             spriteObj.SetActive(false);
             Destroy(this.gameObject, .5f);
+            //StartCoroutine(ReturnToPoolAfterTime());
         }
         return isDead;
+    }
+
+    private IEnumerator ReturnToPoolAfterTime()
+    {
+        yield return new WaitForSeconds(0.5f);
+        ObjectPoolManager.ReturnObjectToPool(this.gameObject);
     }
 
     public void SpawnDrop()
@@ -247,33 +255,14 @@ public class EnemyController : Actor
         if(multiDropChance < 2)
         {
             //spawn xp and gold
-            SpawnDropObject(drops[0]);
-            SpawnDropObject(drops[1]);
+            GameObject tempGoldDrop = ObjectPoolManager.SpawnObject(drops[1], transform.position, transform.rotation, ObjectPoolManager.PoolType.GoldNug);
+            tempGoldDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
+            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempGoldDrop, ShootReward.ShootType.Up);
         }
-        else
-        {
             //spawn xp
-            SpawnDropObject(drops[0]);
-        }
-
-    }
-
-    public void SpawnDropObject(GameObject drop)
-    {
-        //shoot reward like it dropped it
-            GameObject tempDrop;
-            tempDrop = Instantiate(drop);
-            tempDrop.transform.position = this.gameObject.transform.position;
-            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
-
-            if(tempDrop.tag == "XP")
-            {
-                tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
-            }
-            else if(tempDrop.tag == "Gold")
-            {
-                tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
-            }
+        GameObject tempDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
+        tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
+        GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
     }
 
     public void VisualDamage()

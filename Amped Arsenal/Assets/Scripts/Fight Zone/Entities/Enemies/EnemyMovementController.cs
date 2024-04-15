@@ -31,8 +31,8 @@ public class EnemyMovementController : MonoBehaviour
     [Header("Stagger vars")]
     public float knockbackAmount;
     public float stagCD, stagCDMax;
-    public bool isStaggered, knockbackCalc = true;
-    public Vector3 dir;
+    public bool isStaggered;
+    public Vector3 dir, lastHitDirection, oppDir;
     public float launchPower, initTimer = 0, initTimerMax = .5f;
 
     [Space(10)]
@@ -45,7 +45,6 @@ public class EnemyMovementController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        knockbackCalc = true;
         target = PlayerController.playerObj.gameObject;
         GetComponent<BoxCollider>().isTrigger = true;
         eController = gameObject.GetComponent<EnemyController>();
@@ -112,15 +111,14 @@ public class EnemyMovementController : MonoBehaviour
                 //theSR.flipX = true;
                 facingRight = true;
                 facingLeft = false;
-                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", true);
-                //dustCloud.velocityOverLifetime.x = 0 - dustCloud.velocityOverLifetime.x;
+                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", false);
             }
             else if(dir.x < 0 && facingLeft != true)
             {
                 //theSR.flipX = false;
                 facingRight = false;
                 facingLeft = true;
-                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", false);
+                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", true);
             }
         }
         
@@ -160,16 +158,17 @@ public class EnemyMovementController : MonoBehaviour
                 if(!inRange)
                 {
                     dir = target.transform.position - transform.position;
+                    oppDir = transform.position - target.transform.position;
                     //velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
                     if (eController.HasEffect("Fear"))
                     {
                         //dir *= -1;
                         //velocity *= -1;
-                        nMA.destination = -target.transform.position;
+                        nMA.SetDestination(oppDir + transform.position);
                     }
                     else
                     {
-                        nMA.destination = target.transform.position;
+                        nMA.SetDestination(target.transform.position);
                     }
 
                     dir.y = 0;
@@ -214,21 +213,18 @@ public class EnemyMovementController : MonoBehaviour
 
             
             case EnemyStates.STAGGER:
-                if(stagCD > 0)
+                /*if(stagCD > 0)
                 {
                     stagCD -= Time.deltaTime;
                 }
                 else
                 {
+                    enemyState = EnemyStates.MOVE;
+                    isStaggered = false;
                     stagCD = stagCDMax;
-                    //thisRB.velocity = Vector3.zero;
-                    if(!knockbackCalc)
-                    {
-                        isStaggered = false;
-                        enemyState = EnemyStates.MOVE;
-                        //knockbackCalc = true;
-                    }
-                }
+                    break;
+                }*/
+                
             break;
 
             case EnemyStates.DEAD:
@@ -246,9 +242,11 @@ public class EnemyMovementController : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider collision)
-    {
+    {        
         if(collision.tag == "Weapon")
         {
+            lastHitDirection = collision.transform.position - transform.position;
+            lastHitDirection.y = 0;
             if(isStaggered)
             {   
                 Physics.IgnoreCollision(collision.GetComponent<Collider>(), GetComponent<Collider>(), true);
@@ -262,49 +260,33 @@ public class EnemyMovementController : MonoBehaviour
                 enemyState = EnemyStates.DEAD;
                 return;
             }
-
-            if(collision.gameObject.GetComponent<WeaponBase>().effectSlots[0].GetComponent<EffectBase>().effectName == "Knockback")
-            {
-                Vector3 direction = collision.transform.position - transform.position;
-                direction.y = 0;
-                StartCoroutine("ApplyKnockback", direction);
-            }
-
-            if(collision.gameObject.GetComponent<WeaponMods>().giveKnockback)
-            {
-                Rigidbody rb = collision.GetComponent<Rigidbody>();
-                if(rb != null && enemyState != EnemyStates.STAGGER)
-                {
-                    isStaggered = true;
-                    enemyState = EnemyStates.STAGGER;
-
-                    //calculate knockback
-                    // if(knockbackCalc == true)
-                    // {
-                    //     Vector3 direction = collision.transform.position - transform.position;
-                    //     direction.y = 0;
-                    //     if(collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount > 0)
-                    //     {
-                    //         //Debug.Log("adding extra knockback");
-                    //         thisRB.AddForce(-direction.normalized * (knockbackAmount + collision.gameObject.GetComponent<WeaponMods>().knockbackModAmount), ForceMode.Impulse);
-                    //     }
-                    //     else
-                    //     {
-                    //         //Debug.Log("applying normal knockback");
-                    //         thisRB.AddForce(-direction.normalized * knockbackAmount, ForceMode.Impulse);
-                    //     }
-                        
-                    //}
-                }
-            }
-            visuals.GetComponentInChildren<VisualEffects>().damaged = true; 
+        //     //if a mod has knock back
+        //     if(collision.gameObject.GetComponent<WeaponBase>().effectSlots[0].GetComponent<EffectBase>().effectName.Equals("Knockback"))
+        //     {
+        //         Debug.Log("knocking back");
+        //         Vector3 direction = (collision.transform.position - transform.position) * knockbackAmount;
+        //         direction.y = 0;
+        //         StartCoroutine(ApplyKnockback());
+        //     }
+        //     //is a weapon has knockabck
+        //     if(collision.gameObject.GetComponent<WeaponMods>().giveKnockback)
+        //     {
+        //         Rigidbody rb = collision.GetComponent<Rigidbody>();
+        //         if(rb != null && enemyState != EnemyStates.STAGGER)
+        //         {
+        //             isStaggered = true;
+        //             enemyState = EnemyStates.STAGGER;
+        //         }
+        //     }
+        //     visuals.GetComponentInChildren<VisualEffects>().damaged = true; 
+        // }
         }
     }
 
-    private IEnumerator ApplyKnockback(Vector3 force)
+    public IEnumerator ApplyKnockback()
     {
+        Vector3 force = lastHitDirection * knockbackAmount;
         Debug.Log("KNOCKBACKINNNNNG!!!!");
-        knockbackCalc = true;
         yield return null;
         nMA.enabled = false;
         thisRB.useGravity = true;
@@ -323,7 +305,6 @@ public class EnemyMovementController : MonoBehaviour
         nMA.enabled = true;
 
         yield return null;
-        knockbackCalc = false;
         enemyState = EnemyStates.MOVE;
     }
 }

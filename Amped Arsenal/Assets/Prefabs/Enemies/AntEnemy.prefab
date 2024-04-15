@@ -66,10 +66,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: MOVE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 76052484a2ef36f4c8ebccdfc5d05535, type: 2}
+  m_sharedMaterial: {fileID: -4025175170621991969, guid: 76052484a2ef36f4c8ebccdfc5d05535, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -315,7 +315,7 @@ Transform:
   m_GameObject: {fileID: 3682981137545698338}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.52269, y: 0.52269, z: 0.52269}
+  m_LocalScale: {x: -0.52269, y: 0.52269, z: 0.52269}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7129349350123362636}
@@ -406,6 +406,7 @@ GameObject:
   - component: {fileID: 8629111587935591292}
   - component: {fileID: 1595604239}
   - component: {fileID: 2198734513270268791}
+  - component: {fileID: 830653105}
   m_Layer: 13
   m_Name: AntEnemy
   m_TagString: Enemy
@@ -421,7 +422,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3791055123043577848}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 107.167564, y: 0.68, z: 402.1975}
+  m_LocalPosition: {x: 143.81366, y: 23.178368, z: 16.694916}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -442,24 +443,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47cc4eff95b45734b8afdbb7d43a4374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyState: 0
-  thisRB: {fileID: 0}
+  enemyState: 1
+  thisRB: {fileID: 830653105}
   visuals: {fileID: 5332059950944026705}
   nMA: {fileID: 1595604239}
-  distance: 0
+  distance: 8.752028
   attackRange: 5
-  attackCooldown: 0
+  attackCooldown: 0.4537494
   attackCooldownMax: 0.5
   facingLeft: 0
-  facingRight: 0
-  knockbackAmount: 40
-  stagCD: 0
+  facingRight: 1
+  knockbackAmount: 300
+  stagCD: 0.5
   stagCDMax: 0.5
   isStaggered: 0
-  knockbackCalc: 1
-  dir: {x: 0, y: 0, z: 0}
+  dir: {x: 3.8838196, y: 0, z: 7.8164062}
+  lastHitDirection: {x: 1.7244263, y: 0, z: 1.2755737}
+  oppDir: {x: 0, y: 0, z: 0}
   launchPower: 55
-  initTimer: 0
+  initTimer: 1.009072
   initTimerMax: 1
   layers:
     serializedVersion: 2
@@ -484,13 +486,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorName: Ant
   _stats:
-    _stats: []
+    _stats:
+    - _statName: hp
+      _value: 8
+      mods: []
+    - _statName: attk
+      _value: 1
+      mods: []
+    - _statName: str
+      _value: 1
+      mods: []
+    - _statName: def
+      _value: 1
+      mods: []
+    - _statName: spd
+      _value: 6.1
+      mods: []
+    - _statName: luck
+      _value: 100
+      mods: []
+    - _statName: xp
+      _value: 1
+      mods: []
+    - _statName: gold
+      _value: 1
+      mods: []
   movementController: {fileID: 41604279069339930}
   spriteObj: {fileID: 3682981137545698338}
   deathPoof: {fileID: 3414706946739579905, guid: db871ada3796d4d4ba68d0a6bb3b2129, type: 3}
   blinkIntesity: 3
   blinkDuration: 0.1
-  blinkTimer: 0
+  blinkTimer: -0.012751095
   dpoofOffset: 3
   tookDamage: 0
   spawnedXp: 0
@@ -522,7 +548,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 4.63739, y: 2.3009565, z: 1.9197998}
-  m_Center: {x: -0.018676758, y: 0.1843816, z: -0.066711426}
+  m_Center: {x: -0.018676758, y: 0.15, z: -0.066711426}
 --- !u!114 &8629111587935591292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,8 +577,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.74
-  m_Speed: 8
-  m_Acceleration: 10
+  m_Speed: 6.1
+  m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 0
   m_StoppingDistance: 5
@@ -659,6 +685,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &830653105
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3791055123043577848}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0.5
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &4412910636485349254
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,7 +786,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5332059950944026705}
-  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalRotation: {x: 0.45758155, y: -0, z: -0, w: 0.88916767}
   m_LocalPosition: {x: 0, y: 0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

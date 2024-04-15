@@ -7,6 +7,10 @@ public class DeathPoofLogic : MonoBehaviour
     public float timer, timerMax;
     //public float vertOffset;
     // Update is called once per frame
+    public void OneEnabled()
+    {
+        GetComponentInChildren<Animator>().Play("DPoofy");
+    }
     void Update()
     {
         //transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y, transform.position.z), 5f * Time.deltaTime);
@@ -16,7 +20,9 @@ public class DeathPoofLogic : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            ObjectPoolManager.ReturnObjectToPool(this.gameObject);
+            timer = 0;
+            //Destroy(this.gameObject);
         }
     }
 }

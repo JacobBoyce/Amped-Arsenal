@@ -19,6 +19,7 @@ public class SpearLogic : MonoBehaviour
         //when spawned throw the spear in the firsction faced
         thisRB = GetComponent<Rigidbody>();
         thisRB.AddForce(-(controller.playerObj.transform.position - transform.position).normalized * speed, ForceMode.Impulse);
+        //transform.rotation = Quaternion.Euler(controller.playerObj.transform.position - transform.position);
     }
     
 
@@ -43,7 +44,7 @@ public class SpearLogic : MonoBehaviour
 
         if(collision.tag == "TerrainObj")
         {
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -51,13 +52,15 @@ public class SpearLogic : MonoBehaviour
     {
         if(pierceNum <= 0)
         {
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
         }
 
         float dist = Vector3.Distance(this.transform.position, controller.playerObj.gameObject.transform.position);
         if(dist > range)
         {
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
         }
+
+        transform.LookAt(transform.position + thisRB.velocity);
     }
 }

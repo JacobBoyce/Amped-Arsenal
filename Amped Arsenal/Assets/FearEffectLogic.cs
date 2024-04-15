@@ -40,6 +40,7 @@ public class FearEffectLogic : EffectBase
         //enemymovemnt already effected when this effect is applied
         // if you want fear to do something else enter it here
         activate = true;
+        enemy.movementController.enemyState = EnemyMovementController.EnemyStates.MOVE;
 
         //change enemy color
         //enemy.spriteR.color = new Color(0.9104829f, 0.5613208f, 1, 1);

@@ -295,18 +295,21 @@ public class WaveController : MonoBehaviour
         if(curWave <= 10)
         {
             tempPrefab = Instantiate(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
+            //tempPrefab = ObjectPoolManager.SpawnObject(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
         else if(curWave >= 11)
         {
             int randEnemy = Random.Range(0, midAndLateGameSpwnList.Count);
             tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
+            //tempPrefab = ObjectPoolManager.SpawnObject(midAndLateGameSpwnList[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
         else if(exfilPhase)
         {
             int randEnemy = Random.Range(0, enemyPrefabs.Count);
             tempPrefab = Instantiate(enemyPrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
+            //tempPrefab = ObjectPoolManager.SpawnObject(enemyPrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
 

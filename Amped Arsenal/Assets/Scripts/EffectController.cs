@@ -37,7 +37,7 @@ public class EffectController : MonoBehaviour
                 if(go.GetComponent<EffectBase>().effectName.Equals(eName) == true)
                 {
                     temp1 = go;
-                    //effectObjs.Remove(go);
+                    effectObjs.Remove(go);
                     Destroy(temp1);
                     Destroy(temp2);
                 //remove ui on enemy for effect

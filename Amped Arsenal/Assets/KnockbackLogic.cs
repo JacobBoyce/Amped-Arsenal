@@ -40,8 +40,8 @@ public class KnockbackLogic : EffectBase
         activate = true;
 
         enemy.movementController.enemyState = EnemyMovementController.EnemyStates.STAGGER;
-        enemy.movementController.isStaggered = true;
-        enemy.movementController.knockbackCalc = true;
+        //enemy.movementController.isStaggered = true;
+        enemy.movementController.StartCoroutine(enemy.movementController.ApplyKnockback());
         enemy.movementController.stagCD = tickMaxDuration;
     }
 

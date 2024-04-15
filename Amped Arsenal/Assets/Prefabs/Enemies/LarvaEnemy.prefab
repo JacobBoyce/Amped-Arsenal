@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 8849061553069171316}
   - component: {fileID: 3007466142837434693}
   - component: {fileID: 5642505215157119642}
+  - component: {fileID: 2011770820708613473}
   m_Layer: 13
   m_Name: LarvaEnemy
   m_TagString: Enemy
@@ -400,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyState: 0
-  thisRB: {fileID: 0}
+  thisRB: {fileID: 2011770820708613473}
   visuals: {fileID: 7748675441640103456}
   nMA: {fileID: 0}
   distance: 0
@@ -409,12 +410,12 @@ MonoBehaviour:
   attackCooldownMax: 0.5
   facingLeft: 1
   facingRight: 0
-  knockbackAmount: 25
+  knockbackAmount: 300
   stagCD: 0
   stagCDMax: 0.3
   isStaggered: 0
-  knockbackCalc: 1
   dir: {x: 0, y: 0, z: 0}
+  lastHitDirection: {x: 0, y: 0, z: 0}
   launchPower: 65
   initTimer: 0
   initTimerMax: 1.1
@@ -616,6 +617,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &2011770820708613473
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683092176483963480}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0.5
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &7748675441640103456
 GameObject:
   m_ObjectHideFlags: 0
