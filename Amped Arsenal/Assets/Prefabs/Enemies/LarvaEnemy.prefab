@@ -400,10 +400,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47cc4eff95b45734b8afdbb7d43a4374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyState: 0
+  enemyState: 1
   thisRB: {fileID: 2011770820708613473}
   visuals: {fileID: 7748675441640103456}
-  nMA: {fileID: 0}
+  nMA: {fileID: 3007466142837434693}
   distance: 0
   attackRange: 4
   attackCooldown: 0
@@ -416,6 +416,7 @@ MonoBehaviour:
   isStaggered: 0
   dir: {x: 0, y: 0, z: 0}
   lastHitDirection: {x: 0, y: 0, z: 0}
+  oppDir: {x: 0, y: 0, z: 0}
   launchPower: 65
   initTimer: 0
   initTimerMax: 1.1

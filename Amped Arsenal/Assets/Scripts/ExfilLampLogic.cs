@@ -85,13 +85,13 @@ public class ExfilLampLogic : MonoBehaviour
         GameObject[] xpObj = GameObject.FindGameObjectsWithTag("XP");
         foreach(GameObject go in xpObj)
         {
-            Destroy(go);
+            ObjectPoolManager.ReturnObjectToPool(go);
         }
 
         GameObject[] goldObj = GameObject.FindGameObjectsWithTag("Gold");
         foreach(GameObject go in goldObj)
         {
-            Destroy(go);
+            ObjectPoolManager.ReturnObjectToPool(go);
         }
     }
 

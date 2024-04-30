@@ -61,6 +61,7 @@ public class EnemyMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        dir = target.transform.position - transform.position;
 /*
         //nMA.destination = target.transform.position;// - transform.position;
         dir = target.transform.position - transform.position;
@@ -111,14 +112,14 @@ public class EnemyMovementController : MonoBehaviour
                 //theSR.flipX = true;
                 facingRight = true;
                 facingLeft = false;
-                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", false);
+                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", true);
             }
             else if(dir.x < 0 && facingLeft != true)
             {
                 //theSR.flipX = false;
                 facingRight = false;
                 facingLeft = true;
-                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", true);
+                eController.spriteObj.GetComponent<Animator>().SetBool("Flip", false);
             }
         }
         

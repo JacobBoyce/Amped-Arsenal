@@ -31,6 +31,9 @@ public class PlayerController : Actor
     public TextMeshProUGUI xpText;
     public TextMeshProUGUI goldText;
 
+    public Light aoeLight;
+    public int lightMax = 60;
+
     //List of equipped weapons List<Weapon>
 
     public void UpdateBar(Stat stat)

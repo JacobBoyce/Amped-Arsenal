@@ -170,15 +170,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47cc4eff95b45734b8afdbb7d43a4374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyState: 0
+  enemyState: 1
   thisRB: {fileID: 789676040562875924}
   visuals: {fileID: 403880048}
-  nMA: {fileID: 0}
+  nMA: {fileID: 1790240262569892782}
   distance: 0
   attackRange: 4
   attackCooldown: 0
   attackCooldownMax: 0.5
-  facingLeft: 0
+  facingLeft: 1
   facingRight: 0
   knockbackAmount: 300
   stagCD: 0
@@ -186,6 +186,7 @@ MonoBehaviour:
   isStaggered: 0
   dir: {x: 0, y: 0, z: 0}
   lastHitDirection: {x: 0, y: 0, z: 0}
+  oppDir: {x: 0, y: 0, z: 0}
   launchPower: 100
   initTimer: 0
   initTimerMax: 1

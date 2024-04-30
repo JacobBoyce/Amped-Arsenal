@@ -24,7 +24,7 @@ public class FreeLampLogic : MonoBehaviour
         countdownText.text = formatTime;
 
         maxLightIntensity = aoeLight.intensity;
-        aoeLight.intensity = maxLightIntensity/4;
+        aoeLight.intensity = maxLightIntensity/2f;
  
         initColor = lightMat.material.GetColor("_EmissionColor");
     }
@@ -32,12 +32,13 @@ public class FreeLampLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(inRange && done == false)
+        if(inRange && !done)
         {
             countdown -= Time.deltaTime;
             formatTime = countdown.ToString("0");
             countdownText.text = formatTime;
-            aoeLight.intensity = (.25f + (1 - (countdown / cdMax))) * maxLightIntensity;
+            aoeLight.intensity = (.5f + (1 - (countdown / cdMax))) * maxLightIntensity;
+            //aoeLight.intensity += 1f;
             //lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (countdown / cdMax)) * Mathf.Pow(2, 5)));
             if (countdown <= 0)
             {
@@ -54,19 +55,23 @@ public class FreeLampLogic : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !done)
         {
            inRange = true;
-           aoeLight.gameObject.SetActive(true);
         }
     }
     public void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
-            inRange = false;
-            aoeLight.intensity = maxLightIntensity/4;
-            countdown = cdMax;
+            if(!done)
+            {
+                inRange = false;
+                aoeLight.intensity = maxLightIntensity/2;
+                countdown = cdMax;
+                formatTime = countdown.ToString("0");
+                countdownText.text = formatTime;
+            }
         }
     }
 }

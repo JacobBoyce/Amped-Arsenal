@@ -28,8 +28,8 @@ public class LampLoadLevel : MonoBehaviour
     {
         cd = cdMax;
         countdownText.text = levelName;
-        maxLightIntensity = 200;
-        baseLightIntensity = 100;
+        maxLightIntensity = aoeLight.intensity;
+        aoeLight.intensity = maxLightIntensity/2;
         //aoeLight.gameObject.SetActive(false);
         initColor = lightMat.material.GetColor("_EmissionColor");
         //lightMat.material.SetColor("_EmissionColor", initColor /** Mathf.Pow(2, 4)*/);
@@ -46,7 +46,8 @@ public class LampLoadLevel : MonoBehaviour
                 cd -= Time.deltaTime;
                 formatTime = cd.ToString("0");
                 countdownText.text = formatTime;
-                aoeLight.intensity = baseLightIntensity + (((1 - (cd / cdMax))) * maxLightIntensity);
+                aoeLight.intensity = (.5f + (1 - (cd / cdMax))) * maxLightIntensity;
+                //aoeLight.intensity += 2f;
                 //lightMat.material.SetColor("_EmissionColor", initColor * (1 - (cd / cdMax)) * Mathf.Pow(2, 2));
             }
             else
@@ -128,7 +129,7 @@ public class LampLoadLevel : MonoBehaviour
             if(usable)
             {
                 inRange = false;
-                aoeLight.intensity = baseLightIntensity;
+                aoeLight.intensity = maxLightIntensity/2;
                 //lightMat.material.SetColor("_EmissionColor", initColor /** Mathf.Pow(2, 4)*/);
                 cd = cdMax;
                 countdownText.text = levelName;

@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ApplyToWeapMenu : MonoBehaviour
 {
+    public TextMeshProUGUI titleText;
+    public Image relicImage;
     public GameObject weaponChoicePrefab, weapChoicePrefabContainer;
     [Header("Selected Weapon")]
     public WeapChoicePrefab selectedWeap;
@@ -12,10 +15,12 @@ public class ApplyToWeapMenu : MonoBehaviour
 
     public PlayerController player;
 
-    public List<GameObject> weapOptions = new List<GameObject>();
+    public List<GameObject> weapOptions = new();
 
     public void PopulateWeapChoiceList(PlayerController p1, RelicBase relic)
     {
+        titleText.text = "Choose a Weapon to apply the " + relic.relicName + " Weapon Mod";
+        relicImage.sprite = relic.relicImg;
         player = p1;
         relicToApply = relic;
         ClearOptions();

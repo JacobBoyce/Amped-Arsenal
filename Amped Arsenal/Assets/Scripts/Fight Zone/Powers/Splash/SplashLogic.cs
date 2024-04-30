@@ -120,6 +120,11 @@ public class SplashLogic : MonoBehaviour
         {
             visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(-thisRB.velocity.y)*buffer);
         }
+
+        if(Vector3.Distance(controller.playerObj.gameObject.transform.position, transform.position) > 100)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public void OnCollisionEnter(Collision collision)

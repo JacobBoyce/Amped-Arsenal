@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class RelicBase : MonoBehaviour
 {
     public string relicName;
+    public Sprite relicImg;
     public enum RelicType
     {
         NONE,
