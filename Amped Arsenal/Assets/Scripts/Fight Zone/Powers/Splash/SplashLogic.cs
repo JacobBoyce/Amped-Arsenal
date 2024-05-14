@@ -116,9 +116,14 @@ public class SplashLogic : MonoBehaviour
             this.GetComponentInChildren<SpriteRenderer>().flipY = true;
             visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(thisRB.velocity.y + 180)*buffer);
         }
-        else
+        else if(thisRB.velocity.x < 0)
         {
             visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(-thisRB.velocity.y)*buffer);
+        }
+        else
+        {
+            //if not moving delete it
+            //Destroy(this.gameObject);
         }
 
         if(Vector3.Distance(controller.playerObj.gameObject.transform.position, transform.position) > 100)

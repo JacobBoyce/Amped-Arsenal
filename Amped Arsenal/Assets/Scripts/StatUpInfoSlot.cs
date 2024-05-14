@@ -7,11 +7,15 @@ using TMPro;
 public class StatUpInfoSlot : MonoBehaviour
 {
     public string upgradeName;
+    public TextMeshProUGUI uiUpgradeName;
     public Image upgradeCurrent, upgradeTo;
     public float minVal, maxVal, curVal, nextVal;
 
+    
+
     public void SetFillAmount(int minAmount, int currentAmount, int nextAmount, int maxAmount)
     {
+        uiUpgradeName.text = upgradeName;
         minVal = minAmount;
         maxVal = maxAmount;
         curVal = currentAmount;

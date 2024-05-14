@@ -11,6 +11,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords:
   - _EMISSION
+  - _ENVIRONMENTREFLECTIONS_OFF
+  - _SPECULARHIGHLIGHTS_OFF
   m_InvalidKeywords: []
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -99,7 +101,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emission: 1
-    - _EnvironmentReflections: 1
+    - _EnvironmentReflections: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossinessSource: 0
@@ -116,7 +118,7 @@ Material:
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
     - _SpecSource: 0
-    - _SpecularHighlights: 1
+    - _SpecularHighlights: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
@@ -124,7 +126,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.89402974, g: 0.9150943, b: 0.12517802, a: 1}
-    - _Color: {r: 0.89402974, g: 0.9150943, b: 0.12517802, a: 1}
+    - _Color: {r: 0.89402974, g: 0.9150943, b: 0.12517798, a: 1}
     - _EmissionColor: {r: 0.5283019, g: 0.5115238, b: 0.11712353, a: 1}
     - _OutlineColor: {r: 0.968729, g: 1, b: 0, a: 1}
     - _ReflectColor: {r: 0.7169812, g: 0.70662385, b: 0.21982914, a: 0.5176471}

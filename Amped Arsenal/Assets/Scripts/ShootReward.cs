@@ -56,7 +56,7 @@ public class ShootReward : MonoBehaviour
             }
         }
                 
-        GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, pointToShootFrom.transform.rotation);
+        GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, Quaternion.identity);
 
         return tempRelicSpawned;
     }

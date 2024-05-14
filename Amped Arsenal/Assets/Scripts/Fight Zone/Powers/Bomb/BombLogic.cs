@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BombLogic : MonoBehaviour
@@ -56,9 +57,17 @@ public class BombLogic : MonoBehaviour
         {
             //explode
             //Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y, transform.position.z), transform.rotation);
-            GameObject tempExpl = Instantiate(explosion, new Vector3(transform.position.x , transform.position.y, transform.position.z), transform.rotation);
+            GameObject tempExpl = Instantiate(explosion, new Vector3(transform.position.x , transform.position.y, transform.position.z), quaternion.identity);
             tempExpl.GetComponent<BombExplosionLogic>().controller = controller;
             Destroy(this.gameObject);
         }
+    }
+
+    void OnCollisionEnter(Collision collision) 
+    { 
+        if (collision.gameObject.tag == "Enemy") 
+        { 
+            Physics.IgnoreCollision(collision.gameObject.GetComponent<Collider>(), GetComponent<Collider>()); 
+        } 
     }
 }
