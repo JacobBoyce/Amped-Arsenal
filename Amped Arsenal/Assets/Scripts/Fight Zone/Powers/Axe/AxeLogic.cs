@@ -29,6 +29,7 @@ public class AxeLogic : MonoBehaviour
         if(ec != null)
         {
             controller.SendDamage(ec);
+            controller.PlayDamageSound();
         }
     }
 }

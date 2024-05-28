@@ -7,6 +7,9 @@ public class LobbyController : MonoBehaviour
 {
     public WaveController waveController;
     public ExfilLampLogic exfilLamp;
+
+    public GameObject lobbyTerrain;
+    public GameObject frogShop;
     public int levelDifficulty;
     public List<LampLoadLevel> lamps;
     public GameObject globalLobbyLight, mainMenuLightLamp, middleSpawnPoint;
@@ -55,6 +58,7 @@ public class LobbyController : MonoBehaviour
 
         //turn on fight zone stuff
         GameZoneController.Instance.ToggleFightZoneLights(!toggle);
+
         
 
         //if going back to the lobby
@@ -64,5 +68,11 @@ public class LobbyController : MonoBehaviour
         }
     }
 
-    
+    public void DeactivateTerrains()
+    {
+        foreach(LampLoadLevel lamp in lamps)
+        {
+            lamp.terrainToLoad.SetActive(false);
+        }
+    }    
 }

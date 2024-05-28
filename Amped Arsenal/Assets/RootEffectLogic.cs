@@ -8,6 +8,7 @@ public class RootEffectLogic : EffectBase
     public Color damageColor;
     public float intensity;
     public bool activate, endAbility = false;
+    public Modifier mod = new("rootRelic", -.99f, Modifier.ChangeType.PERCENT, true); 
     public AnimationClip animClip;
 
     public void Start()
@@ -33,23 +34,18 @@ public class RootEffectLogic : EffectBase
             if(tickAmtDuration == tickMaxDuration)
             {
                 endAbility = true;
-                
             }
         }
     }
     public override void CallEffect()
     {
-        //set effect damage (scales with weapon)
-                //20      *  .5 = 10
-        //damage = weap dmg * poison damage
+        //add effect visuals
         spawnOnBodyEffect.transform.SetParent(enemy.effectCont.effectSpwnPointOnEnemy.transform);
         spawnOnBodyEffect.transform.SetLocalPositionAndRotation(new Vector3(0,0,0), Quaternion.Euler(-90,0,0));
 
         //add enemy stop
         enemy.GetComponent<EnemyMovementController>().stagCD = tickMaxDuration;
-        //enemy.GetComponent<EnemyMovementController>().thisRB.isKinematic = true;
-        enemy.GetComponent<EnemyMovementController>().isStaggered = true;
-        enemy.GetComponent<EnemyMovementController>().enemyState = EnemyMovementController.EnemyStates.STAGGER;
+        enemy._stats["spd"].AddMod(mod);
 
         activate = true;
 
@@ -74,7 +70,7 @@ public class RootEffectLogic : EffectBase
 
     public void EndEffect()
     {
-        enemy.GetComponent<EnemyMovementController>().thisRB.isKinematic = false;
+        enemy._stats["spd"].RemoveMod(mod.modName);
         enemy.RemoveEffect(this.effectName);
     }
 }

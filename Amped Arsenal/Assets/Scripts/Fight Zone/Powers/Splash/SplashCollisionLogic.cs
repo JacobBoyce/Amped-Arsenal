@@ -14,6 +14,7 @@ public class SplashCollisionLogic : MonoBehaviour
         {
             //Debug.Log("hitEnemy");
             controller.SendDamage(ec);
+            controller.PlayDamageSound();
         }
     }
 }

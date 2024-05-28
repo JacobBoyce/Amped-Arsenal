@@ -77,7 +77,7 @@ public class EnemyController : Actor
         _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseMaxBy(.1f);
+        _stats["spd"].IncreaseByPercent(.1f);
         _stats["spd"].Fill();
     }
 
@@ -95,7 +95,7 @@ public class EnemyController : Actor
         _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseMaxBy(.1f);
+        _stats["spd"].IncreaseByPercent(.1f);
         _stats["spd"].Fill();
     }
 
@@ -112,7 +112,7 @@ public class EnemyController : Actor
         _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseMaxBy(.1f);
+        _stats["spd"].IncreaseByPercent(.1f);
         _stats["spd"].Fill();
 
         transform.localScale = new Vector3(2f,2f,2f);
@@ -174,7 +174,7 @@ public class EnemyController : Actor
 
     public void TakeDamage(float damage)
     {
-        damagedSound.PlayOneShot(damagedSound.clip);
+        //damagedSound.PlayOneShot(damagedSound.clip);
         if(!AmDead())
         {
             tookDamage = true;
@@ -236,6 +236,7 @@ public class EnemyController : Actor
             //Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
             ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
             spriteObj.SetActive(false);
+            effectCont.uiSatusEffectParent.SetActive(false);
             Destroy(this.gameObject, .5f);
             //StartCoroutine(ReturnToPoolAfterTime());
         }

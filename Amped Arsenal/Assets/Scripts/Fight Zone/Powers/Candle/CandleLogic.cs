@@ -103,6 +103,7 @@ public class CandleLogic : MonoBehaviour
             {
                 damageTickCooldown = 0;
                 controller.SendDamage(ec);
+                controller.PlayDamageSound();
             }           
         }
     }

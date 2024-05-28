@@ -66,6 +66,8 @@ public class ExfilLampLogic : MonoBehaviour
         //Time.timeScale = 1;
         p1.MovePlayerToField(moveToPos, false);
         waveController.DeactivateWaveSystem();
+        
+        lobController.lobbyTerrain.SetActive(true);
         lobController.ToggleLamps(true);
         MainMenuController.Instance.SaveProgress();
 
@@ -93,6 +95,7 @@ public class ExfilLampLogic : MonoBehaviour
         {
             ObjectPoolManager.ReturnObjectToPool(go);
         }
+        lobController.DeactivateTerrains();
     }
 
     public void ResetExfilLamp()

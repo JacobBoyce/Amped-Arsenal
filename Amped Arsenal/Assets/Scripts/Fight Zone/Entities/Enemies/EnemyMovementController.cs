@@ -61,6 +61,7 @@ public class EnemyMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        nMA.speed = eController._stats["spd"].Value;
         dir = target.transform.position - transform.position;
 /*
         //nMA.destination = target.transform.position;// - transform.position;
@@ -246,8 +247,8 @@ public class EnemyMovementController : MonoBehaviour
     {        
         if(collision.tag == "Weapon")
         {
-            lastHitDirection = collision.transform.position - transform.position;
-            lastHitDirection.y = 0;
+            //lastHitDirection = collision.transform.position - transform.position;
+            //lastHitDirection.y = 0;
             if(isStaggered)
             {   
                 Physics.IgnoreCollision(collision.GetComponent<Collider>(), GetComponent<Collider>(), true);
@@ -286,8 +287,9 @@ public class EnemyMovementController : MonoBehaviour
 
     public IEnumerator ApplyKnockback()
     {
+        lastHitDirection = ( transform.position - target.transform.position).normalized;
         Vector3 force = lastHitDirection * knockbackAmount;
-        Debug.Log("KNOCKBACKINNNNNG!!!!");
+        //Debug.Log("KNOCKBACKINNNNNG!!!!");
         yield return null;
         nMA.enabled = false;
         thisRB.useGravity = true;

@@ -169,9 +169,6 @@ public class SplashLogic : MonoBehaviour
             
 
             Destroy(this.gameObject);
-        }
-        
+        }       
     }
-
-    
 }

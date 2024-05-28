@@ -22,6 +22,11 @@ public class WeaponBase : MonoBehaviour, IWeapon
     [Space(10)]
     public int level = 1, maxLevel = 5;
 
+    [Header("Sounds Vars")]
+    public AudioSource damageSound;
+    [Range(0.1f, 0.5f)]
+    public float pitchMultiplier;
+
     public bool IsMaxLvl()
     {
         return level == maxLevel ? true : false;
@@ -67,6 +72,13 @@ public class WeaponBase : MonoBehaviour, IWeapon
     {
         enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
         ApplyEffects(enemy);
+
+        
+    }
+
+    public virtual void PlayDamageSound()
+    {
+        
     }
 
     public virtual void ActivateAbility()

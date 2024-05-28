@@ -43,6 +43,12 @@ public class CandleController : WeaponBase
         //send weap stats to logic script
     }
 
+    public override void PlayDamageSound()
+    {
+        damageSound.pitch = Random.Range(1 - pitchMultiplier, 1 + pitchMultiplier);
+        damageSound.PlayOneShot(damageSound.clip);
+    }
+
 
     public override void UpgradeWeapon()
     {

@@ -31,7 +31,7 @@ public class ApplyToWeapMenu : MonoBehaviour
             WeaponBase tempWeap = weapObj.GetComponent<WeaponBase>();
             WeapChoicePrefab choicePrefab = weapOptions[i].GetComponent<WeapChoicePrefab>();
 
-                choicePrefab.weapName.text = tempWeap.wName;
+                choicePrefab.weapName = tempWeap.wName;
                 choicePrefab.weapImg.sprite = tempWeap.shopItemInfo.splashImg;
                 choicePrefab.weapImg.gameObject.SetActive(true);
 
@@ -53,7 +53,7 @@ public class ApplyToWeapMenu : MonoBehaviour
         foreach(GameObject go in weapOptions)
         {
             //make the slots empty
-            go.GetComponent<WeapChoicePrefab>().weapName.text = "";
+            go.GetComponent<WeapChoicePrefab>().weapName = "";
             go.GetComponent<WeapChoicePrefab>().weapImg.gameObject.SetActive(false);
             go.GetComponent<Button>().interactable = false;
         }
@@ -88,7 +88,7 @@ public class ApplyToWeapMenu : MonoBehaviour
     //Apply Button calls this
     public void ApplySelectedWeapon()
     {
-        relicToApply.ApplyRelic(player, selectedWeap.weapName.text);
+        relicToApply.ApplyRelic(player, selectedWeap.weapName);
     }
 
 }

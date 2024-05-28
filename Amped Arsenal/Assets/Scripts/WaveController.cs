@@ -121,8 +121,14 @@ public class WaveController : MonoBehaviour
         if(exfilPhase)
         {
             mainCountdown += Time.deltaTime;
-            seconds = Mathf.FloorToInt(mainCountdown);
-            //string niceTime = string.Format("{0}", seconds);
+            seconds = Mathf.FloorToInt(mainCountdown) % 60;
+    
+            if (seconds == 0 && Mathf.FloorToInt(mainCountdown) != 0)
+            {
+                min++;
+                mainCountdown = 0f;
+            }
+
             string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
             countdownText.text = niceTime;
         }

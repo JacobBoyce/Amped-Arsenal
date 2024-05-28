@@ -26,6 +26,8 @@ public class PlayerController : Actor
     public bool openShop = false;
     public float inflationAmount = 0;
 
+    public ParticleSystem dropGetPartSys;
+
 
     [Header("UI")]
     public TextMeshProUGUI xpText;
@@ -33,6 +35,9 @@ public class PlayerController : Actor
 
     public Light aoeLight;
     public int lightMax = 60;
+
+    [Header("Audio")]
+    public PlayerAudioController audioController;
 
     //List of equipped weapons List<Weapon>
 
@@ -88,7 +93,7 @@ public class PlayerController : Actor
         //_stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
         //_stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
         
-        _stats["hp"].IncreaseMaxBy(PlayerPrefs.GetInt("HP"));
+        _stats["hp"].IncreaseByAmount(PlayerPrefs.GetInt("HP"));
         _stats["hp"].Value = _stats["hp"].Max;
         _stats["str"].Value += PlayerPrefs.GetInt("Strength");
         _stats["def"].Value += PlayerPrefs.GetInt("Armor");
@@ -129,19 +134,20 @@ public class PlayerController : Actor
         
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            AddWeaponToCache("Sword");
+            aoeLight.range += 5;
+            //AddWeaponToCache("Sword");
             //AddWeaponToCache("Bomb");
         }
 
         if(Input.GetKeyDown(KeyCode.G))
         {
-            AddWeaponToCache("Sword");
+            //AddWeaponToCache("Sword");
             //AddWeaponToCache("Axe");
         }
 
         if(Input.GetKeyDown(KeyCode.U))
         {
-            AddWeaponToCache("Spear");
+            //AddWeaponToCache("Spear");
             //AddWeaponToCache("Axe");
         }
 
@@ -178,14 +184,17 @@ public class PlayerController : Actor
         }
         if(_stats["hp"].Value == 0)
         {
-            Debug.Log("GameOver");
-            //---------------------add player prefs inflation to equation here
-            Debug.Log("inflation percentage: " + (inflationAmount / 10) 
-            + "\ncurrent gold: " + _stats["gold"].Value
-            + "\n amount to take back: " + (_stats["gold"].Value * (inflationAmount / 10)));
-            PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (inflationAmount / 10)));
-            PlayerPrefs.SetInt("Returned", 1);
-            mainController.EndGame();
+            // Debug.Log("GameOver");
+            // //---------------------add player prefs inflation to equation here
+            // Debug.Log("inflation percentage: " + (inflationAmount / 10) 
+            // + "\ncurrent gold: " + _stats["gold"].Value
+            // + "\n amount to take back: " + (_stats["gold"].Value * (inflationAmount / 10)));
+            int temp = Mathf.RoundToInt(_stats["gold"].Value * (PlayerPrefs.GetInt("Inflation") / 10));
+            MainMenuController.Instance._playerGold += temp;
+            GameSceneManager.instance.LoadMainMenu();
+            // PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (inflationAmount / 10)));
+            // PlayerPrefs.SetInt("Returned", 1);
+            // mainController.EndGame();
         }
     }
 
@@ -216,6 +225,8 @@ public class PlayerController : Actor
         */
         Set("xp", _stats["xp"].Value + xpAmount);
         xpText.text = _stats["xp"].Value.ToString();
+        audioController.PlayXPSound();
+        dropGetPartSys.Play();
         CheckIfCanUpgradeWeapons();
     }
 
@@ -231,6 +242,8 @@ public class PlayerController : Actor
     {
         Set("gold", _stats["gold"].Value + goldAmount);
         goldText.text = _stats["gold"].Value.ToString();
+        dropGetPartSys.Play();
+        audioController.PlayGoldSound();
     }
 
     public void RemoveGold(int amt)

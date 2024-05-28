@@ -40,6 +40,7 @@ public class SpearLogic : MonoBehaviour
         {
             pierceNum--;
             controller.SendDamage(ec);
+            controller.PlayDamageSound();
         }
 
         if(collision.tag == "TerrainObj")

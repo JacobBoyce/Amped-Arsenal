@@ -7,7 +7,10 @@ public class LampLoadLevel : MonoBehaviour
     public GameZoneController gzController;
     public WaveController waveController;
     public LobbyController lobController;
-    public GameObject moveToPos;
+    public POIController poiController;
+    public GameObject lampLevelSpawnZone;
+    public GameObject exfilLamp, terrainToLoad;
+    public GameObject moveToPos, shopStartPos;
     public Light aoeLight;
     public MeshRenderer lightMat;
     public TextMeshProUGUI countdownText;
@@ -57,11 +60,22 @@ public class LampLoadLevel : MonoBehaviour
                     inRange = false;
                     usable = false;
                     countdownText.text = "";
+                    //set difficulty
                     lobController.levelDifficulty = levelNum;
 
+                    //set up the correct torrain and deactivate others
+                    lobController.DeactivateTerrains();
+                    terrainToLoad.SetActive(true);
+
+                    //set the shops location for the right area
+                    lobController.frogShop.GetComponent<ShopMovement>().startpos = shopStartPos;
+                    //setup the correct exfil lamp to end the level
+                    waveController.exfilLampObject = exfilLamp.GetComponent<ExfilLampLogic>();
+
+                    //Set the POI controllers spawn points
+                    poiController.InitPOIPositions(lampLevelSpawnZone);
                     //move player
                     StartCoroutine(MovePlayer());
-                    //p1.MovePlayerToField(moveToPos, true);
                 }
             }
         }

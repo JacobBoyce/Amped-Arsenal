@@ -17,7 +17,7 @@ public class MoveToPlayer : MonoBehaviour
     public int amount;
     public bool isDelay = true, inRangeOfLamp = false, givenXp = false;
     private PlayerController p1;
-    public GameObject visuals, partSys; //visuals;
+    public GameObject visuals; //visuals;
     public AbsorbLamp lamp;
 
     [Header("Sounds Vars")]
@@ -33,7 +33,6 @@ public class MoveToPlayer : MonoBehaviour
         speed = 1;
         isDelay = true;
         visuals.SetActive(true);
-        partSys.SetActive(false);
         //get lamp from game controller or event controller
         // lamp = gamezonecontroller.instance.absorblamp
         StartCoroutine(DelayStart());
@@ -67,9 +66,8 @@ public class MoveToPlayer : MonoBehaviour
     {
         p1 = PlayerController.playerObj;
         visuals.SetActive(true);
-        partSys.SetActive(false);
         speed = 1;
-        isDelay = true;
+        //isDelay = true;
         
 
         //StartCoroutine(DelayStart());
@@ -103,35 +101,13 @@ public class MoveToPlayer : MonoBehaviour
                     givenXp = true;
                     //call lamp script to subtract from counter
                     lamp.UpdateCount();
-                    CallVisuals();
-                    StartCoroutine(ReturnToPoolAfterTime());
-                    //Destroy(this.gameObject, 1f);
+
+                    ObjectPoolManager.ReturnObjectToPool(this.gameObject);
                 }
             }
         }
     }
 
-    private IEnumerator ReturnToPoolAfterTime()
-    {
-        //Debug.Log("delay release");
-        yield return new WaitForSeconds(1f);
-        ObjectPoolManager.ReturnObjectToPool(this.gameObject);
-        //Debug.Log("released");
-    }
-
-    public void CallVisuals()
-    {
-        visuals.SetActive(false);
-        //check if particle system exists
-        if (partSys != null)
-        {
-            partSys.SetActive(true);
-            for (int i = 0; i < partSys.GetComponentsInChildren<ParticleSystem>().Length; i++)
-            {
-                partSys.GetComponentsInChildren<ParticleSystem>()[i].Play();
-            }
-        }
-    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -141,10 +117,7 @@ public class MoveToPlayer : MonoBehaviour
             if(givenXp == false)
             {
                 givenXp = true;
-                CallVisuals();
-                pickupSound.pitch = Random.Range(1 - pitchMultiplier, 1 + pitchMultiplier);
-                pickupSound.PlayOneShot(pickupSound.clip);
-                //add value to player
+
                 if(itemType == DropItem.XP)
                 {
                     p1.AddXP(amount);
@@ -153,8 +126,7 @@ public class MoveToPlayer : MonoBehaviour
                 {
                     p1.AddGold(amount);
                 }
-                StartCoroutine(ReturnToPoolAfterTime());
-                //Destroy(this.gameObject,1f);
+                ObjectPoolManager.ReturnObjectToPool(this.gameObject);
             }
         }        
     }

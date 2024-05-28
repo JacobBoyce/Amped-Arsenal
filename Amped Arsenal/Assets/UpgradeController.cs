@@ -92,6 +92,14 @@ public class UpgradeController : MonoBehaviour
         upgradeList.Add(tempUpgrade);
     }*/
 
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            mainController._playerGold += 10;
+        }
+    }
+
     public void LoadUpgradeList()
     {
         int i = 0;

@@ -19,12 +19,12 @@ public class Stat
         set => _statName = value; 
     }
     [SerializeField]
-    public List<Modifier> mods = new List<Modifier>();
+    public List<Modifier> mods = new();
 
     [SerializeField]
     public float Value
     {
-        get => _value + CalcMods();
+        get => _value;
         set
         {
             if (value < 0)
@@ -40,122 +40,39 @@ public class Stat
 
     public void Fill() => Value = Max;
     public void Empty() => Value = 0;
-    public void IncreaseMaxByPercent(float percent)
-    {
-        Max = Max + (Max * percent);
-    }
-    public void IncreaseMaxBy(float amount) => Max = (Max + amount);
-    public void DecreaseMaxByPercent(float percent) => Max = Max - (Max * percent);  
-    public void DecreaseMaxBy(float amount) => Max = (Max - amount);
 
-    //add a list of a data type(modifier)
-    //modifier, string, float
-
-    public float CalcMods()
-    {
-        float addAmt = 0;
-        foreach(Modifier mod in mods)
-        {
-            if(mod.maxMod == false)
-            {
-                if(mod.modType == Modifier.ChangeType.INT)
-                {
-                    addAmt += mod.modAmount;
-                }
-                else if(mod.modType == Modifier.ChangeType.PERCENT)
-                {
-                    addAmt += (Max * mod.modAmount);
-                }
-            }
-        }
-        return addAmt;
-    }
-
-    public void AddMod(string mName, float amt, Modifier.ChangeType ctype, bool mMod)
-    {
-        Modifier tempMod = new Modifier(mName, amt, ctype, mMod);
-        float chgAmt = 0;
-        //if the mods max bool is true then add it right away to the max of the stat using the methods above
-        if(tempMod.maxMod == true)
-        {
-            if(tempMod.modType == Modifier.ChangeType.PERCENT)
-            {
-                chgAmt = Max;
-                IncreaseMaxByPercent(tempMod.modAmount);
-                tempMod.amtChanged = Max - chgAmt;
-            }
-            else if(tempMod.modType == Modifier.ChangeType.INT)
-            {
-                IncreaseMaxBy(tempMod.modAmount);
-            }
-        }
-        Fill();
-
-        mods.Add(tempMod);
-    }
+    public void IncreaseByPercent(float percent) => _value += _value * percent;
+    public void IncreaseByAmount(float amount) => _value += amount;
 
     public void AddMod(Modifier mod)
     {
-        Modifier tempMod = new Modifier(mod);
-        float chgAmt = 0;
-        //if the mods max bool is true then add it right away to the max of the stat using the methods above
-        if(tempMod.maxMod == true)
+        Modifier tempMod = new(mod);
+
+        if(tempMod.modType == Modifier.ChangeType.PERCENT)
         {
-            if(tempMod.modType == Modifier.ChangeType.PERCENT)
-            {
-                chgAmt = Max;
-                IncreaseMaxByPercent(tempMod.modAmount);
-                tempMod.amtChanged = Max - chgAmt;
-            }
-            else if(tempMod.modType == Modifier.ChangeType.INT)
-            {
-                IncreaseMaxBy(tempMod.modAmount);
-            }
+            tempMod.amtChanged = _value * tempMod.modAmount;
+            IncreaseByPercent(tempMod.modAmount);
         }
-        Fill();
+        else if(tempMod.modType == Modifier.ChangeType.INT)
+        {
+            tempMod.amtChanged = tempMod.modAmount;
+            IncreaseByAmount(tempMod.modAmount);
+        }
         mods.Add(tempMod);
     }
 
     public void RemoveMod(string mName)
     {
-        Modifier tempMod = new Modifier();
+        Modifier tempMod = new();
         tempMod = GetMod(mName);
-        //if maxMode is true remove max using methods above
-        if(tempMod.maxMod == true)
-        {
-            if(tempMod.modType == Modifier.ChangeType.PERCENT)
-            {
-                if(tempMod.amtChanged < 0)
-                {
-                    Max = Max + Mathf.Abs(tempMod.amtChanged);
-                }
-                else
-                {
-                    Max = Max - tempMod.amtChanged;
-                }
-                
-                //DecreaseMaxByPercent(tempMod.modAmount);
-            }
-            else if(tempMod.modType == Modifier.ChangeType.INT)
-            {
-                if(tempMod.amtChanged < 0)
-                {
-                    IncreaseMaxBy(tempMod.amtChanged);
-                }
-                else
-                {
-                    DecreaseMaxBy(tempMod.amtChanged);
-                }
-            }
-        }
-        Fill();
+        _value -= Mathf.Abs(tempMod.amtChanged);
 
         mods.Remove(tempMod);
     }
 
     public Modifier GetMod(string mName)
     {
-        Modifier findMod = new Modifier();
+        Modifier findMod = new();
 
         foreach(Modifier mod in mods)
         {
@@ -208,14 +125,12 @@ public class Modifier
     [SerializeField]
     public ChangeType modType;
     [SerializeField]
-    public bool maxMod;
 
     public Modifier()
     {
         modName = "empty";
         modAmount = 0;
         modType = ChangeType.NONE;
-        maxMod = false;
     }
 
     public Modifier(string mName, float amt, Modifier.ChangeType ctype, bool mMod)
@@ -223,7 +138,6 @@ public class Modifier
         modName = mName;
         modAmount = amt;
         modType = ctype;
-        maxMod = mMod;
     }
 
     public Modifier(Modifier mod)
@@ -231,6 +145,5 @@ public class Modifier
         modName = mod.modName;
         modAmount = mod.modAmount;
         modType = mod.modType;
-        maxMod = mod.maxMod;
     }
 }

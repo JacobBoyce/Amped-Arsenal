@@ -50,6 +50,12 @@ public class BombController : WeaponBase
         tempBomb.GetComponentInChildren<BombLogic>().InitBomb(this, weapMod);
     }
 
+    public override void PlayDamageSound()
+    {
+        damageSound.pitch = Random.Range(1 - pitchMultiplier, 1 + pitchMultiplier);
+        damageSound.PlayOneShot(damageSound.clip);
+    }
+
 
     public override void UpgradeWeapon()
     {
