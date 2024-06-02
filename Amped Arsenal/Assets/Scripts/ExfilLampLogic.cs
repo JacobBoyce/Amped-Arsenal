@@ -45,6 +45,7 @@ public class ExfilLampLogic : MonoBehaviour
                         triggeredLoad = true;
                         exfilTime = false;
                         waveController.startExfilDelay = false;
+                        waveController.gvController.ReturnToNormalColor();
 
                         //set player pref flags to tell new scene that you exfilled
                         StartCoroutine(MovePlayer());

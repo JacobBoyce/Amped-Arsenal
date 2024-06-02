@@ -160,7 +160,7 @@ public class EnemyController : Actor
             {
                 if(eff.GetComponent<EffectBase>().effectName.Equals(effect))
                 {
-                    Debug.Log(eff.GetComponent<EffectBase>().effectName + " == " + effect);
+                    //Debug.Log(eff.GetComponent<EffectBase>().effectName + " == " + effect);
                     flag = true;
                 }
             }

@@ -8,14 +8,19 @@ using Den.Tools;
 public class WaveController : MonoBehaviour
 {
     public EnemySpawnController spawnController;
+    public GlobalVolumeController gvController;
     public GameObject waveUIObj;
-    public TextMeshProUGUI countdownText, waveText;
+    public TextMeshProUGUI infoMessages;
     public Image countdownBarUI;
     public int curWave = 0, maxWave;
     public float startWaitTime;
     public bool wavesActive = false, exfilPhase = false;
     public ExfilLampLogic exfilLampObject;
     public GameObject enemyParentObj;
+    [Header("Moon Stuff")]
+    public float endAngle = 237;
+    public float totalWaveTime;
+    public RectTransform moons;
 
     public List<GameObject> enemyPrefabs = new List<GameObject>();
 
@@ -50,11 +55,15 @@ public class WaveController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        waveText.text = "Wave " + curWave + "/" + maxWave;
+        //waveText.text = "Wave " + curWave + "/" + maxWave;
+        totalWaveTime = (maxWave-1)*maxWaveTimer;
         mainCountdown = maxWaveTimer;
 
         delayStart = delayStartMax;
         delayExfil = delayExfilMax;
+
+
+        
     }
 
     // Update is called once per frame
@@ -67,12 +76,21 @@ public class WaveController : MonoBehaviour
             //check if current wave is less than the max amount
             if(curWave < maxWave)
             {
+                if (totalWaveTime > 0)
+                {
+                    float t = 1 - (totalWaveTime / ((maxWave-1) * maxWaveTimer));
+                    float currentRotation = Mathf.Lerp(0, endAngle, t);
+                    moons.localRotation = Quaternion.Euler(0, 0, currentRotation);
+                    totalWaveTime -= Time.deltaTime;
+                }
+
                 if(mainCountdown >= 0)
                 {
                     //Countdown the wave time
                     mainCountdown -= Time.deltaTime;
                     //update the countdown bar UI
-                    countdownBarUI.fillAmount = 1 - (mainCountdown / maxWaveTimer);
+                    
+                    //countdownBarUI.fillAmount = 1 - (mainCountdown / maxWaveTimer);
 
                     //seconds = Mathf.FloorToInt(mainCountdown);
                     //string niceTime = string.Format("{0}", seconds);
@@ -93,8 +111,7 @@ public class WaveController : MonoBehaviour
                 //end game stuff
                 //open menu for player to choose to go to next lamp or go to the main menu
                 wavesActive = false;
-                waveText.gameObject.SetActive(false);
-                countdownText.gameObject.SetActive(true);
+                infoMessages.gameObject.SetActive(true);
                 mainCountdown = 0;
                 exfilLampObject.exfilTime = true;
                 
@@ -110,6 +127,7 @@ public class WaveController : MonoBehaviour
                //start exfill phase
                startExfilDelay = true;
                toggleSpawning = false;
+               gvController.StartRedFade();
             }
 
                 //check if wave is a multiple of 5 -> (start peace wave)
@@ -130,7 +148,7 @@ public class WaveController : MonoBehaviour
             }
 
             string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
-            countdownText.text = niceTime;
+            infoMessages.text = niceTime;
         }
         #endregion
 
@@ -157,20 +175,19 @@ public class WaveController : MonoBehaviour
             {
                 delayStart -= Time.deltaTime;
                 seconds = Mathf.FloorToInt(delayStart);
-                string niceTime = "Waves start in: " + string.Format("{0}", seconds);
+                string niceTime = "The night starts in: " + string.Format("{0}", seconds);
                 //string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
-                countdownText.text = niceTime;
+                infoMessages.text = niceTime;
             }
             else
             {
                 startDelay = false;
 
-                waveText.gameObject.SetActive(true);
-                countdownText.gameObject.SetActive(false);
+                infoMessages.gameObject.SetActive(false);
                 curWave = 1;
                 spawnRateMax = 2;
                 spawnRate = spawnRateMax;
-                waveText.text = "Wave " + curWave + "/" + maxWave;
+                //waveText.text = "Wave " + curWave + "/" + maxWave;
                 mainCountdown = maxWaveTimer;
                 seconds = 0;
                 min = 0;
@@ -188,9 +205,9 @@ public class WaveController : MonoBehaviour
             {
                 delayExfil -= Time.deltaTime;
                 seconds = Mathf.FloorToInt(delayExfil);
-                string niceTime = "Return to the camp to escape!\n" + string.Format("{0}", seconds);
+                string niceTime = "Return to the camp to escape the Blood moon!\n" + string.Format("{0}", seconds);
                 //string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
-                countdownText.text = niceTime;
+                infoMessages.text = niceTime;
             }
             else
             {
@@ -199,6 +216,7 @@ public class WaveController : MonoBehaviour
                 exfilPhase = true;
                 toggleSpawning = true;
                 spawnRateMax = .05f;
+                
             }
         }
         #endregion
@@ -207,7 +225,7 @@ public class WaveController : MonoBehaviour
     public void StartNextWave()
     {
         //update wave UI
-        waveText.text = "Wave " + curWave + "/" + maxWave;
+        //waveText.text = "Wave " + curWave + "/" + maxWave;
         spawnRateMax -= .1f;
         DecideWave();
         //spawn enemies
@@ -278,9 +296,14 @@ public class WaveController : MonoBehaviour
     public void StartWaveSystem()
     {
         startDelay = true;
-        waveText.gameObject.SetActive(false);
-        countdownText.gameObject.SetActive(true);
-        
+        //waveText.gameObject.SetActive(false);
+        infoMessages.gameObject.SetActive(true);
+        delayStart = delayStartMax;
+        delayExfil = delayExfilMax;
+
+        moons.localRotation = Quaternion.Euler(0,0,0);
+        totalWaveTime = (maxWave-1)*maxWaveTimer;
+        mainCountdown = maxWaveTimer;
     }
 
     public void DeactivateWaveSystem()

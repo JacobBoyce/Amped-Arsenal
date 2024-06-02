@@ -85,7 +85,7 @@ public class PlayerController : Actor
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",    9,10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("pull",   5,30);    // How far to pull object from.
+        _stats.AddStat("pull",   5,50);    // How far to pull object from.
         _stats.AddStat("xp",      0,100000); // Xp.
         _stats.AddStat("gold",    50,100000); //Gold
         
@@ -135,29 +135,30 @@ public class PlayerController : Actor
         if (Input.GetKeyDown(KeyCode.Y))
         {
             aoeLight.range += 5;
-            //AddWeaponToCache("Sword");
-            //AddWeaponToCache("Bomb");
+        }
+
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            AddXP(10);
         }
 
         if(Input.GetKeyDown(KeyCode.G))
         {
-            //AddWeaponToCache("Sword");
-            //AddWeaponToCache("Axe");
+            AddGold(10);
         }
 
-        if(Input.GetKeyDown(KeyCode.U))
+        if(Input.GetKeyDown(KeyCode.P))
         {
-            //AddWeaponToCache("Spear");
-            //AddWeaponToCache("Axe");
+            _stats["pull"].Value++;
         }
 
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            foreach(GameObject go in equippedWeapons)
-            {
-                go.GetComponent<WeaponBase>().UpgradeWeapon();
-            }
-        }
+        // if(Input.GetKeyDown(KeyCode.Z))
+        // {
+        //     foreach(GameObject go in equippedWeapons)
+        //     {
+        //         go.GetComponent<WeaponBase>().UpgradeWeapon();
+        //     }
+        // }
         
         #endregion
 
