@@ -6,13 +6,16 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using MapMagic.Nodes.MatrixGenerators;
+using Unity.VisualScripting;
 
 public class BaseUpgradeSquare : MonoBehaviour
 {
-    public TextMeshProUGUI bUpName, bUpCost, bUpLevel;
+    public TextMeshProUGUI bUpName, bUpCost, bUpLevel, shopCostUI;
     //possible level graphic to show what level its at
-    public Image bUpImage;
-    public string baseUpgradeName;
+    public Image bUpImage, background;
+    //public Sprite selected, notSelected, hovering, hoveringSelected;
+    public UISelectableObject uiBGObj;
+    public string baseUpgradeName, toolTIP;
     public int _baseUpgradeLevel;
 
     public Image lvlFillBar;
@@ -21,7 +24,7 @@ public class BaseUpgradeSquare : MonoBehaviour
     [SerializeField]
     private int maxLvl = 10;
     private int _baseCost;
-    public bool lerpBar = false, useLastLevel = false;
+    public bool lerpBar = false, useLastLevel = false, isSelected = false;
 
     public int BaseCost
     {
@@ -72,7 +75,49 @@ public class BaseUpgradeSquare : MonoBehaviour
         bUpLevel.text = "LVL: " + ulvl;
     }
 
-    
+    public void SetSelected()
+    {
+        if(isSelected)
+        {
+            uiBGObj.SetGreen(false);
+            //background.sprite = selected;
+        }
+        
+    }
+    public void SetUnFocused()
+    {
+        if(isSelected)
+        {
+            uiBGObj.SetGreen(false);
+            //background.sprite = selected;
+        }
+        else
+        {
+            uiBGObj.SetNormal(false);
+            //background.sprite = notSelected;
+        }
+    }
+
+    public void SetHover()
+    {
+        if(isSelected)
+        {
+            uiBGObj.SetGreen(true);
+        }
+        else
+        {
+            uiBGObj.SetNormal(true);
+        }
+        UpdateBuyButton();
+
+        UpdateShopCostUI();
+    }
+
+    public void UpdateBuyButton()
+    {
+        ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().RestoreToolTipValues();
+        ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(baseUpgradeName);
+    }
 
     public void OnEnable()
     {
@@ -112,6 +157,18 @@ public class BaseUpgradeSquare : MonoBehaviour
         }
     }
 
+    public void UpdateShopCostUI()
+    {
+        //update cost ui
+        if(BaseCost < 0)
+        {
+            shopCostUI.text = "MAX";
+        }
+        else
+        {
+            shopCostUI.text = BaseCost.ToString();
+        }
+    }
     public void UpdateCostUI()
     {
         if(BaseCost == -1)

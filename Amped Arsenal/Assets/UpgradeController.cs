@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Den.Tools;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class UpgradeController : MonoBehaviour
 {
@@ -97,6 +98,7 @@ public class UpgradeController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.G))
         {
             mainController._playerGold += 10;
+            UpdatedGoldUI();
         }
     }
 
@@ -121,14 +123,35 @@ public class UpgradeController : MonoBehaviour
         }
     }
 
+    public void DeselectAll()
+    {
+        foreach(GameObject go in upgradePrefabs)
+        {
+            go.GetComponent<BaseUpgradeSquare>().isSelected = false;
+            go.GetComponent<BaseUpgradeSquare>().SetUnFocused();
+        }
+    }
+
+    public void SelectUpgrade(GameObject me)
+    {
+        DeselectAll();
+        me.GetComponent<BaseUpgradeSquare>().isSelected = true;
+        me.GetComponent<BaseUpgradeSquare>().SetHover();
+
+        EventSystem.current.SetSelectedGameObject(ShopItemSelectionManager.instance.shopItems[7]);
+        ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(me.GetComponent<BaseUpgradeSquare>().baseUpgradeName, me.GetComponent<BaseUpgradeSquare>().toolTIP, me.GetComponent<BaseUpgradeSquare>().BaseCost);
+    }
     public void ChooseUpgrade(string upName)
     {
-        MainMenuController.BaseUpgrade tempUpgrade = new();
-        tempUpgrade.upgradeName = "";
-        tempUpgrade.UpgradeLevel = 0;
+        BaseUpgradeSquare bus = null;
+        MainMenuController.BaseUpgrade tempUpgrade = new()
+        {
+            upgradeName = "",
+            UpgradeLevel = 0
+        };
 
         //Get the upgrade from the upgrade list to update the data to be saved
-        foreach(MainMenuController.BaseUpgrade bu in upgradeList)
+        foreach (MainMenuController.BaseUpgrade bu in upgradeList)
         {
             if (bu.upgradeName == upName)
             {
@@ -162,7 +185,7 @@ public class UpgradeController : MonoBehaviour
                     if(tempUpgrade.upgradeName == go.GetComponent<BaseUpgradeSquare>().baseUpgradeName)
                     {
                         //update price on upgrade
-                        BaseUpgradeSquare bus = go.GetComponent<BaseUpgradeSquare>();
+                        bus = go.GetComponent<BaseUpgradeSquare>();
                         if(tempUpgrade.IsMaxLevel())
                         {
                             bus.SetUpgradeVisuals(tempUpgrade.UpgradeLevel, -1);
@@ -178,6 +201,9 @@ public class UpgradeController : MonoBehaviour
 
                 //save upgrade
                 mainController.SaveUpgradeValues();
+
+                //update upgrade visuals and buy button
+                ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(bus.baseUpgradeName, bus.toolTIP, bus.BaseCost);
             }
         }
         else

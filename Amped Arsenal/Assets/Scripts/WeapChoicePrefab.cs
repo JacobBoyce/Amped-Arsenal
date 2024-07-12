@@ -8,19 +8,33 @@ public class WeapChoicePrefab : MonoBehaviour
 {
     public Image weapImg, bgImg;
     public string weapName;
-    [SerializeField]
-    private Sprite deselected, selected;
     public bool isSelected = false;
+
+    // void Awake()
+    // {
+    //     GetComponent<UIInteracableObjectVisuals>().OnObjectHovered += Hovered;
+    // }
+    // void OnDestroy()
+    // {
+    //     GetComponent<UIInteracableObjectVisuals>().OnObjectHovered -= Hovered;
+    // }
+
+    // public void Hovered()
+    // {
+
+    // }
 
     public void Select()
     {
-        bgImg.sprite = selected;
-        isSelected = true;
+        //bgImg.sprite = selected;
+        //GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
+        //isSelected = true;
     }
 
     public void Deselect()
     {
-        bgImg.sprite = deselected;
-        isSelected = false;
+        //GetComponent<UIInteracableObjectVisuals>().SetNormal(false);
+        //GetComponent<UIInteracableObjectVisuals>().SetUnselected();
+        //bgImg.sprite = deselected;
     }
 }

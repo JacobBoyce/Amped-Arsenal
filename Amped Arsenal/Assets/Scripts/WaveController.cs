@@ -185,7 +185,7 @@ public class WaveController : MonoBehaviour
 
                 infoMessages.gameObject.SetActive(false);
                 curWave = 1;
-                spawnRateMax = 2;
+                //spawnRateMax = 2;
                 spawnRate = spawnRateMax;
                 //waveText.text = "Wave " + curWave + "/" + maxWave;
                 mainCountdown = maxWaveTimer;
@@ -226,7 +226,11 @@ public class WaveController : MonoBehaviour
     {
         //update wave UI
         //waveText.text = "Wave " + curWave + "/" + maxWave;
-        spawnRateMax -= .1f;
+        if(spawnRateMax > .1f)
+        {
+            spawnRateMax -= .1f;
+        }
+        
         DecideWave();
         //spawn enemies
         toggleSpawning = true;

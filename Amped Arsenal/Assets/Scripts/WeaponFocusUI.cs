@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 using System.Numerics;
 
 public class WeaponFocusUI : MonoBehaviour
@@ -131,14 +132,16 @@ public class WeaponFocusUI : MonoBehaviour
             {
                 //Debug.Log("turnon on init");
                 upgradeButton.interactable = true;
-                buttonImage.sprite = canBuyImg;
+                upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
+                //buttonImage.sprite = canBuyImg;
                 // make button green
             }
             else
             {
                 //Debug.Log("turnoff on init");
                 upgradeButton.interactable = false;
-                buttonImage.sprite = cantBuyImg;
+                upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetRed(false);
+                //buttonImage.sprite = cantBuyImg;
                 // make button red
                 //costUI.text = "Cost: ";
             }
@@ -155,7 +158,7 @@ public class WeaponFocusUI : MonoBehaviour
         weapLvl.text = "";
         modName.text = "";
 
-        upgradeButton.interactable = false;
+        //upgradeButton.interactable = false;
         costUI.text = "";
 
         foreach (GameObject go in upInfoSlot)
@@ -180,7 +183,8 @@ public class WeaponFocusUI : MonoBehaviour
                 //update focused weapon
                 ClearFocusUI();
                 UpdateFocusUI(tempWeap, player);
-                controller.UpdateSlotUIInfo();
+                controller.UpdateSlotUIInfo(false);
+                GetComponentInParent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6);
                 
                 controller.xpText.text = player._stats["xp"].Value.ToString();
             }

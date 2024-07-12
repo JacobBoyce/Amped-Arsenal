@@ -20,4 +20,14 @@ public class MenuController : MonoBehaviour
     {
         MainMenuController.Instance.SaveUpgradeValues();
     }
+
+    public void DeleteGame()
+    {
+        MainMenuController.Instance.data.DeleteProfile();
+    }
+
+    public void OpenFileLocation()
+    {
+        MainMenuController.Instance.data.OpenProfileLocation();
+    }
 }

@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    [TextArea]
-    public string toolTip;
     [SerializeField] private readonly float _verticalMoveAmount = 30f;
     [SerializeField] private readonly float _moveTime = .1f;
     [Range(0f,2f), SerializeField] private readonly float _scaleAmount = 1.1f;
@@ -52,42 +50,68 @@ public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPo
     public void OnPointerEnter(PointerEventData eventData)
     {
         eventData.selectedObject = gameObject;
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         eventData.selectedObject = null;
+        
     }
 
     public void OnSelect(BaseEventData eventData)
     {
         StartCoroutine(MoveShopItem(true));
         ShopItemSelectionManager.instance.LastSelected = gameObject;
+        GetComponent<BaseUpgradeSquare>()?.SetHover();
+
+       
 
         // Find the index
         for(int i = 0; i < ShopItemSelectionManager.instance.shopItems.Length; i++)
         {
             if(ShopItemSelectionManager.instance.shopItems[i] == gameObject)
             {
+                
                 ShopItemSelectionManager.instance.LastSelectedIndex = i;
                 try
                 {
-                    ShopItemSelectionManager.instance.ShowToolTip(toolTip);
+                    ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>()?.RestoreToolTipValues(GetComponent<BaseUpgradeSquare>()?.toolTIP);
+                    //ShopItemSelectionManager.instance.ShowToolTip(toolTip);
                 }
                 catch (System.Exception)
                 {
                     
                     throw;
                 }
+
+                if(ShopItemSelectionManager.instance.shopItems[i] == ShopItemSelectionManager.instance.shopItems[7])
+                {
+                    ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().RestoreToolTipValues();
+                    ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().BuyButtonSelected();
+                }
                 
                 return;
+            }
+            else
+            {
+                ShopItemSelectionManager.instance.shopItems[7].GetComponent<UISelectableObject>().SetUnselected();
             }
         }
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        ShopItemSelectionManager.instance.ShowToolTip("");
+        
         StartCoroutine(MoveShopItem(false));
+        GetComponent<BaseUpgradeSquare>()?.SetUnFocused();
+
+        // for(int i = 0; i < ShopItemSelectionManager.instance.shopItems.Length; i++)
+        // {
+        //     if(ShopItemSelectionManager.instance.shopItems[i] == ShopItemSelectionManager.instance.shopItems[7])
+        //     {
+        //         ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().RestoreToolTipValues();
+        //     }
+        // }
     }
 }

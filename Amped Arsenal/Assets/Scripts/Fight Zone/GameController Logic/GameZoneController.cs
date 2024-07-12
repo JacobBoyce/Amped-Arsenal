@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameZoneController : MonoBehaviour
 {
@@ -215,23 +216,41 @@ public class GameZoneController : MonoBehaviour
             go.SetActive(toggle);
         }
     }
-    public void OpenUpgrades()
+    public void OpenUpgrades(InputAction.CallbackContext context)
     {
-        
-        //turn on upgrade screen and turn off other ui
-            if(isUpgrading == false)
+        if (context.performed)
+        {
+            if(!isPaused)
             {
-                FocusUI(upgradePanel, true);
-                upgradePanel.GetComponent<UpgradeMenuController>().PopulateUI();
-                joystickController.SetActive(false);
+                //turn on upgrade screen and turn off other ui
+                if(isUpgrading == false)
+                {
+                    FocusUI(upgradePanel, true);
+                    upgradePanel.GetComponent<UpgradeMenuController>().PopulateUI();
+                    joystickController.SetActive(false);
+                    upgradeButton.SetActive(false);
+                    isUpgrading = true;
+                }
+                else
+                {
+                    //display gameplay ui
+                    ResumeGamePlay();
+                    joystickController.SetActive(true);
+                    upgradeButton.SetActive(true);
+                    isUpgrading = false;
+                    p1.CheckIfCanUpgradeWeapons();
+                }
             }
-            else
+            else if(isPaused && isUpgrading)
             {
                 //display gameplay ui
                 ResumeGamePlay();
                 joystickController.SetActive(true);
+                upgradeButton.SetActive(true);
+                isUpgrading = false;
+                p1.CheckIfCanUpgradeWeapons();
             }
-            isUpgrading = !isUpgrading;
+        }
     }
 
     public void ShowStats(bool onoff)
@@ -275,6 +294,7 @@ public class GameZoneController : MonoBehaviour
         currencyUI.SetActive(true);
         shopPanel.SetActive(false);
         upgradeButton.SetActive(true);
+        p1.CheckIfCanUpgradeWeapons();
         //shopAnimeController.ToggleDots();
     }
 

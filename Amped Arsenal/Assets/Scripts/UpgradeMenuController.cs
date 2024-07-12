@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
 {
     public WeaponFocusUI weapFocus;
+    public MenuItemSelectionManager menuController;
     public EquippedUI equippedUICont;
     //public GameObject blankSlotPrefab;
     public TextMeshProUGUI xpText;
     private PlayerController playerCont;
 
 
-    public List<UpgradeIcons> upIcons = new List<UpgradeIcons>();
+    public List<UpgradeIcons> upIcons = new();
     UpgradeIcons Find(WeapUpgrade.WeaponUpgrade wuType) => upIcons.Find(x => x.upType.Equals(wuType));// FirstOrDefault(x => x.Name.Equals(type, StringComparison.OrdinalIgnoreCase));
 
 
@@ -51,10 +53,15 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
         xpText.text = playerCont._stats["xp"].Value.ToString();
 
         //check the slot first to see if the thing we are about to populate is already in the list
-        UpdateSlotUIInfo();
+        UpdateSlotUIInfo(true);
     }
 
-    public void UpdateSlotUIInfo()
+    public void SelectBuyButton()
+    {
+        StartCoroutine(menuController.SetSelectedAfterOneFrame(6));
+    }
+
+    public void UpdateSlotUIInfo(bool isFirstLoad)
     {
         if (playerCont.equippedWeapons.Count != 0)
         {
@@ -85,6 +92,10 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
                 
                 slotNum++;
             }
+        }
+        if(isFirstLoad)
+        {
+            equippedUICont.SelectThisOne(menuController.menuItems[0].GetComponent<WeapItemSlotUI>()); 
         }
     }
 

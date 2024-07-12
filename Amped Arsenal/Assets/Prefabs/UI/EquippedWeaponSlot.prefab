@@ -506,6 +506,7 @@ GameObject:
   - component: {fileID: 843656319744283508}
   - component: {fileID: 5100049265635304624}
   - component: {fileID: 7442574240905900973}
+  - component: {fileID: 7446051989926446324}
   m_Layer: 5
   m_Name: EquippedWeaponSlot
   m_TagString: Untagged
@@ -567,19 +568,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65c923cfdd4ac9448875e3349fbe2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eUIController: {fileID: 0}
   indentity: 1
   weapName: 
-  selectBorder: {fileID: 843656318394267274}
-  weapUIObj: {fileID: 843656319440383070}
-  deselected: {fileID: 21300000, guid: edef03ece7a3e734aa3a885741a80ec2, type: 3}
-  upgradable: {fileID: 21300000, guid: 3dc6a15b47232cf47b0c4e048b420e4f, type: 3}
-  selected: {fileID: 21300000, guid: 37751a2fc468788438b04da37b947344, type: 3}
-  upgradableANDselected: {fileID: 21300000, guid: 80893d2eb67cb1a489cc914a11a3e794, type: 3}
   isSelected: 0
   isUpgradeable: 0
   weapImg: {fileID: 843656319203676095}
   lvlBar: {fileID: 3256650443048398953}
-  weapLvlBadge: {fileID: 843656319455153945}
   lvl: {fileID: 843656318768921281}
 --- !u!114 &7442574240905900973
 MonoBehaviour:
@@ -594,7 +589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 3
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -626,17 +621,42 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: EquippedUI, Assembly-CSharp
-        m_MethodName: SelectThisOne
-        m_Mode: 2
+        m_TargetAssemblyTypeName: UpgradeMenuController, Assembly-CSharp
+        m_MethodName: SelectBuyButton
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 5100049265635304624}
-          m_ObjectArgumentAssemblyTypeName: WeapItemSlotUI, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7446051989926446324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843656319744283514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abceee73b071bc84abd75b8d4ad55445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgObjectImage: {fileID: 843656319440383070}
+  selectedPlain: {fileID: 21300000, guid: 37751a2fc468788438b04da37b947344, type: 3}
+  notSelectedPlain: {fileID: 21300000, guid: edef03ece7a3e734aa3a885741a80ec2, type: 3}
+  selectedGreen: {fileID: 21300000, guid: 80893d2eb67cb1a489cc914a11a3e794, type: 3}
+  notSelectedGreen: {fileID: 21300000, guid: 3dc6a15b47232cf47b0c4e048b420e4f, type: 3}
+  selectedRed: {fileID: 21300000, guid: 998fbb39e0f4bf94a9bed19a0f21486e, type: 3}
+  notSelectedRed: {fileID: 21300000, guid: b16afa35925782946b4f4c87ba67a131, type: 3}
+  isSelected: 0
+  menuController: {fileID: 0}
+  _verticalMoveAmount: 0
+  _moveTime: 0.1
+  _scaleAmount: 1.1
+  wantUIChange: 1
 --- !u!1 &3256650442718718464
 GameObject:
   m_ObjectHideFlags: 0

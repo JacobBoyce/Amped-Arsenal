@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Threading;
 
 public class ShopMenuController : MonoBehaviour
 {
     public GameZoneController controller;
+    public MenuItemSelectionManager menuController;
     public WeaponLib weapLib;
     public GameObject shopWeaponParent, itemPrefab, tempItemPrefab, rerollButton;
     public List<ShopItemPrefab> buyableItems;
@@ -248,6 +251,7 @@ public class ShopMenuController : MonoBehaviour
         {
             rerollButton.GetComponent<Button>().interactable = false;
         }
+        StartCoroutine(menuController.SetSelectedAfterOneFrame(4));
     }
 
     public void CheckIfCanBuy()
@@ -260,22 +264,22 @@ public class ShopMenuController : MonoBehaviour
             if(price > controller.p1._stats["gold"].Value)
             {
                 sp.UpdatePrice(price); // .GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
-                sp.buyButton.enabled = false;
+                //sp.buyButton.enabled = false;
                 sp.buyButton.interactable = false;
             }
             else
             {
                 sp.UpdatePrice(price); 
                 //sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = price.ToString();
-                sp.buyButton.enabled = true;
+                //sp.buyButton.enabled = true;
                 sp.buyButton.interactable = true;
             }
 
             //check if it has already been bought
             if (controller.p1.FindWeapon(sp.weapName) || sp.weapName == "None")
             {
-                 sp.UpdatePrice("X"); //sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
-                sp.buyButton.enabled = false;
+                sp.UpdatePrice("X"); //sp.buyButton.GetComponentInChildren<TextMeshProUGUI>().text = "X";
+                //sp.buyButton.enabled = false;
                 sp.buyButton.interactable = false;
             }
         }

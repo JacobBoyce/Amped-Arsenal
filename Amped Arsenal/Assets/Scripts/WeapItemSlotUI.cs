@@ -6,17 +6,23 @@ using TMPro;
 
 public class WeapItemSlotUI : MonoBehaviour
 {
+    public EquippedUI eUIController;
+    
+    [Space(15)]
     public int indentity;
     public string weapName;
-    public GameObject selectBorder;
-    public Image weapUIObj;
-    [SerializeField]
-    private Sprite deselected, upgradable, selected, upgradableANDselected;
     public bool isSelected = false, isUpgradeable = false;
     public Image weapImg, lvlBar;
-    public GameObject weapLvlBadge;
     public TextMeshProUGUI lvl;
 
+    void Awake()
+    {
+        GetComponent<UIInteracableObjectVisuals>().OnObjectHovered += Hovered;
+    }
+    void OnDestroy()
+    {
+        GetComponent<UIInteracableObjectVisuals>().OnObjectHovered -= Hovered;
+    }
 
     public void ClearStuff()
     {
@@ -31,15 +37,20 @@ public class WeapItemSlotUI : MonoBehaviour
     public void Deselect()
     {
         isSelected = false;
-
         if(!isUpgradeable)
         {
-            weapUIObj.sprite = deselected;
+            //weapUIObj.sprite = deselected;
+            GetComponent<UIInteracableObjectVisuals>().SetNormal(false);
         }
         else
         {
-            weapUIObj.sprite = upgradable;
+            //weapUIObj.sprite = upgradable;
+            GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
         }
+    }
+    public void Hovered()
+    {
+        eUIController.SelectThisOne(gameObject.GetComponent<WeapItemSlotUI>());
     }
 
     public void Select()
@@ -48,12 +59,15 @@ public class WeapItemSlotUI : MonoBehaviour
 
         if(!isUpgradeable)
         {
-            weapUIObj.sprite = selected;
+            //weapUIObj.sprite = selected;
+            GetComponent<UIInteracableObjectVisuals>().SetNormal(true);
         }
         else
         {
-            weapUIObj.sprite = upgradableANDselected;
+            //weapUIObj.sprite = upgradableANDselected;
+            GetComponent<UIInteracableObjectVisuals>().SetGreen(true);
         }
+        
     }
 
     public void UpgradeableCheck(bool canUpgrade)

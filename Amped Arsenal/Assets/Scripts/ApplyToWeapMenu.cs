@@ -29,22 +29,38 @@ public class ApplyToWeapMenu : MonoBehaviour
         foreach(GameObject weapObj in player.equippedWeapons)
         {
             WeaponBase tempWeap = weapObj.GetComponent<WeaponBase>();
-            WeapChoicePrefab choicePrefab = weapOptions[i].GetComponent<WeapChoicePrefab>();
+            if(tempWeap.currentEquippedSlots != tempWeap.maxSlots)
+            {
+                WeapChoicePrefab choicePrefab = weapOptions[i].GetComponent<WeapChoicePrefab>();
 
                 choicePrefab.weapName = tempWeap.wName;
                 choicePrefab.weapImg.sprite = tempWeap.shopItemInfo.splashImg;
                 choicePrefab.weapImg.gameObject.SetActive(true);
-
-            if(tempWeap.currentEquippedSlots < tempWeap.maxSlots)
+                choicePrefab.GetComponent<UIInteracableObjectVisuals>().SetNormal(false);
+                choicePrefab.isSelected = false;
+                choicePrefab.GetComponent<Button>().interactable = true;
+                i++;
+            }
+            else
             {
-                //GameObject tempWeapChoicePrefab = Instantiate(weaponChoicePrefab);
-                //tempWeapChoicePrefab.transform.SetParent(weapChoicePrefabContainer.transform);
+                WeapChoicePrefab choicePrefab = weapOptions[i].GetComponent<WeapChoicePrefab>();
+                choicePrefab.weapName = "";
+                choicePrefab.GetComponent<WeapChoicePrefab>().weapImg.gameObject.SetActive(false);
+                choicePrefab.GetComponent<Button>().interactable = false;
+                choicePrefab.GetComponent<UIInteracableObjectVisuals>().SetNormal(false);
+                choicePrefab.isSelected = false;
+            }
+            
+            // if(tempWeap.currentEquippedSlots < tempWeap.maxSlots)
+            // {
+            //     //GameObject tempWeapChoicePrefab = Instantiate(weaponChoicePrefab);
+            //     //tempWeapChoicePrefab.transform.SetParent(weapChoicePrefabContainer.transform);
  
                 
-                weapOptions[i].GetComponent<Button>().interactable = true;
-                i++;
-                //weapOptions.Add(tempWeapChoicePrefab);
-            }
+            //     weapOptions[i].GetComponent<Button>().interactable = true;
+            //     i++;
+            //     //weapOptions.Add(tempWeapChoicePrefab);
+            // }
         }
     }
 
@@ -56,6 +72,9 @@ public class ApplyToWeapMenu : MonoBehaviour
             go.GetComponent<WeapChoicePrefab>().weapName = "";
             go.GetComponent<WeapChoicePrefab>().weapImg.gameObject.SetActive(false);
             go.GetComponent<Button>().interactable = false;
+            go.GetComponent<UIInteracableObjectVisuals>().SetNormal(false);
+            GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<UIInteracableObjectVisuals>().SetRed(false);
+            //GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<Button>().interactable = false;
         }
     }
 
@@ -69,26 +88,66 @@ public class ApplyToWeapMenu : MonoBehaviour
             WeapChoicePrefab wcp = ws.GetComponent<WeapChoicePrefab>();
             if(weapChoice.weapName.Equals(wcp.weapName) == true)
             {
+                //ws.GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
                 if(wcp.isSelected != true)
                 {
                     //select it
-                    wcp.Select();
+                    Debug.Log(wcp.weapName + " not selected, selecting and setting green.");
+                    wcp.isSelected = true;
+                    //wcp.Select();
                     selectedWeap = wcp;
+                    StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6));
+                    //GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<Button>().interactable = true;
+                    GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
+                }
+                else
+                {
+                    Debug.Log(wcp.weapName + " already selected, selecting apply button");
+                    StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6));
+                    //GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<Button>().interactable = true;
+                    GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
                 }
             }
             else
             {
-                //deselect it
-                wcp.Deselect();
-                
+                Debug.Log(wcp.weapName + " not the weap we are looking for, deSelecting and/or setting off bool to false.");
+                wcp.isSelected = false;
+                //wcp.GetComponent<UIInteracableObjectVisuals>().SetUnselected();
+                //wcp.Deselect();
             }
+        }
+
+        ApplyGreenAndDeselectAll();
+    }
+
+    public void ApplyGreenAndDeselectAll()
+    {
+        if(selectedWeap != null)
+        {
+            foreach(GameObject ws in weapOptions)
+            {
+                WeapChoicePrefab wcp = ws.GetComponent<WeapChoicePrefab>();
+                if(!wcp.isSelected)
+                {
+                    wcp.GetComponent<UIInteracableObjectVisuals>().SetNormal(false);
+                }
+            }
+
+            selectedWeap.GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
         }
     }
 
     //Apply Button calls this
     public void ApplySelectedWeapon()
     {
-        relicToApply.ApplyRelic(player, selectedWeap.weapName);
+        if(selectedWeap != null)
+        {
+            relicToApply.ApplyRelic(player, selectedWeap.weapName);
+            player.mainController.CloseWeapSelectEffect();
+        }
+        else
+        {
+            Debug.Log("Choose an upgrade first");
+        }
     }
-
 }

@@ -25,10 +25,7 @@ public class EquippedUI : MonoBehaviour
         weapUI[idNum].UpgradeableCheck(canUpgrade);
     }
 
-    public void UpdateUI()
-    {
-        
-    }
+    
 
     public void ClearSlots()
     {

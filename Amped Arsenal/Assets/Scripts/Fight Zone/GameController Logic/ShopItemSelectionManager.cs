@@ -55,14 +55,9 @@ public class ShopItemSelectionManager : MonoBehaviour
             int newIndex = LastSelectedIndex + addition;
             newIndex = Mathf.Clamp(newIndex, 0, shopItems.Length-1);
             EventSystem.current.SetSelectedGameObject(shopItems[newIndex]);
-        }
-    }
-
-    public void ShowToolTip(string tooltip)
-    {
-        if(tooltipText != null)
-        {
-            tooltipText.text = tooltip;
+            shopItems[LastSelectedIndex].GetComponent<BaseUpgradeSquare>()?.SetUnFocused();
+            shopItems[LastSelectedIndex].GetComponent<BuyButtonLogic>()?.BuyButtonUnSelected();
+            shopItems[newIndex].GetComponent<BaseUpgradeSquare>()?.SetHover();
         }
     }
 }
