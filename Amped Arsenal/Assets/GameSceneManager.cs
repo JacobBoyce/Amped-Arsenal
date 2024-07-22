@@ -62,6 +62,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        Time.timeScale = 1;
         loadingScreen.SetActive(true);
         triggerEndLoadingScreen = false;
         scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.FIGHTZONE));
@@ -91,7 +92,7 @@ public class GameSceneManager : MonoBehaviour
                     totalSceneProgress += operation.progress;
                 }
 
-                totalSceneProgress = (totalSceneProgress / scenesLoading.Count);
+                totalSceneProgress /= scenesLoading.Count;
                 
                 yield return null;
             }
@@ -123,7 +124,7 @@ public class GameSceneManager : MonoBehaviour
         {
             if(loadBuffCD < loadBuffCDMax)
             {
-                loadBuffCD += Time.deltaTime;
+                loadBuffCD += Time.unscaledDeltaTime;
             }
             else
             {

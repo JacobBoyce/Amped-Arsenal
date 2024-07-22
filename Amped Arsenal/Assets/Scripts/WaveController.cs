@@ -60,10 +60,7 @@ public class WaveController : MonoBehaviour
         mainCountdown = maxWaveTimer;
 
         delayStart = delayStartMax;
-        delayExfil = delayExfilMax;
-
-
-        
+        delayExfil = delayExfilMax;        
     }
 
     // Update is called once per frame
@@ -346,15 +343,15 @@ public class WaveController : MonoBehaviour
             tempPrefab.transform.parent = enemyParentObj.transform;
         }
 
-        if(curWave > 8 && (curWave % 3) == 0)
-        {
+        //if(curWave > 8 && (curWave % 3) == 0)
+        //{
             if(spawnLargeTrigger == false)
             {
                 Debug.Log("Spawn Large enemy!");
                 spawnLargeTrigger = true;
                 tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
             }
-        }
+        //}
         else
         {
             if(exfilPhase)

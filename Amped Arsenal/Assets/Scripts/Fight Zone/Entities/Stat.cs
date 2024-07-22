@@ -65,7 +65,7 @@ public class Stat
     {
         Modifier tempMod = new();
         tempMod = GetMod(mName);
-        _value -= Mathf.Abs(tempMod.amtChanged);
+        _value -= tempMod.amtChanged;
 
         mods.Remove(tempMod);
     }

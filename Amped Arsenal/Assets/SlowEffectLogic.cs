@@ -10,7 +10,7 @@ public class SlowEffectLogic : EffectBase
     public GameObject createdUIObj;
     public bool activate;
 
-    public Modifier mod = new Modifier("slowRelic", -.4f, Modifier.ChangeType.PERCENT, true);   
+    public Modifier mod = new("slowRelic", -.4f, Modifier.ChangeType.PERCENT, true);   
     public void Start()
     {
         TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 

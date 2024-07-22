@@ -5,6 +5,7 @@ using UnityEngine;
 public class DeathPoofLogic : MonoBehaviour
 {
     public float timer, timerMax;
+    public bool isLarge = false;
     //public float vertOffset;
     // Update is called once per frame
     public void OneEnabled()
@@ -22,6 +23,11 @@ public class DeathPoofLogic : MonoBehaviour
         {
             ObjectPoolManager.ReturnObjectToPool(this.gameObject);
             timer = 0;
+            if(isLarge)
+            {
+                transform.localScale = new Vector3(1,1,1);
+                isLarge = false;
+            }
             //Destroy(this.gameObject);
         }
     }

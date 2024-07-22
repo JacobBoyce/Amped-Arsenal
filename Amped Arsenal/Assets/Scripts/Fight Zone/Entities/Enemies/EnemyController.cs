@@ -10,7 +10,7 @@ public class EnemyController : Actor
     public EnemyMovementController movementController;
     public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
-    public bool tookDamage, spawnedXp = false;
+    public bool tookDamage, spawnedXp = false, isLargeEnemy = false;
     private Color baseDamageColor = Color.white;
     public Color baseSpriteColor;
     private Color curDamageColor;
@@ -54,14 +54,13 @@ public class EnemyController : Actor
 
     public void SetStats()
     {
-        _stats["hp"].Max = hpMax;
-        _stats["attk"].Max = attk;
-        _stats["str"].Max = str;
-        _stats["def"].Max = def;
-        _stats["spd"].Max = spd;
-        _stats["xp"].Max = xp;
-        _stats["gold"].Max = gold;
-        _stats.Fill();
+        _stats["hp"].Value = hpMax;
+        _stats["attk"].Value = attk;
+        _stats["str"].Value = str;
+        _stats["def"].Value = def;
+        _stats["spd"].Value = spd;
+        _stats["xp"].Value = xp;
+        _stats["gold"].Value = gold;
     }
 
     public void IncreaseStats(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
@@ -101,6 +100,7 @@ public class EnemyController : Actor
 
     public void CreateLargeEnemy(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
     {
+        isLargeEnemy = true;
         float nHp;//, nStr, nDef;
 
         nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
@@ -109,11 +109,11 @@ public class EnemyController : Actor
         //nDef = _def * _zoneNum;
         
         _stats["hp"].Max = nHp;
-        _stats["hp"].Fill();
+        //_stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseByPercent(.1f);
-        _stats["spd"].Fill();
+        //_stats["spd"].Fill();
 
         transform.localScale = new Vector3(2f,2f,2f);
     }
@@ -233,8 +233,16 @@ public class EnemyController : Actor
         {
             spawnedXp = true;
             SpawnDrop();
-            //Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation);
-            ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+            if(isLargeEnemy)
+            {
+                GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+                largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
+                largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
+            }
+            else
+            {
+                ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+            }
             spriteObj.SetActive(false);
             effectCont.uiSatusEffectParent.SetActive(false);
             Destroy(this.gameObject, .5f);

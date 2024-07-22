@@ -13,7 +13,7 @@ public class GameZoneController : MonoBehaviour
     public RelicLib relicLibrary;
     public PlayerController p1;
     public float exfilPercentAmount;
-    public GameObject statsPanel, uiController, currencyUI, upgradePanel, shopPanel, chooseWeapApplyEffect;
+    public GameObject statsPanel, uiController, currencyUI, upgradePanel, pauseMenu, shopPanel, chooseWeapApplyEffect;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
     public ShopMenuAnimController shopAnimeController;
@@ -249,6 +249,24 @@ public class GameZoneController : MonoBehaviour
                 upgradeButton.SetActive(true);
                 isUpgrading = false;
                 p1.CheckIfCanUpgradeWeapons();
+            }
+        }
+    }
+
+    public void OpenPauseMenu(InputAction.CallbackContext context)
+    {
+        //if button was pressed (this makes it so the method doesnt get called twice, NEEDED)
+        if (context.performed)
+        {
+            //if game is not paused
+            if(!isPaused)
+            {
+                FocusUI(pauseMenu, true);
+                pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
+            }
+            else
+            {
+                ResumeGamePlay();
             }
         }
     }

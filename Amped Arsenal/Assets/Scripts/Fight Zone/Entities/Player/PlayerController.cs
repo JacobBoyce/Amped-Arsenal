@@ -80,12 +80,12 @@ public class PlayerController : Actor
 
         playerObj = this;
         _stats = new Stats();
-        _stats.AddStat("hp",       100);    // Max Health
+        _stats.AddStat("hp",       100,10000);    // Max Health
         _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
         _stats.AddStat("luck",    9,10);    // How lucky you are to get different upgrades or drops from enemies.
-        _stats.AddStat("pull",   5,50);    // How far to pull object from.
+        _stats.AddStat("pull",   10,50);    // How far to pull object from.
         _stats.AddStat("xp",      0,100000); // Xp.
         _stats.AddStat("gold",    50,100000); //Gold
         
@@ -94,7 +94,7 @@ public class PlayerController : Actor
         //_stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
         
         _stats["hp"].IncreaseByAmount(PlayerPrefs.GetInt("HP"));
-        _stats["hp"].Value = _stats["hp"].Max;
+        //_stats["hp"].Value = _stats["hp"].Max;
         _stats["str"].Value += PlayerPrefs.GetInt("Strength");
         _stats["def"].Value += PlayerPrefs.GetInt("Armor");
         _stats["spd"].Value += PlayerPrefs.GetInt("Speed");
@@ -179,11 +179,9 @@ public class PlayerController : Actor
         UpdateBar(_stats["hp"]);
 
         //trigger damage event list
-        if(OnDamaged != null)
-        {
-            OnDamaged();
-        }
-        if(_stats["hp"].Value == 0)
+        OnDamaged?.Invoke();
+        
+        if (_stats["hp"].Value == 0)
         {
             // Debug.Log("GameOver");
             // //---------------------add player prefs inflation to equation here
