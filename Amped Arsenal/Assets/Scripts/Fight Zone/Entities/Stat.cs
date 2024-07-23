@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 [System.Serializable]
@@ -43,7 +44,45 @@ public class Stat
 
     public void IncreaseByPercent(float percent) => _value += _value * percent;
     public void IncreaseByAmount(float amount) => _value += amount;
+    public void IncreaseMaxByPercent(float amount, bool wantFill, bool wantAdd)
+    {
+        Max += Max * amount;
+        
+        if(wantFill)
+        {
+            Fill();
+        }
+        else if(wantAdd)
+        {
+            IncreaseByAmount(Max * amount);
+        }
+    }
+    public void IncreaseMaxByAmount(float amount, bool wantFill, bool wantAdd)
+    {
+        Max += amount;
+        if(wantFill)
+        {
+            Fill();
+        }
+        else if(wantAdd)
+        {
+            IncreaseByAmount(amount);
+        }
+    }
 
+    public void DecreaseMaxBy(float amount)
+    {
+        float temp = Max - amount;
+        if(temp > Max)
+        {
+            Max -= amount;
+            _value = Max;
+        }
+        else
+        {
+            Max -= amount;
+        }
+    } 
     public void AddMod(Modifier mod)
     {
         Modifier tempMod = new(mod);
@@ -51,12 +90,12 @@ public class Stat
         if(tempMod.modType == Modifier.ChangeType.PERCENT)
         {
             tempMod.amtChanged = _value * tempMod.modAmount;
-            IncreaseByPercent(tempMod.modAmount);
+            IncreaseMaxByPercent(tempMod.modAmount,false,true);
         }
         else if(tempMod.modType == Modifier.ChangeType.INT)
         {
             tempMod.amtChanged = tempMod.modAmount;
-            IncreaseByAmount(tempMod.modAmount);
+            IncreaseMaxByAmount(tempMod.modAmount,false,true);
         }
         mods.Add(tempMod);
     }
@@ -66,6 +105,10 @@ public class Stat
         Modifier tempMod = new();
         tempMod = GetMod(mName);
         _value -= tempMod.amtChanged;
+        if(tempMod.isMaxMod)
+        {
+            DecreaseMaxBy(tempMod.amtChanged);
+        }
 
         mods.Remove(tempMod);
     }
@@ -118,6 +161,7 @@ public class Modifier
     public string modName;
     [SerializeField]
     public float modAmount;
+    public bool isMaxMod = false;
 
     [SerializeField]
     public float amtChanged;
@@ -138,6 +182,7 @@ public class Modifier
         modName = mName;
         modAmount = amt;
         modType = ctype;
+        isMaxMod = mMod;
     }
 
     public Modifier(Modifier mod)

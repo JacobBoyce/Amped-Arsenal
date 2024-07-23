@@ -453,9 +453,9 @@ MonoBehaviour:
   attackCooldownMax: 0.5
   facingLeft: 1
   facingRight: 0
-  knockbackAmount: 1000
-  stagCD: 0.5
-  stagCDMax: 0.5
+  knockbackAmount: 300
+  stagCD: 0
+  stagCDMax: 0.3
   isStaggered: 0
   dir: {x: 0, y: 0, z: 0}
   lastHitDirection: {x: 1.7244263, y: 0, z: 0}
@@ -520,6 +520,7 @@ MonoBehaviour:
   dpoofOffset: 3
   tookDamage: 0
   spawnedXp: 0
+  isLargeEnemy: 0
   baseSpriteColor: {r: 0, g: 0, b: 0, a: 0}
   drops:
   - {fileID: 1809617224858193442, guid: 63af3d9bfb0f8f0408dc3189cd9be17d, type: 3}
@@ -577,8 +578,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.74
-  m_Speed: 6.1
-  m_Acceleration: 50
+  m_Speed: 8
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 0
   m_StoppingDistance: 5

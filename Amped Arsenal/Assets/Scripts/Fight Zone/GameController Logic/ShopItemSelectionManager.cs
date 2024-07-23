@@ -39,6 +39,18 @@ public class ShopItemSelectionManager : MonoBehaviour
 
     public void OnEnable()
     {
+        foreach(GameObject go in shopItems)
+        {
+            go.GetComponent<UISelectableObject>().isSelected = false;
+            go.GetComponent<UISelectableObject>().SetNormal(false);
+            try{
+                go.GetComponent<BaseUpgradeSquare>().isSelected = false;
+            }
+            catch{
+                Debug.Log("");
+            }
+            
+        }
         StartCoroutine(SetSelectedAfterOneFrame());
     }
 

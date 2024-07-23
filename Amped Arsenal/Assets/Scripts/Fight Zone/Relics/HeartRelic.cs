@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HeartRelic : RelicBase
 {
-    public Modifier mod = new Modifier("heartRelic", .1f, Modifier.ChangeType.PERCENT, true);
+    public Modifier mod = new("heartRelic", .1f, Modifier.ChangeType.PERCENT, true);
     public override void ApplyRelic(PlayerController player)
     {
         //give player stat boost

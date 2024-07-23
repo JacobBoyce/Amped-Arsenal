@@ -3826,7 +3826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abceee73b071bc84abd75b8d4ad55445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgObjectImage: {fileID: 0}
+  bgObjectImage: {fileID: 1101945637}
   selectedPlain: {fileID: 0}
   notSelectedPlain: {fileID: 0}
   selectedGreen: {fileID: 0}
@@ -3834,11 +3834,11 @@ MonoBehaviour:
   selectedRed: {fileID: 0}
   notSelectedRed: {fileID: 0}
   isSelected: 0
-  menuController: {fileID: 0}
+  menuController: {fileID: 1065827788}
   _verticalMoveAmount: 30
   _moveTime: 0.1
   _scaleAmount: 1.5
-  wantUIChange: 0
+  wantUIChange: 1
 --- !u!1 &1157258004
 GameObject:
   m_ObjectHideFlags: 0
@@ -4107,7 +4107,7 @@ MonoBehaviour:
   selectedRed: {fileID: 0}
   notSelectedRed: {fileID: 0}
   isSelected: 0
-  menuController: {fileID: 0}
+  menuController: {fileID: 1065827788}
   _verticalMoveAmount: 30
   _moveTime: 0.1
   _scaleAmount: 1.5
@@ -4837,18 +4837,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1065827786}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -4931,11 +4919,11 @@ MonoBehaviour:
   selectedRed: {fileID: 0}
   notSelectedRed: {fileID: 0}
   isSelected: 0
-  menuController: {fileID: 0}
+  menuController: {fileID: 1065827788}
   _verticalMoveAmount: 30
   _moveTime: 0.1
   _scaleAmount: 1.5
-  wantUIChange: 0
+  wantUIChange: 1
 --- !u!1 &1520923750
 GameObject:
   m_ObjectHideFlags: 0
@@ -5057,55 +5045,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1532904672}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2122622352}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1065827786}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1774441263}
-        m_TargetAssemblyTypeName: UpgradeController, Assembly-CSharp
-        m_MethodName: UpdatedGoldUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1532904672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5164,11 +5104,11 @@ MonoBehaviour:
   selectedRed: {fileID: 0}
   notSelectedRed: {fileID: 0}
   isSelected: 0
-  menuController: {fileID: 0}
+  menuController: {fileID: 1065827788}
   _verticalMoveAmount: 30
   _moveTime: 0.1
   _scaleAmount: 1.5
-  wantUIChange: 0
+  wantUIChange: 1
 --- !u!1 &1604157105
 GameObject:
   m_ObjectHideFlags: 0
@@ -68417,7 +68357,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 0.1745283, g: 1, b: 0.9024784, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 204.3
   m_Range: 57.6
   m_SpotAngle: 144.63806

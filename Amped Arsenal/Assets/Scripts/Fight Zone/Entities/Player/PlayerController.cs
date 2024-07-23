@@ -80,7 +80,7 @@ public class PlayerController : Actor
 
         playerObj = this;
         _stats = new Stats();
-        _stats.AddStat("hp",       100,10000);    // Max Health
+        _stats.AddStat("hp",       100,100);    // Max Health
         _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
@@ -93,7 +93,7 @@ public class PlayerController : Actor
         //_stats["hp"].AddMod("main", .1f, Modifier.ChangeType.PERCENT, true);
         //_stats["str"].AddMod("main", .1f, Modifier.ChangeType.INT, false);
         
-        _stats["hp"].IncreaseByAmount(PlayerPrefs.GetInt("HP"));
+        _stats["hp"].IncreaseMaxByAmount(PlayerPrefs.GetInt("HP"),true,false);
         //_stats["hp"].Value = _stats["hp"].Max;
         _stats["str"].Value += PlayerPrefs.GetInt("Strength");
         _stats["def"].Value += PlayerPrefs.GetInt("Armor");
@@ -225,7 +225,7 @@ public class PlayerController : Actor
         Set("xp", _stats["xp"].Value + xpAmount);
         xpText.text = _stats["xp"].Value.ToString();
         audioController.PlayXPSound();
-        dropGetPartSys.Play();
+        //dropGetPartSys.Play();
         CheckIfCanUpgradeWeapons();
     }
 
@@ -241,7 +241,7 @@ public class PlayerController : Actor
     {
         Set("gold", _stats["gold"].Value + goldAmount);
         goldText.text = _stats["gold"].Value.ToString();
-        dropGetPartSys.Play();
+        //dropGetPartSys.Play();
         audioController.PlayGoldSound();
     }
 
