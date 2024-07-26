@@ -301,6 +301,7 @@ public class WaveController : MonoBehaviour
         infoMessages.gameObject.SetActive(true);
         delayStart = delayStartMax;
         delayExfil = delayExfilMax;
+        spawnRateMax = 1f;
 
         moons.localRotation = Quaternion.Euler(0,0,0);
         totalWaveTime = (maxWave-1)*maxWaveTimer;

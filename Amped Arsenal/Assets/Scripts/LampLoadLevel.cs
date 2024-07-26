@@ -63,7 +63,7 @@ public class LampLoadLevel : MonoBehaviour
                     //set difficulty
                     lobController.levelDifficulty = levelNum;
 
-                    //set up the correct torrain and deactivate others
+                    //set up the correct terrain and deactivate others
                     lobController.DeactivateTerrains();
                     terrainToLoad.SetActive(true);
 
