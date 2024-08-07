@@ -7,6 +7,8 @@ public class ExfilLampLogic : MonoBehaviour
     public GameZoneController gzController;
     public WaveController waveController;
     public LobbyController lobController;
+    public POIController poiController;
+
     
     public MeshRenderer lightMat;
     public GameObject moveToPos;
@@ -45,7 +47,7 @@ public class ExfilLampLogic : MonoBehaviour
                         triggeredLoad = true;
                         exfilTime = false;
                         waveController.startExfilDelay = false;
-                        waveController.gvController.ReturnToNormalColor();
+                        
 
                         //set player pref flags to tell new scene that you exfilled
                         StartCoroutine(MovePlayer());
@@ -77,6 +79,7 @@ public class ExfilLampLogic : MonoBehaviour
 
     public IEnumerator AfterMovePlayer()
     {
+        waveController.gvController.ReturnToNormalColor();
         gzController.StartFadeIn();
         //Time.timeScale = 0;
         while(gzController.IsFadingIn)
@@ -97,6 +100,7 @@ public class ExfilLampLogic : MonoBehaviour
             ObjectPoolManager.ReturnObjectToPool(go);
         }
         lobController.DeactivateTerrains();
+        poiController.CleanUpEvents();
     }
 
     public void ResetExfilLamp()
@@ -108,7 +112,7 @@ public class ExfilLampLogic : MonoBehaviour
         countdownText.text = "";
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
         if(other.tag == "Player")
         {

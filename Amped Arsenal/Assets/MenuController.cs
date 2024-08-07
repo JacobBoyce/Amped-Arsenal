@@ -30,4 +30,13 @@ public class MenuController : MonoBehaviour
     {
         MainMenuController.Instance.data.OpenProfileLocation();
     }
+
+    public void ExitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
+    }
 }

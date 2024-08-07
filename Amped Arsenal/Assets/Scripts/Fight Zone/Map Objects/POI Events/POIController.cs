@@ -160,4 +160,15 @@ public class POIController : MonoBehaviour
         float z = Random.Range(-range.y, range.y); 
         spawnController.GetComponent<EnemySpawnPoint>().sPoint.transform.localPosition = new Vector3(x, 0, z);
     }
+
+    public void CleanUpEvents()
+    {
+        foreach(GameObject go in spawnedEvents)
+        {
+            go.GetComponent<DeliveryEventLogic>()?.CleanUp();
+
+            Destroy(go);
+        }
+        spawnedEvents.Clear();
+    }
 }

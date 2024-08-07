@@ -44,16 +44,16 @@ public class ShootReward : MonoBehaviour
         else
         {
             // 50/50 chance to pull fom both lists
-            int randomRelicWeapModList = Random.Range(1,3);
+            //int randomRelicWeapModList = Random.Range(1,3);
             //Debug.Log(randomRelicWeapModList);
-            if(randomRelicWeapModList == 1)
-            {
-                relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];
-            }
-            else
-            {
+            //if(randomRelicWeapModList == 1)
+            //{
+                //relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];
+            //}
+            //else
+            //{
                 relicToSpawn = GameZoneController.Instance.relicLibrary.weapModList[Random.Range(0,GameZoneController.Instance.relicLibrary.weapModList.Count)];
-            }
+            //}
         }
                 
         GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, Quaternion.identity);

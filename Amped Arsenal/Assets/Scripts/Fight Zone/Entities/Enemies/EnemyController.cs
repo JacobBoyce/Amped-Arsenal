@@ -11,6 +11,8 @@ public class EnemyController : Actor
     public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
     public bool tookDamage, spawnedXp = false, isLargeEnemy = false;
+    [Range(1,10),Header("1 = 10%  10 = 100%")]
+    public int largeEnemyRelicDropChance;
     private Color baseDamageColor = Color.white;
     public Color baseSpriteColor;
     private Color curDamageColor;
@@ -175,26 +177,69 @@ public class EnemyController : Actor
     public void TakeDamage(float damage)
     {
         //damagedSound.PlayOneShot(damagedSound.clip);
-        if(!AmDead())
+        tookDamage = true;
+        blinkTimer = blinkDuration;
+        Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+
+        if(AmDead())
         {
-            tookDamage = true;
-            blinkTimer = blinkDuration;
-            Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+            //call death stuff
+            DoDeathStuff();
         }
     }
 
     public void TakeDamageFromEffect(float damage, Color dmgColor)
     {
-        if(!AmDead())
+        tookDamage = true;
+        //curDamageColor = dmgColor;
+        blinkTimer = blinkDuration;
+        Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+
+        if(AmDead())
         {
-            tookDamage = true;
-            //curDamageColor = dmgColor;
-            blinkTimer = blinkDuration;
-            Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
-            AmDead();
+            //call death stuff
+            DoDeathStuff();
         }
     }
 
+    public void DoDeathStuff()
+    {
+        if(spawnedXp == false)
+        {
+            if(isLargeEnemy)
+            {
+                //make death poof bigger
+                GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+                largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
+                largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
+
+                //chance to drop relic
+                if(Random.Range(0, 10) < largeEnemyRelicDropChance)
+                {
+                    GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
+                    GetComponent<EnemyMovementController>().visuals.GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
+                
+                }
+                else
+                {
+                    _stats["xp"].Value = 10;
+                    _stats["gold"].Value = 10;
+                    spawnedXp = true;
+                    SpawnDrop();
+                }
+            }
+            else
+            {
+                spawnedXp = true;
+                SpawnDrop();
+                ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+            }
+            spriteObj.SetActive(false);
+            effectCont.uiSatusEffectParent.SetActive(false);
+            Destroy(this.gameObject, .5f);
+            //StartCoroutine(ReturnToPoolAfterTime());
+        }
+    }
     public void AddEffect(GameObject effect)
     {
         //Debug.Log("enemy telling its effect controller to add the effect");
@@ -227,28 +272,7 @@ public class EnemyController : Actor
 
     public bool AmDead()
     {
-        bool isDead = false;
-        isDead = _stats["hp"].Value <= 0;
-        if(isDead && spawnedXp == false)
-        {
-            spawnedXp = true;
-            SpawnDrop();
-            if(isLargeEnemy)
-            {
-                GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
-                largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
-                largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
-            }
-            else
-            {
-                ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
-            }
-            spriteObj.SetActive(false);
-            effectCont.uiSatusEffectParent.SetActive(false);
-            Destroy(this.gameObject, .5f);
-            //StartCoroutine(ReturnToPoolAfterTime());
-        }
-        return isDead;
+        return _stats["hp"].Value <= 0;;        
     }
 
     private IEnumerator ReturnToPoolAfterTime()

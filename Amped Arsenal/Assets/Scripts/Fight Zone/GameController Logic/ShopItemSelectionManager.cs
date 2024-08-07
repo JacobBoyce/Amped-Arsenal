@@ -59,6 +59,11 @@ public class ShopItemSelectionManager : MonoBehaviour
         yield return null;
         EventSystem.current.SetSelectedGameObject(shopItems[0]);
     }
+    public IEnumerator SetSelectedAfterOneFrame(int index)
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(shopItems[index]);
+    }
 
     private void HandleNextUISelection(int addition)
     {

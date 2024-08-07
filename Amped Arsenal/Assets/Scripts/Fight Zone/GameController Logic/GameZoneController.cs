@@ -258,16 +258,19 @@ public class GameZoneController : MonoBehaviour
         //if button was pressed (this makes it so the method doesnt get called twice, NEEDED)
         if (context.performed)
         {
-            //if game is not paused
-            if(!isPaused)
+            if(isUpgrading == false)
             {
-                FocusUI(pauseMenu, true);
-                pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
-            }
-            else
-            {
-                ResumeGamePlay();
-            }
+                //if game is not paused
+                if(!isPaused)
+                {
+                    FocusUI(pauseMenu, true);
+                    pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
+                }
+                else
+                {
+                    ResumeGamePlay();
+                }
+            }            
         }
     }
 

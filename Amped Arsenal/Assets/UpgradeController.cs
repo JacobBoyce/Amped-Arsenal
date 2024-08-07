@@ -137,8 +137,8 @@ public class UpgradeController : MonoBehaviour
         DeselectAll();
         me.GetComponent<BaseUpgradeSquare>().isSelected = true;
         me.GetComponent<BaseUpgradeSquare>().SetHover();
-
-        EventSystem.current.SetSelectedGameObject(ShopItemSelectionManager.instance.shopItems[7]);
+        StartCoroutine(ShopItemSelectionManager.instance.SetSelectedAfterOneFrame(7));
+        //EventSystem.current.SetSelectedGameObject(ShopItemSelectionManager.instance.shopItems[7]);
         ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(me.GetComponent<BaseUpgradeSquare>().baseUpgradeName, me.GetComponent<BaseUpgradeSquare>().toolTIP, me.GetComponent<BaseUpgradeSquare>().BaseCost);
     }
     public void ChooseUpgrade(string upName)

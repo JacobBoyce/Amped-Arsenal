@@ -184,8 +184,8 @@ public class WeaponFocusUI : MonoBehaviour
                 ClearFocusUI();
                 UpdateFocusUI(tempWeap, player);
                 controller.UpdateSlotUIInfo(false);
-                GetComponentInParent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6);
-                
+                StartCoroutine(GetComponentInParent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6));
+
                 controller.xpText.text = player._stats["xp"].Value.ToString();
             }
         }

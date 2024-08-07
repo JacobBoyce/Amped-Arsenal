@@ -187,10 +187,7 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadSceneAsync(sceneName);
     }
 
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
+    
     public void Open()
     {
         data.OpenProfileLocation();
