@@ -53,6 +53,7 @@ public class WeapItemSlotUI : MonoBehaviour
         eUIController.SelectThisOne(gameObject.GetComponent<WeapItemSlotUI>());
     }
 
+    //
     public void Select()
     {
         isSelected = true;

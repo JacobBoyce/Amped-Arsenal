@@ -8,6 +8,8 @@ public class ShopItemSelectionManager : MonoBehaviour
 {
     public static ShopItemSelectionManager instance;
 
+    public SelectedSoundMaker soundMaker;
+
     public GameObject[] shopItems;
     public TextMeshProUGUI tooltipText;
 
@@ -39,6 +41,7 @@ public class ShopItemSelectionManager : MonoBehaviour
 
     public void OnEnable()
     {
+        soundMaker.allowedToMakeNoise = true;
         foreach(GameObject go in shopItems)
         {
             go.GetComponent<UISelectableObject>().isSelected = false;
@@ -47,20 +50,27 @@ public class ShopItemSelectionManager : MonoBehaviour
                 go.GetComponent<BaseUpgradeSquare>().isSelected = false;
             }
             catch{
-                Debug.Log("");
+                //Debug.Log("");
             }
-            
         }
         StartCoroutine(SetSelectedAfterOneFrame());
     }
 
+    public void OnDisable()
+    {
+        soundMaker.allowedToMakeNoise = false;
+    }
+
     private IEnumerator SetSelectedAfterOneFrame()
     {
+        soundMaker.allowedToMakeNoise = true;
+        shopItems[0].GetComponent<UIButtonSelectionManager>().isOpened = true;
         yield return null;
         EventSystem.current.SetSelectedGameObject(shopItems[0]);
     }
-    public IEnumerator SetSelectedAfterOneFrame(int index)
+    public IEnumerator SetSelectedAfterOneFrame(int index, bool wantFXPlayed)
     {
+        shopItems[0].GetComponent<UIButtonSelectionManager>().isOpened = wantFXPlayed;
         yield return null;
         EventSystem.current.SetSelectedGameObject(shopItems[index]);
     }

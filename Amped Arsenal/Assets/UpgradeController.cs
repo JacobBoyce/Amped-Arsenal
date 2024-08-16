@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class UpgradeController : MonoBehaviour
 {
     public MainMenuController mainController;
+    public MenuItemSelectionManager selectionManager;
     public GameObject upgradeParentObj, upgradeSquarePrefab;
     public TextMeshProUGUI goldText;
     private MainMenuController.BaseUpgrade tempUpgrade = new MainMenuController.BaseUpgrade();
@@ -131,15 +132,33 @@ public class UpgradeController : MonoBehaviour
             go.GetComponent<BaseUpgradeSquare>().SetUnFocused();
         }
     }
+    public void DeselectAllV2()
+    {
+        foreach(GameObject go in upgradePrefabs)
+        {
+            go.GetComponent<BaseUpgradeSquare>().uiBGObj.SetNormal(false);
+        }
+    }
 
     public void SelectUpgrade(GameObject me)
     {
-        DeselectAll();
-        me.GetComponent<BaseUpgradeSquare>().isSelected = true;
-        me.GetComponent<BaseUpgradeSquare>().SetHover();
-        StartCoroutine(ShopItemSelectionManager.instance.SetSelectedAfterOneFrame(7));
-        //EventSystem.current.SetSelectedGameObject(ShopItemSelectionManager.instance.shopItems[7]);
-        ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(me.GetComponent<BaseUpgradeSquare>().baseUpgradeName, me.GetComponent<BaseUpgradeSquare>().toolTIP, me.GetComponent<BaseUpgradeSquare>().BaseCost);
+        #region old way
+        // DeselectAll();
+        // me.GetComponent<BaseUpgradeSquare>().isSelected = true;
+        // me.GetComponent<BaseUpgradeSquare>().SetHover();
+        // StartCoroutine(ShopItemSelectionManager.instance.SetSelectedAfterOneFrame(7, true));
+        // //EventSystem.current.SetSelectedGameObject(ShopItemSelectionManager.instance.shopItems[7]);
+        // ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(me.GetComponent<BaseUpgradeSquare>().baseUpgradeName, me.GetComponent<BaseUpgradeSquare>().toolTIP, me.GetComponent<BaseUpgradeSquare>().BaseCost);
+
+        #endregion
+    
+        #region new way
+            DeselectAllV2();
+            me.GetComponent<BaseUpgradeSquare>().uiBGObj.SetGreen(true);
+            StartCoroutine(selectionManager.SetSelectedAfterOneFrame(8, true));
+            selectionManager.menuItems[8].GetComponent<BuyButtonLogic>().PopulateBuyButton(me.GetComponent<BaseUpgradeSquare>().baseUpgradeName, me.GetComponent<BaseUpgradeSquare>().toolTIP, me.GetComponent<BaseUpgradeSquare>().BaseCost, false);
+
+        #endregion
     }
     public void ChooseUpgrade(string upName)
     {
@@ -203,7 +222,8 @@ public class UpgradeController : MonoBehaviour
                 mainController.SaveUpgradeValues();
 
                 //update upgrade visuals and buy button
-                ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(bus.baseUpgradeName, bus.toolTIP, bus.BaseCost);
+                //ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(bus.baseUpgradeName, bus.toolTIP, bus.BaseCost, false);
+                selectionManager.menuItems[8].GetComponent<BuyButtonLogic>().PopulateBuyButton(bus.baseUpgradeName, bus.toolTIP, bus.BaseCost, false);
             }
         }
         else
@@ -215,6 +235,7 @@ public class UpgradeController : MonoBehaviour
     public void SaveStuffButton()
     {
         mainController.SaveUpgradeValues();
+        DeselectAllV2();
     }
 
     public void UpdatedGoldUI()

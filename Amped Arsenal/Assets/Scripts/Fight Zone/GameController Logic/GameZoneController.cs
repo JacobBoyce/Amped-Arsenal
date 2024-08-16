@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
+    public SelectedSoundMaker soundMaker;
     public Image fadeImage;
     public GameObject joystickController, upgradeButton;
     public RelicLib relicLibrary;
@@ -119,6 +120,7 @@ public class GameZoneController : MonoBehaviour
         //p1._stats["str"].Value += PlayerPrefs.GetInt("Strength");
         
         ToggleFightZoneLights(false);
+        GameSceneManager.instance.musicMaker.AquireSoundMaker();
     }
 
     // Update is called once per frame
@@ -270,7 +272,11 @@ public class GameZoneController : MonoBehaviour
                 {
                     ResumeGamePlay();
                 }
-            }            
+            }        
+            else
+            {
+                ResumeGamePlay();
+            }    
         }
     }
 

@@ -5,18 +5,18 @@ using UnityEngine.EventSystems;
 
 public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    public AudioSource navigateFX;
+    public SelectedSoundMaker soundMaker;
     [SerializeField] private readonly float _verticalMoveAmount = 30f;
     [SerializeField] private readonly float _moveTime = .1f;
     [Range(0f,2f), SerializeField] private readonly float _scaleAmount = 1.1f;
     private Vector3 _startPos, _startScale;
+    public bool isOpened;
 
     // Start is called before the first frame update
     void Start()
     {
         _startPos = transform.position;
         _startScale = transform.localScale;
-        navigateFX = GetComponent<AudioSource>();
     }
 
     private IEnumerator MoveShopItem(bool startingAnimation)
@@ -63,7 +63,15 @@ public class UIButtonSelectionManager : MonoBehaviour, IPointerEnterHandler, IPo
 
     public void OnSelect(BaseEventData eventData)
     {
-        navigateFX.Play();
+        if(isOpened == false)
+        {
+            soundMaker.PlayNavigateSound();
+        }
+        else
+        {
+            isOpened = false;
+        }
+        
         StartCoroutine(MoveShopItem(true));
         ShopItemSelectionManager.instance.LastSelected = gameObject;
         GetComponent<BaseUpgradeSquare>()?.SetHover();

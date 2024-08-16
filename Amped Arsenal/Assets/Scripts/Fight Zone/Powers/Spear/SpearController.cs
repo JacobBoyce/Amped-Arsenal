@@ -21,7 +21,7 @@ public class SpearController : WeaponBase
         for(int i = 0; i < playerObj.rotatingSpawnPoints.Count; i++)
         {
             GameObject tempSpear = Instantiate(weapPrefab, playerObj.rotatingSpawnPoints[i].transform.position, playerObj.rotatingSpawnPoints[i].transform.rotation);
-            //tempSpear.transform.SetParent(playerObj.rotatingSpawnPoints[i].transform);
+            tempSpear.transform.SetParent(playerObj.spawnPoints[i].transform);
             spears.Add(tempSpear);
             tempSpear.SetActive(false);
         }

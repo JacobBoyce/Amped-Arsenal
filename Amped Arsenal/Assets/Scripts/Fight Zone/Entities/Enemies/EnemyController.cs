@@ -10,7 +10,7 @@ public class EnemyController : Actor
     public EnemyMovementController movementController;
     public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
-    public bool tookDamage, spawnedXp = false, isLargeEnemy = false;
+    public bool tookDamage, spawnedXp = false, isLargeEnemy = false, triggeredDeath = false;
     [Range(1,10),Header("1 = 10%  10 = 100%")]
     public int largeEnemyRelicDropChance;
     private Color baseDamageColor = Color.white;
@@ -184,7 +184,10 @@ public class EnemyController : Actor
         if(AmDead())
         {
             //call death stuff
-            DoDeathStuff();
+            if(triggeredDeath == false)
+            {
+                DoDeathStuff();
+            }
         }
     }
 
@@ -198,12 +201,17 @@ public class EnemyController : Actor
         if(AmDead())
         {
             //call death stuff
-            DoDeathStuff();
+            if(triggeredDeath == false)
+            {
+                DoDeathStuff();
+            }
         }
     }
 
     public void DoDeathStuff()
     {
+        triggeredDeath = true;
+        
         if(spawnedXp == false)
         {
             if(isLargeEnemy)

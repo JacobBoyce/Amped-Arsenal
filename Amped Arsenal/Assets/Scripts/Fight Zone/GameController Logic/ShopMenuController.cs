@@ -71,6 +71,8 @@ public class ShopMenuController : MonoBehaviour
         {
             rerollButton.GetComponent<Button>().interactable = false;
         }
+
+        StartCoroutine(menuController.SetSelectedAfterOneFrame(menuController.startIndex-1, true));
     }
 
     public void ChooseWeapons()
@@ -251,7 +253,7 @@ public class ShopMenuController : MonoBehaviour
         {
             rerollButton.GetComponent<Button>().interactable = false;
         }
-        StartCoroutine(menuController.SetSelectedAfterOneFrame(4));
+        StartCoroutine(menuController.SetSelectedAfterOneFrame(4, true));
     }
 
     public void CheckIfCanBuy()

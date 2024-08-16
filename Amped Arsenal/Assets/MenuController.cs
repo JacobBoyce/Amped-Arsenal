@@ -9,8 +9,10 @@ public class MenuController : MonoBehaviour
     public void Start()
     {
         MainMenuController.Instance._currentFadeImage = fadeImage;
+        GameSceneManager.instance.musicMaker.AquireSoundMaker();
+        MainMenuController.Instance.opsController = GameSceneManager.instance.musicMaker.soundMaker.opsController;
     }
-    public void LoadScene(string sceneName)
+    public void LoadScene()
     {
         //MainMenuController.Instance.LoadScene(sceneName);
         GameSceneManager.instance.LoadGame();

@@ -14,6 +14,7 @@ public class GameSceneManager : MonoBehaviour
         FIGHTZONE = 2
     }
     public static GameSceneManager instance;
+    public MusicMaker musicMaker;
     public GameObject loadingScreen;
     public Image progressBar;
 
@@ -45,6 +46,7 @@ public class GameSceneManager : MonoBehaviour
     List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
     public void LoadGame()
     {
+        musicMaker.SwapTrack();
         loadingScreen.SetActive(true);
         triggerEndLoadingScreen = false;
         scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.MAINMENU));
@@ -62,6 +64,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        musicMaker.SwapTrack();
         Time.timeScale = 1;
         loadingScreen.SetActive(true);
         triggerEndLoadingScreen = false;

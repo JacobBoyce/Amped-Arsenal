@@ -108,7 +108,7 @@ public class ShopMovement : MonoBehaviour
             if(walkTimer <= 0)
             {
                 walking = false;
-                StartCoroutine("WaitLogic");
+                StartCoroutine(WaitLogic());
             }
         }
     }

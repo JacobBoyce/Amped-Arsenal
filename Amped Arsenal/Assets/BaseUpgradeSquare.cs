@@ -14,8 +14,10 @@ public class BaseUpgradeSquare : MonoBehaviour
     //possible level graphic to show what level its at
     public Image bUpImage, background;
     //public Sprite selected, notSelected, hovering, hoveringSelected;
-    public UISelectableObject uiBGObj;
-    public string baseUpgradeName, toolTIP;
+    public UIInteracableObjectVisuals uiBGObj;
+    public string baseUpgradeName;
+    [TextArea]
+    public string toolTIP;
     public int _baseUpgradeLevel;
 
     public Image lvlFillBar;
@@ -75,6 +77,26 @@ public class BaseUpgradeSquare : MonoBehaviour
         bUpLevel.text = "LVL: " + ulvl;
     }
 
+
+    void Awake()
+    {
+        GetComponent<UIInteracableObjectVisuals>().OnObjectHovered += Hovered;
+        uiBGObj = GetComponent<UIInteracableObjectVisuals>();
+    }
+    void OnDestroy()
+    {
+        GetComponent<UIInteracableObjectVisuals>().OnObjectHovered -= Hovered;
+    }
+
+    public void Hovered()
+    {
+        //update tooltipUI
+        //Debug.Log("'Hovered' method called");
+        UpdateBuyButton("ye");
+        
+        //eUIController.SelectThisOne(gameObject.GetComponent<WeapItemSlotUI>());
+    }
+
     public void SetSelected()
     {
         if(isSelected)
@@ -117,6 +139,12 @@ public class BaseUpgradeSquare : MonoBehaviour
     {
         ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().RestoreToolTipValues();
         ShopItemSelectionManager.instance.shopItems[7].GetComponent<BuyButtonLogic>().PopulateBuyButton(baseUpgradeName);
+    }
+
+    public void UpdateBuyButton(string ttip)
+    {
+        //uiBGObj.menuController.menuItems[8].GetComponent<BuyButtonLogic>().RestoreToolTipValues();
+        uiBGObj.menuController.menuItems[8].GetComponent<BuyButtonLogic>().PopulateBuyButton(baseUpgradeName, toolTIP, BaseCost, true);
     }
 
     public void OnEnable()

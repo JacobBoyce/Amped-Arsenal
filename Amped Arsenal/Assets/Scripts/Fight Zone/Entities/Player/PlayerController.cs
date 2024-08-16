@@ -28,6 +28,13 @@ public class PlayerController : Actor
 
     public ParticleSystem dropGetPartSys;
 
+    [Header("Visual Damage")]
+    public MeshRenderer quispySprite;
+    public Color damageColor;
+    public bool tookDamage;
+    public float blinkIntesity, blinkDuration, blinkTimer;
+    
+
 
     [Header("UI")]
     public TextMeshProUGUI xpText;
@@ -117,6 +124,12 @@ public class PlayerController : Actor
 
     public void Update()
     {
+        if(tookDamage)
+        {
+            VisualDamage();
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Z))
         {
             //_stats["hp"].RemoveMod("main");
@@ -134,7 +147,7 @@ public class PlayerController : Actor
         
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            aoeLight.range += 5;
+            aoeLight.range += 4;
         }
 
         if(Input.GetKeyDown(KeyCode.X))
@@ -171,9 +184,10 @@ public class PlayerController : Actor
         }
     }
 
-
     public void TakeDamage(float damage)
     {
+        blinkTimer = blinkDuration;
+        tookDamage = true;
         float dmg = _stats["def"].Value / 10;
         Set("hp", _stats["hp"].Value - Mathf.CeilToInt(damage * dmg));
         UpdateBar(_stats["hp"]);
@@ -354,4 +368,25 @@ public class PlayerController : Actor
         //if all equipped weapons upgrade cost is less than current xp turn on notify
         
     }
+
+    public void VisualDamage()
+    {
+        if(blinkTimer > 0)
+        {
+            blinkTimer -= Time.deltaTime;
+            float lerp = Mathf.Clamp01(blinkTimer / blinkDuration);
+            float intensity = (lerp * blinkIntesity) + 1.0f;
+            if(quispySprite != null)
+            {
+                quispySprite.material.color = Color.white * intensity;
+            }
+        }
+        else
+        {
+            tookDamage = false;
+            //curBlinkIntensity = blinkIntesity;
+            //curDamageColor = baseDamageColor;
+        }
+    }
+
 }

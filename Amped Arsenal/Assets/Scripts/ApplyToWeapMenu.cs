@@ -96,14 +96,14 @@ public class ApplyToWeapMenu : MonoBehaviour
                     wcp.isSelected = true;
                     //wcp.Select();
                     selectedWeap = wcp;
-                    StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6));
+                    StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6, true));
                     //GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<Button>().interactable = true;
                     GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
                 }
                 else
                 {
                     Debug.Log(wcp.weapName + " already selected, selecting apply button");
-                    StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6));
+                    StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6, true));
                     //GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<Button>().interactable = true;
                     GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
                 }

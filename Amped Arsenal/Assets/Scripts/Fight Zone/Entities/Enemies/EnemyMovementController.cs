@@ -31,7 +31,7 @@ public class EnemyMovementController : MonoBehaviour
     [Header("Stagger vars")]
     public float knockbackAmount;
     public float stagCD, stagCDMax;
-    public bool isStaggered;
+    public bool isStaggered, gettingKnockedBack = false;
     public Vector3 dir, lastHitDirection, oppDir;
     public float launchPower, initTimer = 0, initTimerMax = .5f;
 
@@ -287,6 +287,7 @@ public class EnemyMovementController : MonoBehaviour
 
     public IEnumerator ApplyKnockback()
     {
+        gettingKnockedBack = true;
         lastHitDirection = ( transform.position - target.transform.position).normalized;
         Vector3 force = lastHitDirection * knockbackAmount;
         //Debug.Log("KNOCKBACKINNNNNG!!!!");
@@ -306,6 +307,7 @@ public class EnemyMovementController : MonoBehaviour
         thisRB.isKinematic = true;
         nMA.Warp(transform.position);
         nMA.enabled = true;
+        gettingKnockedBack = false;
 
         yield return null;
         enemyState = EnemyStates.MOVE;

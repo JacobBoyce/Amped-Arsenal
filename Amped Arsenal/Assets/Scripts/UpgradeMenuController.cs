@@ -58,7 +58,7 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
 
     public void SelectBuyButton()
     {
-        StartCoroutine(menuController.SetSelectedAfterOneFrame(6));
+        StartCoroutine(menuController.SetSelectedAfterOneFrame(6, true));
     }
 
     public void UpdateSlotUIInfo(bool isFirstLoad)

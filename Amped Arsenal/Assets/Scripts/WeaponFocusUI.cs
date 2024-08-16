@@ -56,7 +56,7 @@ public class WeaponFocusUI : MonoBehaviour
             //show level is the same
             //lvlUpTo.text = (focusedWeap.level).ToString();
             //disable cost of upgrade button
-            upgradeButton.interactable = false;
+            //upgradeButton.interactable = false;
             // ------- set cost string to  empty -------- 
             costUI.text = "";
         }
@@ -131,7 +131,7 @@ public class WeaponFocusUI : MonoBehaviour
             if (focusedWeap.weapUpgrades.costValues[focusedWeap.level - 1] <= player._stats["xp"].Value)
             {
                 //Debug.Log("turnon on init");
-                upgradeButton.interactable = true;
+                //upgradeButton.interactable = true;
                 upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
                 //buttonImage.sprite = canBuyImg;
                 // make button green
@@ -139,13 +139,17 @@ public class WeaponFocusUI : MonoBehaviour
             else
             {
                 //Debug.Log("turnoff on init");
-                upgradeButton.interactable = false;
+                //upgradeButton.interactable = false;
                 upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetRed(false);
                 //buttonImage.sprite = cantBuyImg;
                 // make button red
                 //costUI.text = "Cost: ";
             }
-        }        
+        }    
+        else
+        {
+            upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetRed(false);
+        }    
     }
 
     public void ClearFocusUI()
@@ -170,24 +174,36 @@ public class WeaponFocusUI : MonoBehaviour
 
     public void UpgradeWeapon()
     {
-        //find the weapon thats equipped on the player
-        foreach (GameObject go in player.equippedWeapons)
+        if(player != null/*player.equippedWeapons.Count >= 1*/)
         {
-            WeaponBase tempWeap = go.GetComponent<WeaponBase>();
-            if (tempWeap.wName.Equals(focusedWeap.wName))
+            
+            //find the weapon thats equipped on the player
+            foreach (GameObject go in player.equippedWeapons)
             {
-                player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level - 1]);
-                //upgrade weapon
-                tempWeap.UpgradeWeapon();
+                WeaponBase tempWeap = go.GetComponent<WeaponBase>();
+                if (tempWeap.wName.Equals(focusedWeap.wName))
+                {
+                    if(!focusedWeap.IsMaxLvl())
+                    {
+                        //can afford and can buy
+                        if (focusedWeap.weapUpgrades.costValues[focusedWeap.level - 1] <= player._stats["xp"].Value)
+                        {
+                            player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level - 1]);
+                            //upgrade weapon
+                            tempWeap.UpgradeWeapon();
 
-                //update focused weapon
-                ClearFocusUI();
-                UpdateFocusUI(tempWeap, player);
-                controller.UpdateSlotUIInfo(false);
-                StartCoroutine(GetComponentInParent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6));
+                            //update focused weapon
+                            ClearFocusUI();
+                            UpdateFocusUI(tempWeap, player);
+                            controller.UpdateSlotUIInfo(false);
+                            StartCoroutine(GetComponentInParent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6, true));
 
-                controller.xpText.text = player._stats["xp"].Value.ToString();
+                            controller.xpText.text = player._stats["xp"].Value.ToString();
+                        }
+                    }
+                }
             }
         }
+        StartCoroutine(GetComponentInParent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6, true));
     }
 }

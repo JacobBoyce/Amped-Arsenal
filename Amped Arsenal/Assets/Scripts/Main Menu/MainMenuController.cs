@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DataManagement;
 using UnityEngine.UI;
+using UnityEditor.Experimental.GraphView;
 
 
 public class MainMenuController : MonoBehaviour
@@ -11,6 +12,7 @@ public class MainMenuController : MonoBehaviour
     public static MainMenuController Instance{get; private set;}
     public Data data;
     public UpgradeController upController;
+    public OptionsMenuController opsController;
     public int _playerGold = 0;
     public int stageDifficulty = 1;
 
@@ -112,22 +114,64 @@ public class MainMenuController : MonoBehaviour
     {
         //init base upgrade list
         //upController.InitUpgradeList();
-    
-        if (data.HasData("UpgradeList") && data.HasData("PlayerGold") && data.HasData("StageDifficulty"))
+        #region Upgrade Loading
+        if(data.HasData("UpgradeList"))
         {
-            //has save data
-            
             upController.upgradeList = data.GetData<List<BaseUpgrade>>("UpgradeList");
+        }
+        else
+        {
+            Debug.Log("No Upgrade Data Found");
+        }
+        #endregion
+
+        #region Player Gold Loading
+        if(data.HasData("PlayerGold"))
+        {
             _playerGold = data.GetData<int>("PlayerGold");
+        }
+        else
+        {
+            Debug.Log("No Gold Data Found");
+            data.SetData("PlayerGold", _playerGold);
+            data.SaveProfile();
+            _playerGold = 0;
+        }
+        #endregion
+
+        #region Stage Difficulty Loading
+        if(data.HasData("StageDifficulty"))
+        {
             stageDifficulty = data.GetData<int>("StageDifficulty");
         }
         else
         {
-            Debug.Log("no save data found");
+            Debug.Log("No Stage Difficulty Data Found");
             data.SetData("StageDifficulty", 1);
-            data.SetData("PlayerGold", _playerGold);
-            _playerGold = 0;
+            data.SaveProfile();
         }
+        #endregion
+
+        #region Option Settings Loading
+
+        if(data.HasData("OptionSettings"))
+        {
+            Debug.Log("found data");
+            //set options menu slider values
+            opsController.optionSaveData = data.GetData<List<OptionData>>("OptionSettings");
+            //GameSceneManager.instance.musicMaker.soundMaker.opsController.LoadOptionMenuValues();
+
+        }
+        else
+        {
+            Debug.Log("No Option Data Found");
+            PlayerPrefs.SetFloat("MusicVolumeSlider", 1);
+            PlayerPrefs.SetFloat("SFXVolumeSlider", 1);
+            PlayerPrefs.SetInt("FullScreenToggle", 1);
+            data.SaveProfile();
+        }
+
+        #endregion
 
         //sets the unseen values of each upgrade
         for(int i = 0; i < upController.upgradeList.Count; i++)
@@ -136,9 +180,7 @@ public class MainMenuController : MonoBehaviour
             {
                upController.upgradeList[i].upValues[j] = upController.upVals[i].upValues[j];
             }
-            
         }
-       
     }
 
     public void UpdatePlayerPrefs()
@@ -168,6 +210,12 @@ public class MainMenuController : MonoBehaviour
     public void SaveProgress()
     {
         data.SetData("StageDifficulty", stageDifficulty);
+        data.SaveProfile();
+    }
+
+    public void SaveOptionsData()
+    {
+        data.SetData("OptionSettings", GameSceneManager.instance.musicMaker.soundMaker.opsController.optionSaveData);
         data.SaveProfile();
     }
 
