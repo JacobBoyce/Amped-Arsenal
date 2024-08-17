@@ -11,6 +11,8 @@ public class MenuController : MonoBehaviour
         MainMenuController.Instance._currentFadeImage = fadeImage;
         GameSceneManager.instance.musicMaker.AquireSoundMaker();
         MainMenuController.Instance.opsController = GameSceneManager.instance.musicMaker.soundMaker.opsController;
+        MainMenuController.Instance.opsController.InitOptionSettings();
+       //MainMenuController.Instance.opsController.LoadOptionMenuValues();
     }
     public void LoadScene()
     {

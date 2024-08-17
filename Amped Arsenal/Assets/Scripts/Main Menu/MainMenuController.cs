@@ -156,11 +156,16 @@ public class MainMenuController : MonoBehaviour
 
         if(data.HasData("OptionSettings"))
         {
-            Debug.Log("found data");
             //set options menu slider values
             opsController.optionSaveData = data.GetData<List<OptionData>>("OptionSettings");
-            //GameSceneManager.instance.musicMaker.soundMaker.opsController.LoadOptionMenuValues();
 
+            // Set Player Prefs
+            PlayerPrefs.SetFloat("MusicVolumeSlider", float.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "MusicVolumeSlider")].optionData));
+
+            PlayerPrefs.SetFloat("SFXVolumeSlider", float.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "SFXVolumeSlider")].optionData));
+
+            PlayerPrefs.SetInt("FullScreenToggle", int.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "FullScreenToggle")].optionData));
+            Debug.Log("Values are loaded into PlayerPrefs");
         }
         else
         {
