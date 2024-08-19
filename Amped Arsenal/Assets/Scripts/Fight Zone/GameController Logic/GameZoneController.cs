@@ -4,10 +4,12 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
+    public CamFollow camf;
     public SelectedSoundMaker soundMaker;
     public Image fadeImage;
     public GameObject joystickController, upgradeButton;
@@ -19,15 +21,19 @@ public class GameZoneController : MonoBehaviour
     public ShopMenuController shopController;
     public ShopMenuAnimController shopAnimeController;
     public LobbyController lobCont;
+    public GameObject EndGameUI;
     public List<GameObject> mainUIComponents = new();
     public List<GameObject> gamePlayUIComponents = new();
-    public bool isUpgrading;
+    public bool isUpgrading, isEndGame = false, startGoldUICountDown = false;
+    private float maxGCD = 4f, goldCD = 0;
     GameObject focusedUI;
     public GameObject notifyGamesOfUpgrade;
     public bool isPaused, statsVisible;
-    public TextMeshProUGUI gameTimerUIText;
+    public TextMeshProUGUI gameTimerUIText, endGameGoldText;
 
     public List<GameObject> lightsToToggle;
+
+    public GameObject quispyDPoof, quispyDeathAnim;
 
     [Header("Fade Stuff"), Space(10)]
     [Range(0.1f, 10f), SerializeField] private float _fadeOutSpeed = 5f;
@@ -121,6 +127,7 @@ public class GameZoneController : MonoBehaviour
         
         ToggleFightZoneLights(false);
         GameSceneManager.instance.musicMaker.AquireSoundMaker();
+        
     }
 
     // Update is called once per frame
@@ -129,18 +136,23 @@ public class GameZoneController : MonoBehaviour
         #region Fade Stuff
 
             if(IsFadingOut)
-        {
-            if(fadeImage.color.a < 1f)
             {
-                _fadeOutStartColor.a += Time.unscaledDeltaTime * _fadeOutSpeed;
-                fadeImage.color = _fadeOutStartColor;
+                if(fadeImage.color.a < 1f)
+                {
+                    _fadeOutStartColor.a += Time.unscaledDeltaTime * _fadeOutSpeed;
+                    fadeImage.color = _fadeOutStartColor;
+                }
+                else
+                {
+                    IsFadingOut = false;
+                    if(isEndGame)
+                    {
+                        //play death poof effect
+                        quispyDPoof.SetActive(true);
+                        quispyDeathAnim.SetActive(true);
+                    }
+                }
             }
-            else
-            {
-                IsFadingOut = false;
-
-            }
-        }
 
         if(IsFadingIn)
         {
@@ -173,19 +185,13 @@ public class GameZoneController : MonoBehaviour
             isUpgrading = !isUpgrading;
         }*/
 
+        #region Show Stats
         if (Input.GetKeyDown(KeyCode.I))
         {
             statsVisible = !statsVisible;
             ShowStats(statsVisible);
         }
 
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            
-            //GameObject tempObj = Instantiate(thingToShoot, whereToShoot.transform.position, Quaternion.identity);
-            //GetComponent<ShootReward>().ShootObject(whereToShoot, tempObj, ShootReward.ShootType.Facing);
-            
-        }
 
         statsTxt.text = "HP: " + p1._stats["hp"].Value + " / " + p1._stats["hp"].Max
                         + "\nSTR: " + p1._stats["str"].Value
@@ -195,6 +201,31 @@ public class GameZoneController : MonoBehaviour
                         + "\nPULL: " + p1._stats["pull"].Value
                         + "\nInf: " + PlayerPrefs.GetInt("Inflation")
                         + "\nXP: " + p1._stats["xp"].Value + " / " + p1._stats["xp"].Max;
+        #endregion
+
+        #region endgame gold ui countdown
+        if(startGoldUICountDown)
+        {
+            float currentGold = p1._stats["gold"].Value;
+            if(goldCD < maxGCD)
+            {
+                goldCD += Time.unscaledDeltaTime;
+                float percentageComplete = goldCD / maxGCD;
+
+                // Update current gold based on percentage
+                currentGold = Mathf.FloorToInt(p1._stats["gold"].Value * (1 - percentageComplete));
+
+                // Update the UI text
+                endGameGoldText.text = currentGold.ToString();
+            }
+            else
+            {
+                startGoldUICountDown = false;
+            }
+            
+            
+        }
+        #endregion
     }
     
     public void StartFadeOut()
@@ -220,7 +251,7 @@ public class GameZoneController : MonoBehaviour
     }
     public void OpenUpgrades(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !isEndGame)
         {
             if(!isPaused)
             {
@@ -258,7 +289,7 @@ public class GameZoneController : MonoBehaviour
     public void OpenPauseMenu(InputAction.CallbackContext context)
     {
         //if button was pressed (this makes it so the method doesnt get called twice, NEEDED)
-        if (context.performed)
+        if (context.performed && !isEndGame)
         {
             if(isUpgrading == false)
             {
@@ -346,25 +377,82 @@ public class GameZoneController : MonoBehaviour
         notifyGamesOfUpgrade.GetComponent<NotifyPlayerOfUpgrade>().ChangeButtonImage(toggleVal);
     }
 
-    public void EndGame()
+    public void StartEndGamePhase()
     {
-        //end level stuff
-        SceneManager.LoadScene("MainMenu");
+        isEndGame = true;
+        GameSceneManager.instance.musicMaker.StopMusic();
+        //turn off UI
+         foreach (GameObject go in gamePlayUIComponents)
+        {
+            go.SetActive(false);
+        }
+        camf.AdjustToTargetOffset(1.5f);
+        StartCoroutine(DecreaseTimeScaleAndVignette(1f));
+        //GameSceneManager.instance.LoadMainMenu();
     }
 
-    public void EndGameChoice(int choice)
+    private IEnumerator DecreaseTimeScaleAndVignette(float duration)
     {
-        //1 = continue
-        if(choice == 1)
+        float startTime = Time.timeScale; // Starting time scale (1)
+        float elapsedTime = 0f;
+        
+
+        // Get the current vignette intensity
+        float startIntensity = GetComponent<GlobalVolumeController>().vignette.intensity.value;
+
+        while (elapsedTime < duration)
         {
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+            // Interpolate time scale
+            Time.timeScale = Mathf.Lerp(startTime, 0f, elapsedTime / duration);
+            // Interpolate vignette intensity
+            if (GetComponent<GlobalVolumeController>().vignette != null)
+            {
+                GetComponent<GlobalVolumeController>().vignette.intensity.value = Mathf.Lerp(startIntensity, 1f, elapsedTime / duration);
+            }
+            elapsedTime += Time.unscaledDeltaTime; // Increase elapsed time
+            yield return null; // Wait for the next frame
         }
-        else
+        StartFadeOut();
+        // Ensure final values are set
+        Time.timeScale = 0f; // Set time scale to 0
+        if (GetComponent<GlobalVolumeController>().vignette != null)
         {
-            PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(p1._stats["gold"].Value * ((PlayerPrefs.GetInt("Inflation") / 10) + exfilPercentAmount)));
-            PlayerPrefs.SetInt("Returned", 1);
-            EndGame();
+            GetComponent<GlobalVolumeController>().vignette.intensity.value = 1f; // Ensure vignette intensity is set to 1
         }
         
     }
+    
+    public void OpenEndGameUI()
+    {
+        //int temp = Mathf.RoundToInt(p1._stats["gold"].Value / 2);
+        endGameGoldText.text = p1._stats["gold"].Value.ToString();
+       
+        //int temp = Mathf.RoundToInt(p1._stats["gold"].Value * (PlayerPrefs.GetInt("Inflation") / 10));
+        //MainMenuController.Instance._playerGold += temp;
+        EndGameUI.SetActive(true);
+        startGoldUICountDown = true;
+        //set selected button
+    }
+    public void EndGame()
+    {
+        GameSceneManager.instance.LoadMainMenu();
+    }
+
+    // public void EndGameChoice(int choice)
+    // {
+    //     //1 = continue
+    //     if(choice == 1)
+    //     {
+    //         Debug.Log("end game called");
+    //         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("end game called2");
+    //         PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(p1._stats["gold"].Value * ((PlayerPrefs.GetInt("Inflation") / 10) + exfilPercentAmount)));
+    //         PlayerPrefs.SetInt("Returned", 1);
+    //         EndGame();
+    //     }
+        
+    // }
 }

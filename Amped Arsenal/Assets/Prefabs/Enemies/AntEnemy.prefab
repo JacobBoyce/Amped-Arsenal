@@ -458,6 +458,7 @@ MonoBehaviour:
   stagCD: 0
   stagCDMax: 0.3
   isStaggered: 0
+  gettingKnockedBack: 0
   dir: {x: 0, y: 0, z: 0}
   lastHitDirection: {x: 1.7244263, y: 0, z: 0}
   oppDir: {x: 0, y: 0, z: 0}
@@ -522,6 +523,7 @@ MonoBehaviour:
   tookDamage: 0
   spawnedXp: 0
   isLargeEnemy: 0
+  triggeredDeath: 0
   largeEnemyRelicDropChance: 7
   baseSpriteColor: {r: 0, g: 0, b: 0, a: 0}
   drops:
@@ -530,7 +532,7 @@ MonoBehaviour:
   lifeText: {fileID: 155113344}
   effectCont: {fileID: 8815015681239692202}
   hpMax: 20
-  attk: 1
+  attk: 10
   str: 1
   def: 1
   spd: 6

@@ -126,7 +126,10 @@ public class PlayerController : Actor
     {
         if(tookDamage)
         {
-            VisualDamage();
+            if(!(_stats["hp"].Value <= 0))
+            {
+                VisualDamage();
+            }
         }
 
 
@@ -202,9 +205,9 @@ public class PlayerController : Actor
             // Debug.Log("inflation percentage: " + (inflationAmount / 10) 
             // + "\ncurrent gold: " + _stats["gold"].Value
             // + "\n amount to take back: " + (_stats["gold"].Value * (inflationAmount / 10)));
-            int temp = Mathf.RoundToInt(_stats["gold"].Value * (PlayerPrefs.GetInt("Inflation") / 10));
-            MainMenuController.Instance._playerGold += temp;
-            GameSceneManager.instance.LoadMainMenu();
+            
+            mainController.StartEndGamePhase();
+            
             // PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (inflationAmount / 10)));
             // PlayerPrefs.SetInt("Returned", 1);
             // mainController.EndGame();
