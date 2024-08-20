@@ -19,7 +19,7 @@ public class ApplyToWeapMenu : MonoBehaviour
 
     public void PopulateWeapChoiceList(PlayerController p1, RelicBase relic)
     {
-        titleText.text = "Choose a Weapon to apply the " + relic.relicName + " Weapon Mod";
+        titleText.text = "Choose a Weapon to apply the <color=purple>" + relic.relicName + "</color> Weapon Mod";
         relicImage.sprite = relic.relicImg;
         player = p1;
         relicToApply = relic;
@@ -92,7 +92,7 @@ public class ApplyToWeapMenu : MonoBehaviour
                 if(wcp.isSelected != true)
                 {
                     //select it
-                    Debug.Log(wcp.weapName + " not selected, selecting and setting green.");
+                    //Debug.Log(wcp.weapName + " not selected, selecting and setting green.");
                     wcp.isSelected = true;
                     //wcp.Select();
                     selectedWeap = wcp;
@@ -102,7 +102,7 @@ public class ApplyToWeapMenu : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(wcp.weapName + " already selected, selecting apply button");
+                    //Debug.Log(wcp.weapName + " already selected, selecting apply button");
                     StartCoroutine(GetComponent<MenuItemSelectionManager>().SetSelectedAfterOneFrame(6, true));
                     //GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<Button>().interactable = true;
                     GetComponent<MenuItemSelectionManager>().menuItems[6].GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
@@ -110,7 +110,7 @@ public class ApplyToWeapMenu : MonoBehaviour
             }
             else
             {
-                Debug.Log(wcp.weapName + " not the weap we are looking for, deSelecting and/or setting off bool to false.");
+                //Debug.Log(wcp.weapName + " not the weap we are looking for, deSelecting and/or setting off bool to false.");
                 wcp.isSelected = false;
                 //wcp.GetComponent<UIInteracableObjectVisuals>().SetUnselected();
                 //wcp.Deselect();

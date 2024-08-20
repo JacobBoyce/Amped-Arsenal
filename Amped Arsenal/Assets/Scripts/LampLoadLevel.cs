@@ -92,7 +92,7 @@ public class LampLoadLevel : MonoBehaviour
 
         //Time.timeScale = 1;
         p1.MovePlayerToField(moveToPos, true);
-        
+        yield return new WaitForSecondsRealtime(1f);
         //end loop
         triggeredLoad = true;
         StartCoroutine(AfterMovePlayer());
@@ -103,14 +103,18 @@ public class LampLoadLevel : MonoBehaviour
 
     public IEnumerator AfterMovePlayer()
     {
-        gzController.StartFadeIn();
+        
         lobController.ToggleLamps(false);
-
+        //yield return new WaitForSeconds(2f);
+        gzController.StartFadeIn();
         //Time.timeScale = 0;
         while(gzController.IsFadingIn)
         {
             yield return null;
+            
         }
+        
+        
     }
 
     public void OnTriggerEnter(Collider other)

@@ -13,7 +13,6 @@ public class WeapItemSlotUI : MonoBehaviour
     public string weapName;
     public bool isSelected = false, isUpgradeable = false;
     public Image weapImg, lvlBar;
-    public TextMeshProUGUI lvl;
 
     void Awake()
     {
@@ -30,7 +29,6 @@ public class WeapItemSlotUI : MonoBehaviour
         //selectBorder.SetActive(false);
         Deselect();
         weapImg.enabled = false;
-        lvl.text = "";
         lvlBar.fillAmount = 0;
     }
 
