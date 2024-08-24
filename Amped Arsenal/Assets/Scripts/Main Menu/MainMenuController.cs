@@ -165,7 +165,6 @@ public class MainMenuController : MonoBehaviour
             PlayerPrefs.SetFloat("SFXVolumeSlider", float.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "SFXVolumeSlider")].optionData));
 
             PlayerPrefs.SetInt("FullScreenToggle", int.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "FullScreenToggle")].optionData));
-            Debug.Log("Values are loaded into PlayerPrefs");
         }
         else
         {
@@ -217,6 +216,13 @@ public class MainMenuController : MonoBehaviour
         data.SetData("StageDifficulty", stageDifficulty);
         data.SaveProfile();
     }
+
+    public void SaveGoldData()
+    {
+        data.SetData("PlayerGold", _playerGold);
+        data.SaveProfile();
+    }
+
 
     public void SaveOptionsData()
     {

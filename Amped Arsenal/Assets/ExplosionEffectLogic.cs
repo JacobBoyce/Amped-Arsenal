@@ -43,7 +43,7 @@ public class ExplosionEffectLogic : EffectBase
         {
             GameObject tempExpl = Instantiate(explAnimObj, ec.gameObject.transform);
             tempExpl.transform.SetLocalPositionAndRotation(new Vector3(0,0,0), Quaternion.Euler(0,0,0));
-            ec.TakeDamageFromEffect(damage, damageColor);
+            ec.TakeDamage(damage);
         }
     }
 }

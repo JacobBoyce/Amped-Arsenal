@@ -12,7 +12,7 @@ public class CurseEffectLogic : EffectBase
     public float intensity;
     public bool activate;
 
-    public Modifier mod = new("curseRelic", -.3f, Modifier.ChangeType.PERCENT, true);   
+    public Modifier mod = new("curseRelic", -.3f, Modifier.BuffOrDebuff.BUFF, Modifier.ChangeType.PERCENT, true);   
     public void Start()
     {
         TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 

@@ -4991,9 +4991,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8056377478772937286}
-  - component: {fileID: 8056377478772937287}
   - component: {fileID: 8056377478772937284}
   - component: {fileID: 1794410983172599086}
+  - component: {fileID: 1822471493024922517}
   m_Layer: 14
   m_Name: HeartRelic
   m_TagString: Relic
@@ -5017,27 +5017,6 @@ Transform:
   - {fileID: 8056377477881610178}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8056377478772937287
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8056377478772937274}
-  m_Material: {fileID: 13400000, guid: 1e0335ea713e9464a99977e523951254, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.1, y: 2.87, z: 2.62}
-  m_Center: {x: -0.0066070557, y: 1.21, z: 0.023483276}
 --- !u!54 &8056377478772937284
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5087,6 +5066,28 @@ MonoBehaviour:
     isMaxMod: 1
     amtChanged: 0
     modType: 2
+    buffType: 1
+--- !u!135 &1822471493024922517
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056377478772937274}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.67
+  m_Center: {x: 0, y: 2.09, z: 0}
 --- !u!1001 &1960322507183209266
 PrefabInstance:
   m_ObjectHideFlags: 0

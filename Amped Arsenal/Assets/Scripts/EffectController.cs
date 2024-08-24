@@ -29,7 +29,6 @@ public class EffectController : MonoBehaviour
     {
         GameObject temp1 = null, temp2;
         temp2 = uiEffect;
-        
         if(effectObjs.Count > 0)
         {
             foreach(GameObject go in effectObjs)
@@ -40,7 +39,7 @@ public class EffectController : MonoBehaviour
                     effectObjs.Remove(go);
                     Destroy(temp1);
                     Destroy(temp2);
-                //remove ui on enemy for effect
+                    break;
                 }
             }
         }

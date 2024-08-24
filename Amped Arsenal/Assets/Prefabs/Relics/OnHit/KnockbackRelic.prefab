@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6288555237690538272}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6701624057370719206}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!212 &6288555237690538276
 SpriteRenderer:
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &6288555237690538277
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,7 +105,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6288555237690538274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,9 +149,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6701624056517221986}
-  - component: {fileID: 6701624056517221987}
   - component: {fileID: 6701624056517221984}
   - component: {fileID: -6100340442857931564}
+  - component: {fileID: 3615913245422097672}
   m_Layer: 14
   m_Name: KnockbackRelic
   m_TagString: Relic
@@ -165,6 +166,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6701624056517221918}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 102.73415, y: 0.91, z: 397.38348}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -172,21 +174,7 @@ Transform:
   m_Children:
   - {fileID: 6701624057370719206}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6701624056517221987
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6701624056517221918}
-  m_Material: {fileID: 13400000, guid: aac0d65f82c49de40a90353a405778ad, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.9688873, y: 2.094434, z: 2.4691162}
-  m_Center: {x: -0.039871216, y: -0.008529782, z: 0.15997314}
 --- !u!54 &6701624056517221984
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -194,10 +182,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6701624056517221918}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -223,6 +222,27 @@ MonoBehaviour:
   knockbackEffect: {fileID: 2465762157243312120, guid: 5a994658752830f42828c716b8aacd8d, type: 3}
   knockbackEffectPrefab: {fileID: 4533668280376628752, guid: 5a994658752830f42828c716b8aacd8d, type: 3}
   appliedWeapon: {fileID: 0}
+--- !u!135 &3615913245422097672
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6701624056517221918}
+  m_Material: {fileID: 13400000, guid: aac0d65f82c49de40a90353a405778ad, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6701624057370719207
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +266,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6701624057370719207}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -254,13 +275,13 @@ Transform:
   - {fileID: 4592352716081254897}
   - {fileID: 6288555237690538275}
   m_Father: {fileID: 6701624056517221986}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3775489076438437901
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6701624057370719206}
     m_Modifications:
     - target: {fileID: 855238871857349116, guid: d82e646674b04ce41a3af8a63c0f4510, type: 3}
@@ -312,6 +333,9 @@ PrefabInstance:
       value: WeapModAura
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d82e646674b04ce41a3af8a63c0f4510, type: 3}
 --- !u!4 &4592352716081254897 stripped
 Transform:

@@ -96,7 +96,7 @@ public class UpgradeController : MonoBehaviour
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G))
+        if(Input.GetKey(KeyCode.G))
         {
             mainController._playerGold += 10;
             UpdatedGoldUI();

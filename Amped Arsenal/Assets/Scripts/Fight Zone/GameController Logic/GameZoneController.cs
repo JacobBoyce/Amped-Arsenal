@@ -206,7 +206,7 @@ public class GameZoneController : MonoBehaviour
         #region endgame gold ui countdown
         if(startGoldUICountDown)
         {
-            float currentGold = p1._stats["gold"].Value;
+            float currentGold = (p1._stats["gold"].Value - 50) / 2;
             if(goldCD < maxGCD)
             {
                 goldCD += Time.unscaledDeltaTime;
@@ -220,6 +220,8 @@ public class GameZoneController : MonoBehaviour
             }
             else
             {
+                currentGold = 0;
+                endGameGoldText.text = currentGold.ToString();
                 startGoldUICountDown = false;
             }
             
@@ -306,6 +308,7 @@ public class GameZoneController : MonoBehaviour
             }        
             else
             {
+                isUpgrading = false;
                 ResumeGamePlay();
             }    
         }
@@ -382,7 +385,7 @@ public class GameZoneController : MonoBehaviour
         isEndGame = true;
         GameSceneManager.instance.musicMaker.StopMusic();
         //turn off UI
-         foreach (GameObject go in gamePlayUIComponents)
+        foreach (GameObject go in gamePlayUIComponents)
         {
             go.SetActive(false);
         }
@@ -424,14 +427,14 @@ public class GameZoneController : MonoBehaviour
     
     public void OpenEndGameUI()
     {
-        //int temp = Mathf.RoundToInt(p1._stats["gold"].Value / 2);
-        endGameGoldText.text = p1._stats["gold"].Value.ToString();
-       
-        //int temp = Mathf.RoundToInt(p1._stats["gold"].Value * (PlayerPrefs.GetInt("Inflation") / 10));
-        //MainMenuController.Instance._playerGold += temp;
+        int endGameGold = Mathf.RoundToInt(p1._stats["gold"].Value / 2);
+
+        MainMenuController.Instance._playerGold += endGameGold;
+        MainMenuController.Instance.SaveGoldData();
+        
+        endGameGoldText.text = endGameGold.ToString();
         EndGameUI.SetActive(true);
         startGoldUICountDown = true;
-        //set selected button
     }
     public void EndGame()
     {

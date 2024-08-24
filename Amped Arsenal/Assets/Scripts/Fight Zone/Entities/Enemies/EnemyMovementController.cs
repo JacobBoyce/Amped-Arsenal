@@ -61,7 +61,6 @@ public class EnemyMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nMA.speed = eController._stats["spd"].Value;
         dir = target.transform.position - transform.position;
 /*
         //nMA.destination = target.transform.position;// - transform.position;
@@ -158,7 +157,8 @@ public class EnemyMovementController : MonoBehaviour
                 }
                 //CHASE
                 if(!inRange)
-                {
+                { 
+                    nMA.speed = eController._stats["spd"].Value;
                     dir = target.transform.position - transform.position;
                     oppDir = transform.position - target.transform.position;
                     //velocity = Vector3.ClampMagnitude(dir * eController._stats["spd"].Value, eController._stats["spd"].Value);
@@ -215,7 +215,8 @@ public class EnemyMovementController : MonoBehaviour
 
             
             case EnemyStates.STAGGER:
-                /*if(stagCD > 0)
+                nMA.speed = 0;
+                if(stagCD > 0)
                 {
                     stagCD -= Time.deltaTime;
                 }
@@ -225,7 +226,7 @@ public class EnemyMovementController : MonoBehaviour
                     isStaggered = false;
                     stagCD = stagCDMax;
                     break;
-                }*/
+                }
                 
             break;
 

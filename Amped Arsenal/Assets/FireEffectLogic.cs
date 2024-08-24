@@ -10,7 +10,7 @@ public class FireEffectLogic : EffectBase
     public bool activate;
     //public EnemyController en;
     public int tickDamage, maxTickDamage;
-    public Modifier mod = new("fireRelic", .15f, Modifier.ChangeType.PERCENT, true);   
+    public Modifier mod = new("fireRelic", .15f, Modifier.BuffOrDebuff.BUFF, Modifier.ChangeType.PERCENT, true);   
 
     public void Start()
     {

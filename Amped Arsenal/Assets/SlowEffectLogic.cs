@@ -10,7 +10,7 @@ public class SlowEffectLogic : EffectBase
     public GameObject createdUIObj;
     public bool activate;
 
-    public Modifier mod = new("slowRelic", -.4f, Modifier.ChangeType.PERCENT, true);   
+    public Modifier mod = new("slowRelic", -.5f, Modifier.BuffOrDebuff.DEBUFF, Modifier.ChangeType.PERCENT, true);   
     public void Start()
     {
         TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 
@@ -24,9 +24,8 @@ public class SlowEffectLogic : EffectBase
         {
             if(tickAmtDuration >= tickMaxDuration)
             {
-                Debug.Log("remove effect object and UI from enemy");
-                enemy._stats["spd"].RemoveMod(mod.modName);
                 enemy.RemoveEffect(this.effectName, createdUIObj);
+                enemy._stats["spd"].RemoveMod(mod.modName);
             }
         }
     }

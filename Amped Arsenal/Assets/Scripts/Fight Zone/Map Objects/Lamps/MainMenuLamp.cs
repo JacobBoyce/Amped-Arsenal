@@ -49,6 +49,7 @@ public class MainMenuLamp : MonoBehaviour
                     int temp = Mathf.RoundToInt(p1._stats["gold"].Value * ((PlayerPrefs.GetInt("Inflation") / 10) + exfilPercentAmount));
                     Debug.Log("returning with " + temp + " gold");
                     MainMenuController.Instance._playerGold += temp;
+                    MainMenuController.Instance.SaveGoldData();
                     triggeredLoad = true;
                     GameSceneManager.instance.LoadMainMenu();
                 }

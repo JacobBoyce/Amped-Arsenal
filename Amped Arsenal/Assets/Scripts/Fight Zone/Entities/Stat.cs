@@ -46,7 +46,7 @@ public class Stat
     public void IncreaseByAmount(float amount) => _value += amount;
     public void IncreaseMaxByPercent(float amount, bool wantFill, bool wantAdd)
     {
-        Max += Max * amount;
+        Max += amount;
         
         if(wantFill)
         {
@@ -54,7 +54,7 @@ public class Stat
         }
         else if(wantAdd)
         {
-            IncreaseByAmount(Max * amount);
+            IncreaseByAmount(amount);
         }
     }
     public void IncreaseMaxByAmount(float amount, bool wantFill, bool wantAdd)
@@ -64,7 +64,8 @@ public class Stat
         {
             Fill();
         }
-        else if(wantAdd)
+        
+        if(wantAdd)
         {
             IncreaseByAmount(amount);
         }
@@ -76,7 +77,7 @@ public class Stat
         if(temp > Max)
         {
             Max -= amount;
-            _value = Max;
+            _value -= amount;
         }
         else
         {
@@ -90,12 +91,26 @@ public class Stat
         if(tempMod.modType == Modifier.ChangeType.PERCENT)
         {
             tempMod.amtChanged = _value * tempMod.modAmount;
-            IncreaseMaxByPercent(tempMod.modAmount,false,true);
+            if(tempMod.isMaxMod)
+            {
+                IncreaseMaxByPercent(tempMod.modAmount,false,true);
+            }
+            else
+            {
+                IncreaseByAmount(tempMod.amtChanged);
+            }
         }
         else if(tempMod.modType == Modifier.ChangeType.INT)
         {
             tempMod.amtChanged = tempMod.modAmount;
-            IncreaseMaxByAmount(tempMod.modAmount,false,true);
+            if(tempMod.isMaxMod)
+            {
+                IncreaseMaxByAmount(tempMod.modAmount,false,true);
+            }
+            else
+            {
+                IncreaseByAmount(tempMod.amtChanged);
+            }
         }
         mods.Add(tempMod);
     }
@@ -157,6 +172,16 @@ public class Modifier
         INT,
         PERCENT
     };
+    
+    
+    [SerializeField]
+    public enum BuffOrDebuff 
+    {
+        NONE,
+        BUFF,
+        DEBUFF
+    };
+    
     [SerializeField]
     public string modName;
     [SerializeField]
@@ -168,21 +193,24 @@ public class Modifier
 
     [SerializeField]
     public ChangeType modType;
-    [SerializeField]
 
+    [SerializeField]
+    public BuffOrDebuff buffType;
     public Modifier()
     {
         modName = "empty";
         modAmount = 0;
         modType = ChangeType.NONE;
+        buffType = BuffOrDebuff.NONE;
     }
 
-    public Modifier(string mName, float amt, Modifier.ChangeType ctype, bool mMod)
+    public Modifier(string mName, float amt, BuffOrDebuff buffT, ChangeType ctype, bool mMod)
     {
         modName = mName;
         modAmount = amt;
         modType = ctype;
         isMaxMod = mMod;
+        buffType = buffT;
     }
 
     public Modifier(Modifier mod)
@@ -190,5 +218,8 @@ public class Modifier
         modName = mod.modName;
         modAmount = mod.modAmount;
         modType = mod.modType;
+        isMaxMod = mod.isMaxMod;
+        amtChanged = mod.amtChanged;
+        buffType = mod.buffType;
     }
 }

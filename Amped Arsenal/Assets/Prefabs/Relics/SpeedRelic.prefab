@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1567514489769515635}
-  - component: {fileID: 1567514489769515634}
   - component: {fileID: 1567514489769515633}
   - component: {fileID: 8795229623996287024}
+  - component: {fileID: 7096145303909258349}
   m_Layer: 14
   m_Name: SpeedRelic
   m_TagString: Relic
@@ -26,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567514489769515535}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 103.06756, y: 4.3, z: 395.9016}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,21 +34,7 @@ Transform:
   m_Children:
   - {fileID: 1567514490488862711}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1567514489769515634
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1567514489769515535}
-  m_Material: {fileID: 13400000, guid: aac0d65f82c49de40a90353a405778ad, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.1, y: 2.87, z: 2.62}
-  m_Center: {x: -0.0066070557, y: 1.21, z: 0.023483276}
 --- !u!54 &1567514489769515633
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -55,10 +42,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567514489769515535}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -86,9 +84,31 @@ MonoBehaviour:
   mod:
     modName: SpeedRelicUp
     modAmount: 0
+    isMaxMod: 0
     amtChanged: 0
     modType: 1
-    maxMod: 0
+    buffType: 0
+--- !u!135 &7096145303909258349
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567514489769515535}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.67
+  m_Center: {x: 0, y: 2.09, z: 0}
 --- !u!1 &1567514490488862710
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,6 +132,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567514490488862710}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -120,7 +141,6 @@ Transform:
   - {fileID: 1567514490543554474}
   - {fileID: 1954583724417573217}
   m_Father: {fileID: 1567514489769515635}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!1 &1567514490543554472
 GameObject:
@@ -147,13 +167,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567514490543554472}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.7, z: -0.69}
   m_LocalScale: {x: 1.141125, y: 1.141125, z: 1.141125}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1567514490488862711}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1567514490543554473
 SpriteRenderer:
@@ -245,6 +265,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1567514490488862711}
     m_Modifications:
     - target: {fileID: 2738596883275707496, guid: 9c6f1a2c1d5bf884a870c1f7bad0e832, type: 3}
@@ -296,6 +317,9 @@ PrefabInstance:
       value: RelicAura
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c6f1a2c1d5bf884a870c1f7bad0e832, type: 3}
 --- !u!4 &1954583724417573217 stripped
 Transform:

@@ -82,7 +82,7 @@ public class RelicBase : MonoBehaviour
 
                         //turn off visuals
                         visuals.SetActive(false);
-                        GetComponent<BoxCollider>().enabled = false;
+                        GetComponent<SphereCollider>().enabled = false;
                     }
                 }
             }
@@ -93,7 +93,7 @@ public class RelicBase : MonoBehaviour
 
                 //turn off visuals
                 visuals.SetActive(false);
-                GetComponent<BoxCollider>().enabled = false;
+                GetComponent<SphereCollider>().enabled = false;
             }
         }
     }

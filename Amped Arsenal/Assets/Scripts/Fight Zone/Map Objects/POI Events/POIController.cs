@@ -14,6 +14,7 @@ public class POIController : MonoBehaviour
     public List<GameObject> spawnedEvents = new();
     public GameObject spawnController, tempEvent;
     public LayerMask _layersToNotSpawnOn;
+    public GameObject enemyParentObject;
     public int distToSpawnFromObjects, distToSpawnFromPOIs;
 
     private void Awake()

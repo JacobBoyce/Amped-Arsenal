@@ -15,7 +15,7 @@ public class ShopMenuController : MonoBehaviour
     public List<ShopItemPrefab> buyableItems;
     public ShopItemPrefab tempShopItem;
     GameObject tempItemObj;
-    public int amountBought, price = 25;
+    public int amountBought, price;
     public bool populatedShop = false;
     int[] weapChoices = new int[3]{-1,-1,-1};
     int v1, shopDirty = 0;
@@ -72,7 +72,7 @@ public class ShopMenuController : MonoBehaviour
             rerollButton.GetComponent<Button>().interactable = false;
         }
 
-        StartCoroutine(menuController.SetSelectedAfterOneFrame(menuController.startIndex-1, true));
+        StartCoroutine(menuController.SetSelectedAfterOneFrame(3, true));
     }
 
     public void ChooseWeapons()
@@ -224,10 +224,6 @@ public class ShopMenuController : MonoBehaviour
     public void ButtonTask(int index)
     {
         controller.p1.RemoveGold(price); //_stats["gold"].Value -= price;
-        goldText.text = controller.p1._stats["gold"].Value.ToString();
-        //if index == 0
-        //buyableweapons[index] has been bought
-        //Debug.Log(index);
         controller.p1.AddWeaponToCache(buyableItems[index].weapName);
         ScalePrices();
         CheckIfCanBuy();
@@ -291,10 +287,10 @@ public class ShopMenuController : MonoBehaviour
     {
         amountBought++;
         price += 25;
-        if (amountBought == 1)
-        {
+        // if (amountBought == 1)
+        // {
             
-        }
+        // }
 
         foreach(ShopItemPrefab sp in buyableItems)
         {

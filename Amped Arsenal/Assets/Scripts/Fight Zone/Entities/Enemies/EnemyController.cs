@@ -32,8 +32,6 @@ public class EnemyController : Actor
     public float attk, str, def, spd, xp, gold;
     public int threatLVL;
 
-    [Header("Sounds Vars")]
-    public AudioSource damagedSound;
     [Range(0.1f, 0.5f)]
     public float pitchMultiplier;
 
@@ -45,7 +43,7 @@ public class EnemyController : Actor
         _stats.AddStat("attk",  1, 200);    // base attack damage to be scaled against strength
         _stats.AddStat("str",   1, 20);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",         1);    // Multiply by damage taken. (0 > Def < 1)
-        _stats.AddStat("spd",      3,50);    // Movement speed
+        _stats.AddStat("spd",      3,15);    // Movement speed
         _stats.AddStat("luck",  10, 100);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("xp",     1, 100);    //How much xp to give the player
         _stats.AddStat("gold",   1, 100);    //How much xp to give the player
@@ -179,6 +177,7 @@ public class EnemyController : Actor
         //damagedSound.PlayOneShot(damagedSound.clip);
         tookDamage = true;
         blinkTimer = blinkDuration;
+        Debug.Log(Mathf.FloorToInt(damage * _stats["def"].Value));
         Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
 
         if(AmDead())
@@ -280,7 +279,7 @@ public class EnemyController : Actor
 
     public bool AmDead()
     {
-        return _stats["hp"].Value <= 0;;        
+        return _stats["hp"].Value <= 0;        
     }
 
     private IEnumerator ReturnToPoolAfterTime()

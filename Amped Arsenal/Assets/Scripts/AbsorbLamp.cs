@@ -16,11 +16,9 @@ public class AbsorbLamp : MonoBehaviour
         absorbAmountMax = absorbAmount;
         
         lightIntensityMax = lampLight.intensity;
-        lampLight.intensity = 0;
+        lampLight.intensity = 200;
 
         countdownText.text = absorbAmount.ToString();
-
-        
     }
 
     public void UpdateCount()
@@ -37,7 +35,7 @@ public class AbsorbLamp : MonoBehaviour
         {
             ableToAbsorb = false;
             countdownText.text = "";
-            lampLight.intensity = 0;
+            lampLight.intensity = lightIntensityMax;
             //decide what relic to spawn
             //GameZoneController.Instance.
             //shoot reward

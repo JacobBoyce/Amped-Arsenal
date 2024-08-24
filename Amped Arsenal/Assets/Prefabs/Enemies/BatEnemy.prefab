@@ -184,12 +184,13 @@ MonoBehaviour:
   stagCD: 0
   stagCDMax: 0.3
   isStaggered: 0
+  gettingKnockedBack: 0
   dir: {x: 0, y: 0, z: 0}
   lastHitDirection: {x: 0, y: 0, z: 0}
   oppDir: {x: 0, y: 0, z: 0}
   launchPower: 100
   initTimer: 0
-  initTimerMax: 1
+  initTimerMax: 0
   layers:
     serializedVersion: 2
     m_Bits: 8
@@ -224,6 +225,7 @@ MonoBehaviour:
   tookDamage: 0
   spawnedXp: 0
   isLargeEnemy: 0
+  triggeredDeath: 0
   largeEnemyRelicDropChance: 7
   baseSpriteColor: {r: 0, g: 0, b: 0, a: 0}
   drops:
@@ -234,12 +236,11 @@ MonoBehaviour:
   hpMax: 25
   attk: 3
   str: 1
-  def: 1
+  def: 0.9
   spd: 4
   xp: 1
   gold: 1
   threatLVL: 2
-  damagedSound: {fileID: 8262119275569859505}
   pitchMultiplier: 0.1
 --- !u!65 &4141661359871722453
 BoxCollider:

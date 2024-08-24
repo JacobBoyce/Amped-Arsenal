@@ -43,7 +43,7 @@ public class SpearLogic : MonoBehaviour
             controller.PlayDamageSound();
         }
 
-        if(collision.tag == "TerrainObj")
+        if(collision.CompareTag("TerrainObj"))
         {
             gameObject.SetActive(false);
         }

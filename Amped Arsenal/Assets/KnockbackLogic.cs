@@ -48,9 +48,4 @@ public class KnockbackLogic : EffectBase
             enemy.movementController.stagCD = tickMaxDuration;
         }
     }
-
-    //private IEnumerator ApplyKnockback()
-    //{
-
-    //}
 }

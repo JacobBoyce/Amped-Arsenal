@@ -8,7 +8,7 @@ public class RootEffectLogic : EffectBase
     public Color damageColor;
     public float intensity;
     public bool activate, endAbility = false;
-    public Modifier mod = new("rootRelic", -.99f, Modifier.ChangeType.PERCENT, true); 
+    public Modifier mod = new("rootRelic", -.99f, Modifier.BuffOrDebuff.DEBUFF, Modifier.ChangeType.PERCENT, true); 
     public AnimationClip animClip;
 
     public void Start()
@@ -44,8 +44,10 @@ public class RootEffectLogic : EffectBase
         spawnOnBodyEffect.transform.SetLocalPositionAndRotation(new Vector3(0,0,0), Quaternion.Euler(-90,0,0));
 
         //add enemy stop
-        enemy.GetComponent<EnemyMovementController>().stagCD = tickMaxDuration;
-        enemy._stats["spd"].AddMod(mod);
+
+         enemy.movementController.enemyState = EnemyMovementController.EnemyStates.STAGGER;
+         enemy.GetComponent<EnemyMovementController>().stagCD = 100f;
+        //enemy._stats["spd"].AddMod(mod);
 
         activate = true;
 
@@ -63,6 +65,7 @@ public class RootEffectLogic : EffectBase
         //if something then reverse clip
         if(endAbility)
         {
+            enemy.GetComponent<EnemyMovementController>().stagCD = 1f;
             //play clip backwards
             GetComponent<Animator>().SetTrigger("End");
         }
@@ -70,7 +73,7 @@ public class RootEffectLogic : EffectBase
 
     public void EndEffect()
     {
-        enemy._stats["spd"].RemoveMod(mod.modName);
+        //enemy._stats["spd"].RemoveMod(mod.modName);
         enemy.RemoveEffect(this.effectName);
     }
 }

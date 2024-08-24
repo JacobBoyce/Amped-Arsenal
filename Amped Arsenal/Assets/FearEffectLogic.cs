@@ -23,7 +23,7 @@ public class FearEffectLogic : EffectBase
         {
             if(tickAmtDuration >= tickMaxDuration)
             {
-                Debug.Log("remove effect object and UI from enemy");
+                //Debug.Log("remove effect object and UI from enemy");
 
                 // Undo the effect to the enemy
 
