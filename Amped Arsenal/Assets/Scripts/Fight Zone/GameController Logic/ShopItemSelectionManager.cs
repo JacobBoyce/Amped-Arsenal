@@ -58,7 +58,7 @@ public class ShopItemSelectionManager : MonoBehaviour
 
     public void OnDisable()
     {
-        soundMaker.allowedToMakeNoise = false;
+        //soundMaker.allowedToMakeNoise = false;
     }
 
     private IEnumerator SetSelectedAfterOneFrame()

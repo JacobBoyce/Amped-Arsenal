@@ -29,12 +29,13 @@ public class ShopMovement : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine("WaitLogic");
+        StartCoroutine(WaitLogic());
     }
 
     public void OnEnable()
     {
         transform.position = startpos.transform.position;
+        StartCoroutine(WaitLogic());
     }
 
     IEnumerator WaitLogic()

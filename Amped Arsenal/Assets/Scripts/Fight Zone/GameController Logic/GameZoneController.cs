@@ -10,6 +10,7 @@ public class GameZoneController : MonoBehaviour
 {
     public static GameZoneController Instance{get; private set;}
     public CamFollow camf;
+    public WaveController wvController;
     public SelectedSoundMaker soundMaker;
     public Image fadeImage;
     public GameObject joystickController, upgradeButton;
@@ -30,7 +31,7 @@ public class GameZoneController : MonoBehaviour
     public GameObject notifyGamesOfUpgrade;
     public bool isPaused, statsVisible;
     public TextMeshProUGUI gameTimerUIText, endGameGoldText;
-
+    public int endGameGold = 0, endGameGoldHalved = 0;
     public List<GameObject> lightsToToggle;
 
     public GameObject quispyDPoof, quispyDeathAnim;
@@ -206,23 +207,30 @@ public class GameZoneController : MonoBehaviour
         #region endgame gold ui countdown
         if(startGoldUICountDown)
         {
-            float currentGold = (p1._stats["gold"].Value - 50) / 2;
-            if(goldCD < maxGCD)
+            float currentGold;
+            if (goldCD < maxGCD)
             {
                 goldCD += Time.unscaledDeltaTime;
                 float percentageComplete = goldCD / maxGCD;
 
                 // Update current gold based on percentage
-                currentGold = Mathf.FloorToInt(p1._stats["gold"].Value * (1 - percentageComplete));
+                currentGold = Mathf.FloorToInt(endGameGold * (1 - percentageComplete));
+
+                // Ensure currentGold doesn't go below half of endGameGold
+                if (currentGold < endGameGoldHalved)
+                {
+                    currentGold = endGameGoldHalved;
+                    startGoldUICountDown = false; // Stop countdown
+                }
 
                 // Update the UI text
                 endGameGoldText.text = currentGold.ToString();
             }
             else
             {
-                currentGold = 0;
+                currentGold = endGameGoldHalved; // Set currentGold to half when done
                 endGameGoldText.text = currentGold.ToString();
-                startGoldUICountDown = false;
+                startGoldUICountDown = false; // Ensure countdown stops
             }
             
             
@@ -427,7 +435,8 @@ public class GameZoneController : MonoBehaviour
     
     public void OpenEndGameUI()
     {
-        int endGameGold = Mathf.RoundToInt(p1._stats["gold"].Value / 2);
+        endGameGold = (int)p1._stats["gold"].Value;
+        endGameGoldHalved = Mathf.RoundToInt(endGameGold / 2);
 
         MainMenuController.Instance._playerGold += endGameGold;
         MainMenuController.Instance.SaveGoldData();

@@ -46,7 +46,9 @@ public class Stat
     public void IncreaseByAmount(float amount) => _value += amount;
     public void IncreaseMaxByPercent(float amount, bool wantFill, bool wantAdd)
     {
-        Max += amount;
+        float temp = Max + Mathf.RoundToInt(amount * Max);
+        Mathf.RoundToInt(temp);
+        Max = temp;
         
         if(wantFill)
         {
@@ -93,7 +95,7 @@ public class Stat
             tempMod.amtChanged = _value * tempMod.modAmount;
             if(tempMod.isMaxMod)
             {
-                IncreaseMaxByPercent(tempMod.modAmount,false,true);
+                IncreaseMaxByAmount(tempMod.modAmount,false,true);
             }
             else
             {

@@ -13,13 +13,10 @@ public class EnemyController : Actor
     public bool tookDamage, spawnedXp = false, isLargeEnemy = false, triggeredDeath = false;
     [Range(1,10),Header("1 = 10%  10 = 100%")]
     public int largeEnemyRelicDropChance;
-    private Color baseDamageColor = Color.white;
-    public Color baseSpriteColor;
-    private Color curDamageColor;
-    private float curBlinkIntensity;
+
 
     public List<GameObject> drops = new List<GameObject>();
-    int multiDropChance, dropIndex;
+    int goldDropChance, xpDropChance;
     public TextMeshProUGUI lifeText;
 
     [Space(10)]
@@ -30,16 +27,14 @@ public class EnemyController : Actor
     [Header("Base Stats")]
     public float hpMax;
     public float attk, str, def, spd, xp, gold;
-    public int threatLVL;
 
-    [Range(0.1f, 0.5f)]
-    public float pitchMultiplier;
+
 
     void Awake()
     {
         //when setting stats pull from a level or scale and use here to instantiate
         _stats = new Stats();
-        _stats.AddStat("hp",   10);    // Max Health
+        _stats.AddStat("hp",   0);    // Max Health
         _stats.AddStat("attk",  1, 200);    // base attack damage to be scaled against strength
         _stats.AddStat("str",   1, 20);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",         1);    // Multiply by damage taken. (0 > Def < 1)
@@ -54,7 +49,7 @@ public class EnemyController : Actor
 
     public void SetStats()
     {
-        _stats["hp"].Value = hpMax;
+        _stats["hp"].Max = hpMax;
         _stats["attk"].Value = attk;
         _stats["str"].Value = str;
         _stats["def"].Value = def;
@@ -65,15 +60,14 @@ public class EnemyController : Actor
 
     public void IncreaseStats(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
     {
-        float nHp;//, nStr, nDef;
+        //float nHp;//, nStr, nDef;
 
-        nHp = (_hpScaleAmount * _zoneNum) * waveNum;
-        nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
+        // nHp = (_hpScaleAmount * _zoneNum) * waveNum;
+        // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
         //nStr = _str * _zoneNum;
         //nDef = _def * _zoneNum;
         
-        _stats["hp"].Max = nHp;
-        _stats["hp"].Fill();
+        _stats["hp"].IncreaseMaxByPercent(.1f,true,false);
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseByPercent(.1f);
@@ -83,15 +77,14 @@ public class EnemyController : Actor
     public void IncreaseStats(float _hpScaleAmount, float _str, float _def, float timer, int _zoneNum)
     {
         
-        float nHp;//, nStr, nDef;
+        // float nHp;//, nStr, nDef;
 
-        nHp = (_hpScaleAmount * _zoneNum) * (20 + Mathf.RoundToInt(timer % 5)/2);
-        nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
-        //nStr = _str * _zoneNum;
-        //nDef = _def * _zoneNum;
+        // nHp = (_hpScaleAmount * _zoneNum) * (20 + Mathf.RoundToInt(timer % 5)/2);
+        // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
+        // //nStr = _str * _zoneNum;
+        // //nDef = _def * _zoneNum;
 
-        _stats["hp"].Max = nHp;
-        _stats["hp"].Fill();
+        _stats["hp"].IncreaseMaxByPercent(.1f,true,false);
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseByPercent(.1f);
@@ -100,15 +93,15 @@ public class EnemyController : Actor
 
     public void CreateLargeEnemy(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
     {
-        isLargeEnemy = true;
-        float nHp;//, nStr, nDef;
+        // isLargeEnemy = true;
+        // float nHp;//, nStr, nDef;
 
-        nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
-        nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
+        // nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
+        // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
         //nStr = _str * _zoneNum;
         //nDef = _def * _zoneNum;
         
-        _stats["hp"].Max = nHp;
+        _stats["hp"].IncreaseMaxByPercent(.1f,true,false);
         //_stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
@@ -116,6 +109,10 @@ public class EnemyController : Actor
         //_stats["spd"].Fill();
 
         transform.localScale = new Vector3(2f,2f,2f);
+        if(GetComponentInChildren<VisualEffects>().wantBob == true)
+        {
+            GetComponentInChildren<VisualEffects>().offset += 1;
+        }
     }
 
     public void Update()
@@ -124,8 +121,13 @@ public class EnemyController : Actor
         {
             VisualDamage();
         }
-        //lifeText.text = _stats["hp"].Value.ToString();
-        lifeText.text = movementController.enemyState.ToString();
+        lifeText.text = _stats["hp"].Value.ToString();
+        //lifeText.text = movementController.enemyState.ToString();
+    }
+
+    public void ToggleViewHP(bool toggle)
+    {
+        lifeText.gameObject.SetActive(toggle);
     }
     
     public bool HasEffect(EffectBase effect)
@@ -177,7 +179,7 @@ public class EnemyController : Actor
         //damagedSound.PlayOneShot(damagedSound.clip);
         tookDamage = true;
         blinkTimer = blinkDuration;
-        Debug.Log(Mathf.FloorToInt(damage * _stats["def"].Value));
+        //Debug.Log(Mathf.FloorToInt(damage * _stats["def"].Value));
         Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
 
         if(AmDead())
@@ -224,6 +226,7 @@ public class EnemyController : Actor
                 if(Random.Range(0, 10) < largeEnemyRelicDropChance)
                 {
                     GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
+                    relicToSpawnObj.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
                     GetComponent<EnemyMovementController>().visuals.GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
                 
                 }
@@ -243,6 +246,7 @@ public class EnemyController : Actor
             }
             spriteObj.SetActive(false);
             effectCont.uiSatusEffectParent.SetActive(false);
+            effectCont.effectSpwnPointOnEnemy.SetActive(false);
             Destroy(this.gameObject, .5f);
             //StartCoroutine(ReturnToPoolAfterTime());
         }
@@ -273,7 +277,7 @@ public class EnemyController : Actor
     {
         if(!AmDead())
         {
-            player.TakeDamage(_stats["attk"].Value * _stats["attk"].Value);
+            player.TakeDamage(_stats["attk"].Value + Mathf.CeilToInt(_stats["attk"].Value * _stats["str"].Value));
         }
     }
 
@@ -291,18 +295,23 @@ public class EnemyController : Actor
     public void SpawnDrop()
     {
            // chance for multi drop
-        multiDropChance = Random.Range(0,10);
-        if(multiDropChance < 2)
+        goldDropChance = Random.Range(0,101);
+        if(goldDropChance < PlayerPrefs.GetInt("Inflation")) //inflation should be a whole number between 0-50
         {
             //spawn xp and gold
             GameObject tempGoldDrop = ObjectPoolManager.SpawnObject(drops[1], transform.position, transform.rotation, ObjectPoolManager.PoolType.GoldNug);
             tempGoldDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
             GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempGoldDrop, ShootReward.ShootType.Up);
         }
-            //spawn xp
-        GameObject tempDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
-        tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
-        GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
+
+        xpDropChance = Random.Range(0,101);
+        if(xpDropChance < 80)
+        {
+            GameObject tempDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
+            tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
+            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
+        }
+        //spawn xp
     }
 
     public void VisualDamage()

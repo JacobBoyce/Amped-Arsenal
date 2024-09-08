@@ -28,16 +28,16 @@ public class TickSystem : MonoBehaviour
         {
             tickTimer = 0;
             tick++;
-            if(OnSubTick != null) OnSubTick(this, new OnTickEventArgs{tick = tick});
+            OnSubTick?.Invoke(this, new OnTickEventArgs { tick = tick });
             /*
             How to subscribe to this event
             TickSystem.OnTick += delegate (object sender, TickSystem.OnTickEventArgs e) {do something when tick happens}
             */
 
             //When ticks equal 1 sec
-            if(tick % 5 == 0)
+            if (tick % 5 == 0)
             {
-                if(OnFullTick != null) OnFullTick(this, new OnTickEventArgs{tick = tick});
+                OnFullTick?.Invoke(this, new OnTickEventArgs { tick = tick });
             }
         }
     }

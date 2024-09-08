@@ -26,11 +26,11 @@ public class ShopMenuController : MonoBehaviour
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            //turn on upgrade screen and turn off other ui
-            controller.p1.AddWeaponToCache("Splash");
-        }
+        // if(Input.GetKeyDown(KeyCode.K))
+        // {
+        //     //turn on upgrade screen and turn off other ui
+        //     controller.p1.AddWeaponToCache("Splash");
+        // }
     }
 
 

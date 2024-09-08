@@ -69,10 +69,16 @@ public class ExfilLampLogic : MonoBehaviour
         //Time.timeScale = 1;
         p1.MovePlayerToField(moveToPos, false);
         waveController.DeactivateWaveSystem();
+        gzController.gameObject.GetComponent<GlobalVolumeController>().StopAllCoroutines();
+        gzController.gameObject.GetComponent<GlobalVolumeController>().ReturnToNormalColor();
         
         lobController.lobbyTerrain.SetActive(true);
         lobController.ToggleLamps(true);
-        MainMenuController.Instance.SaveProgress();
+        if(MainMenuController.Instance.stageDifficulty == waveController.zoneMultiplier)
+        {
+            MainMenuController.Instance.stageDifficulty++;
+            MainMenuController.Instance.SaveProgress();
+        }
 
         StartCoroutine(AfterMovePlayer());
     }

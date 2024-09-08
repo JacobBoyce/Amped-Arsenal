@@ -49,6 +49,7 @@ public class EnemyMovementController : MonoBehaviour
         GetComponent<BoxCollider>().isTrigger = true;
         eController = gameObject.GetComponent<EnemyController>();
         nMA = GetComponent<NavMeshAgent>();
+        nMA.stoppingDistance = attackRange;
         nMA.speed = eController._stats["spd"].Value;
         //animC.GetComponentInChildren<Animator>();
         enemyState = EnemyStates.INIT;

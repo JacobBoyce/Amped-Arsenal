@@ -91,7 +91,7 @@ public class PlayerController : Actor
         _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
-        _stats.AddStat("luck",    9,10);    // How lucky you are to get different upgrades or drops from enemies.
+        _stats.AddStat("luck",    40,100);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",   10,50);    // How far to pull object from.
         _stats.AddStat("xp",      0,100000); // Xp.
         _stats.AddStat("gold",    0,100000); //Gold
@@ -102,9 +102,16 @@ public class PlayerController : Actor
         
         _stats["hp"].IncreaseMaxByAmount(PlayerPrefs.GetInt("HP"),true,false);
         //_stats["hp"].Value = _stats["hp"].Max;
-        _stats["str"].Value += PlayerPrefs.GetInt("Strength");
-        _stats["def"].Value += PlayerPrefs.GetInt("Armor");
-        _stats["spd"].Value += PlayerPrefs.GetInt("Speed");
+        float tempstr = (float)PlayerPrefs.GetInt("Strength") / 100;
+        Debug.Log((float)PlayerPrefs.GetInt("Strength")/100);
+        _stats["str"].Value += tempstr;
+
+        float tempDef = PlayerPrefs.GetInt("Armor") / 100;
+        _stats["def"].Value -= tempDef;
+
+        float tempSpd = PlayerPrefs.GetInt("Speed") / 20;
+        _stats["spd"].Value += tempSpd;
+
         _stats["pull"].Value += PlayerPrefs.GetInt("Magnet");
 
         goldText.text = _stats["gold"].Value.ToString();
@@ -138,27 +145,27 @@ public class PlayerController : Actor
             //_stats["hp"].RemoveMod("main");
             //UpdateBar(_stats["hp"]);
             //HealPlayer(1);
-            foreach(GameObject weap in equippedWeapons)
-            {
-                if(weap.GetComponent<WeaponBase>().wName.Equals("Sword"))
-                {
-                    //weap.GetComponent<WeaponBase>().AddEffectToWeapon(FindRelic("Poison").);
-                }
-            }
+            // foreach(GameObject weap in equippedWeapons)
+            // {
+            //     if(weap.GetComponent<WeaponBase>().wName.Equals("Sword"))
+            //     {
+            //         //weap.GetComponent<WeaponBase>().AddEffectToWeapon(FindRelic("Poison").);
+            //     }
+            // }
         }
-        #region Weapon testing
+        #region Cheats 
         
         if (Input.GetKeyDown(KeyCode.Y))
         {
             aoeLight.range += 4;
         }
 
-        if(Input.GetKeyDown(KeyCode.X))
+        if(Input.GetKey(KeyCode.X))
         {
             AddXP(10);
         }
 
-        if(Input.GetKeyDown(KeyCode.G))
+        if(Input.GetKey(KeyCode.G))
         {
             AddGold(10);
         }
@@ -166,6 +173,11 @@ public class PlayerController : Actor
         if(Input.GetKeyDown(KeyCode.P))
         {
             _stats["pull"].Value++;
+        }
+
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            GameZoneController.Instance.wvController.enemyVisuals = !GameZoneController.Instance.wvController.enemyVisuals;
         }
 
         // if(Input.GetKeyDown(KeyCode.Z))
@@ -191,8 +203,8 @@ public class PlayerController : Actor
     {
         blinkTimer = blinkDuration;
         tookDamage = true;
-        float dmg = _stats["def"].Value / 10;
-        Set("hp", _stats["hp"].Value - Mathf.CeilToInt(damage * dmg));
+        float dmg = _stats["def"].Value * damage;
+        Set("hp", _stats["hp"].Value - Mathf.CeilToInt(dmg));
         UpdateBar(_stats["hp"]);
 
         //trigger damage event list

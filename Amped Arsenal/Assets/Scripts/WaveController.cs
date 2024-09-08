@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Den.Tools;
+using Unity.VisualScripting;
 
 public class WaveController : MonoBehaviour
 {
@@ -14,23 +15,22 @@ public class WaveController : MonoBehaviour
     public Image countdownBarUI;
     public int curWave = 0, maxWave;
     public float startWaitTime;
-    public bool wavesActive = false, exfilPhase = false;
+    public bool wavesActive = false, exfilPhase = false, enemyVisuals = false;
     public ExfilLampLogic exfilLampObject;
     public GameObject enemyParentObj;
+
     [Header("Moon Stuff")]
     public float endAngle = 237;
     public float totalWaveTime;
     public RectTransform moons;
-
-    public List<GameObject> enemyPrefabs = new List<GameObject>();
-
-    public List<GameObject> beginningSpawnList = new List<GameObject>();
-    public List<GameObject> midAndLateGameSpwnList = new List<GameObject>();
+    [SerializeField]
+    public List<EnemyListPerLevel> enemyPrefabs = new(); 
+    public WaveMaster waveMaster;
 
     [Header("Spawn Stuff")]
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
     private GameObject tempPrefab;
-    public bool spawnLargeTrigger = false;
+    public bool spawnLargeTrigger = true;
 
     [Header("Stat Scaling")]
     public float hp;
@@ -49,6 +49,8 @@ public class WaveController : MonoBehaviour
     public float delayStartMax, delayStart, delayExfilMax, delayExfil;
     public bool startDelay, startExfilDelay;
     private int randomIndex;
+    public int largeEnemyCount;
+    public float whenToSpawnLargeEnemy;
     public LayerMask _layersToNotSpawnOn;
 
 
@@ -60,7 +62,8 @@ public class WaveController : MonoBehaviour
         mainCountdown = maxWaveTimer;
 
         delayStart = delayStartMax;
-        delayExfil = delayExfilMax;        
+        delayExfil = delayExfilMax;      
+        whenToSpawnLargeEnemy = Mathf.RoundToInt((totalWaveTime / 5) - (maxWaveTimer / 2));
     }
 
     // Update is called once per frame
@@ -112,23 +115,35 @@ public class WaveController : MonoBehaviour
                 mainCountdown = 0;
                 exfilLampObject.exfilTime = true;
                 
-                
-                //PlayerPrefs.GetInt("StageDifficulty") == zoneMultiplier
-                
-                if(MainMenuController.Instance.stageDifficulty == zoneMultiplier)
-                {
-                    MainMenuController.Instance.stageDifficulty++;
-                    MainMenuController.Instance.SaveProgress();
-                }
-                
                //start exfill phase
                startExfilDelay = true;
                toggleSpawning = false;
                gvController.StartRedFade();
             }
 
-                //check if wave is a multiple of 5 -> (start peace wave)
-                //if(curWave % 5 == 0 )
+            if(spawnLargeTrigger)
+            {
+                if(whenToSpawnLargeEnemy > 0)
+                {
+                    whenToSpawnLargeEnemy -= Time.deltaTime;
+                }    
+                else
+                {
+                    int spwnLoc = ChooseValidSpawnLocation();
+                    Debug.Log(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyCount]+ "  " + largeEnemyCount);
+                    tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyCount],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
+                    tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+                    //tempPrefab = ObjectPoolManager.SpawnObject(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
+                    tempPrefab.transform.parent = enemyParentObj.transform;
+                    tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
+                    largeEnemyCount++;
+                    whenToSpawnLargeEnemy = Mathf.RoundToInt((totalWaveTime / 5) - (maxWaveTimer / 2));
+                    if(largeEnemyCount == 5)
+                    {
+                        spawnLargeTrigger = false;
+                    }
+                } 
+            }
         }
         #endregion
 
@@ -160,7 +175,7 @@ public class WaveController : MonoBehaviour
             else
             {
                 spawnRate = 0;
-                ChooseValidSpawnLocation();
+                SpawnEnemy(ChooseValidSpawnLocation());
             }
         }
         #endregion
@@ -228,72 +243,11 @@ public class WaveController : MonoBehaviour
             spawnRateMax -= .1f;
         }
         
-        DecideWave();
         //spawn enemies
-        toggleSpawning = true;
-        spawnLargeTrigger = false;
+        toggleSpawning = true; 
     }
 
-    private void DecideWave()
-    {
-        //if wave 1-10 use single enemy list defined by me
-        if(curWave >= 11 && curWave <= 15)
-        {
-            int tryCount = 0;
-            int enemiesSelected = 0;
-            int randomChoice;
-            midAndLateGameSpwnList.Clear();
-
-            randomChoice = Random.Range(0,enemyPrefabs.Count);
-
-            midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
-
-            enemiesSelected++;
-
-            while(enemiesSelected < 2 && tryCount < 200)
-            {  
-                randomChoice = Random.Range(0,enemyPrefabs.Count);
-                if(!midAndLateGameSpwnList.Contains(enemyPrefabs[randomChoice]))
-                {
-                    midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
-                    enemiesSelected++;
-                }
-                tryCount++;
-            }
-        }
-        else if(curWave >= 16 && curWave <= 20)
-        {
-            int tryCount = 0;
-            int enemiesSelected = 0;
-            int randomChoice;
-            midAndLateGameSpwnList.Clear();
-
-            randomChoice = Random.Range(0,enemyPrefabs.Count);
-
-            midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
-            enemiesSelected++;
-
-            while(enemiesSelected < 3 && tryCount < 200)
-            {  
-                randomChoice = Random.Range(0,enemyPrefabs.Count);
-
-                if(!midAndLateGameSpwnList.Contains(enemyPrefabs[randomChoice]))
-                {
-                    midAndLateGameSpwnList.Add(enemyPrefabs[randomChoice]);
-                    enemiesSelected++;
-                }
-                tryCount++;
-            }
-            
-        }
-        //if wave 10-15 use 2 random enemies from the list
-        //if wave 15-20 use 3 or more random enemies from the list
-            //int randomChoice = Random.Range(0,enemyPrefabs.Count);
-            //GameObject tempEnemy = enemyPrefabs[randomChoice];
- 
-
-        //spawnRateMax = (maxWaveTimer - (maxWaveTimer * .25f)) / toSpawnList.Count; 
-    }
+    
     public void StartWaveSystem()
     {
         startDelay = true;
@@ -322,39 +276,28 @@ public class WaveController : MonoBehaviour
     }
     public void SpawnEnemy(int spwnIndex)
     {
-    
-        if(curWave <= 10)
+        if(spwnIndex != -1)
         {
-            tempPrefab = Instantiate(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
-            //tempPrefab = ObjectPoolManager.SpawnObject(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
-            tempPrefab.transform.parent = enemyParentObj.transform;
-        }
-        else if(curWave >= 11)
-        {
-            int randEnemy = Random.Range(0, midAndLateGameSpwnList.Count);
-            tempPrefab = Instantiate(midAndLateGameSpwnList[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
-            //tempPrefab = ObjectPoolManager.SpawnObject(midAndLateGameSpwnList[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
-            tempPrefab.transform.parent = enemyParentObj.transform;
-        }
-        else if(exfilPhase)
-        {
-            int randEnemy = Random.Range(0, enemyPrefabs.Count);
-            tempPrefab = Instantiate(enemyPrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
-            //tempPrefab = ObjectPoolManager.SpawnObject(enemyPrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
-            tempPrefab.transform.parent = enemyParentObj.transform;
-        }
-
-        //if(curWave > 8 && (curWave % 3) == 0)
-        //{
-            if(spawnLargeTrigger == false)
+            if(curWave <= 15)
             {
-                Debug.Log("Spawn Large enemy!");
-                spawnLargeTrigger = true;
-                tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+                int randEnemy = Random.Range(0, waveMaster.levelWaveList[zoneMultiplier-1].waves[curWave-1].enemysToSpawn.Count);
+                // Debug.Log("level: " + waveMaster.levelWaveList[zoneMultiplier-1].levelName
+                //     + "\nWave Index: " + (curWave-1)
+                //     + "\nEnemy To Spawn: " + waveMaster.levelWaveList[zoneMultiplier-1].waves[curWave-1].enemysToSpawn[randEnemy] + " randEnemy: " + randEnemy
+                //     + "\nSpawnIndex: " + spwnIndex);
+                tempPrefab = Instantiate(waveMaster.levelWaveList[zoneMultiplier-1].waves[curWave-1].enemysToSpawn[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
+                //tempPrefab = ObjectPoolManager.SpawnObject(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
+                tempPrefab.transform.parent = enemyParentObj.transform;
             }
-        //}
-        else
-        {
+            else if(exfilPhase)
+            {
+                int randEnemy = Random.Range(0, enemyPrefabs[zoneMultiplier-1].ePrefabs.Count);
+                tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation);
+                //tempPrefab = ObjectPoolManager.SpawnObject(enemyPrefabs[randEnemy],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
+                tempPrefab.transform.parent = enemyParentObj.transform;
+            }
+            
+
             if(exfilPhase)
             {
                 //increase stats by exfil amount
@@ -365,10 +308,11 @@ public class WaveController : MonoBehaviour
                 //upgrade enemy stats here
                 tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
             }
+            tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
         }
     }
 
-    public void ChooseValidSpawnLocation()
+    public int ChooseValidSpawnLocation()
     {
         bool isSpawnPosValid;
         int maxAttemptsPerLocation = 50;
@@ -431,11 +375,13 @@ public class WaveController : MonoBehaviour
         if(!isSpawnPosValid)
         {
             Debug.Log("couldnt find valid spawn position for - enemy to spawn");
+            return -1;
         }
         else
         {
             //spawnstuff
-            SpawnEnemy(randomIndex);
+            return randomIndex;
+            //SpawnEnemy(randomIndex);
         }
     }
 
@@ -447,5 +393,57 @@ public class WaveController : MonoBehaviour
             float x = Random.Range(-range.z, range.z); //z because the value needs to be between -.5 and .5 (which y and z are)
             es.sPoint.transform.localPosition = new Vector3(x, 0, 0);
         //}
+    }
+}
+
+[System.Serializable]
+public struct EnemyListPerLevel
+{
+    [SerializeField]
+    public string levelName;
+    [SerializeField]
+    public List<GameObject> ePrefabs;
+
+    public EnemyListPerLevel(string lvlName, List<GameObject> ep)
+    {
+        levelName = lvlName;
+        ePrefabs = ep;
+    }
+
+}
+
+[System.Serializable]
+public struct Wave
+{
+    [SerializeField]
+    public List<GameObject> enemysToSpawn;
+    public Wave(List<GameObject> ep)
+    {
+        enemysToSpawn = ep;
+    }
+}
+
+[System.Serializable]
+public struct WaveList 
+{
+    [SerializeField]
+    public string levelName;
+    [SerializeField]
+    public List<Wave> waves;
+    public WaveList(string lvlName, List<Wave> ep)
+    {
+        levelName = lvlName;
+        waves = ep;
+    }
+}
+
+[System.Serializable]
+public struct WaveMaster 
+{
+    [SerializeField]
+    public List<WaveList> levelWaveList;
+    public WaveMaster(List<WaveList> ep)
+    {
+        levelWaveList = ep;
     }
 }
