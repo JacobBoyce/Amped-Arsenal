@@ -33,10 +33,10 @@ public class WaveController : MonoBehaviour
     public bool spawnLargeTrigger = true;
 
     [Header("Stat Scaling")]
-    public float hp;
-    public float str,def;
+    public float strScaling, defScaling;
     public int zoneMultiplier;
-    public float[] scaleLampLevel;
+    //public float[] scaleLampLevel;
+    public float waveScale, levelScale, exfilScale, exfilScaleInterval;
 
     //Time stuff
     [Header("Timers")]
@@ -132,7 +132,7 @@ public class WaveController : MonoBehaviour
                     int spwnLoc = ChooseValidSpawnLocation();
                     Debug.Log(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyCount]+ "  " + largeEnemyCount);
                     tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyCount],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
-                    tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+                    tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier);
                     //tempPrefab = ObjectPoolManager.SpawnObject(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
                     tempPrefab.transform.parent = enemyParentObj.transform;
                     tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
@@ -301,12 +301,12 @@ public class WaveController : MonoBehaviour
             if(exfilPhase)
             {
                 //increase stats by exfil amount
-                tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,mainCountdown,zoneMultiplier);
+                tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, exfilScale, exfilScaleInterval, strScaling,defScaling,mainCountdown,curWave,zoneMultiplier);
             }
             else
             {
                 //upgrade enemy stats here
-                tempPrefab.GetComponent<EnemyController>().IncreaseStats(scaleLampLevel[zoneMultiplier-1],str,def,curWave,zoneMultiplier);
+                tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, strScaling,defScaling,curWave,zoneMultiplier);
             }
             tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
         }

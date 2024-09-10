@@ -84,6 +84,7 @@ public class LampLoadLevel : MonoBehaviour
     public IEnumerator MovePlayer()
     {
         gzController.StartFadeOut();
+        GameSceneManager.instance.musicMaker.SwapTrack();
         //Time.timeScale = 0;
         while(gzController.IsFadingOut)
         {

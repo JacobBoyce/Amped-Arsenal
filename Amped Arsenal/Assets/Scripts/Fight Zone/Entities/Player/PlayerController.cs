@@ -91,7 +91,7 @@ public class PlayerController : Actor
         _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
         _stats.AddStat("spd",    10,50);    // Movement speed
-        _stats.AddStat("luck",    40,100);    // How lucky you are to get different upgrades or drops from enemies.
+        _stats.AddStat("luck",   65,100);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",   10,50);    // How far to pull object from.
         _stats.AddStat("xp",      0,100000); // Xp.
         _stats.AddStat("gold",    0,100000); //Gold
@@ -103,7 +103,7 @@ public class PlayerController : Actor
         _stats["hp"].IncreaseMaxByAmount(PlayerPrefs.GetInt("HP"),true,false);
         //_stats["hp"].Value = _stats["hp"].Max;
         float tempstr = (float)PlayerPrefs.GetInt("Strength") / 100;
-        Debug.Log((float)PlayerPrefs.GetInt("Strength")/100);
+        //Debug.Log((float)PlayerPrefs.GetInt("Strength")/100);
         _stats["str"].Value += tempstr;
 
         float tempDef = PlayerPrefs.GetInt("Armor") / 100;

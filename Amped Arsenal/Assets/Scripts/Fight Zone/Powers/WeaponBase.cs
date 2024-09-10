@@ -70,7 +70,7 @@ public class WeaponBase : MonoBehaviour, IWeapon
 
     public void SendDamage(EnemyController enemy)
     {
-        enemy.TakeDamage(Mathf.CeilToInt(damage + (damage * playerObj._stats["str"].Value)));
+        enemy.TakeDamage(Mathf.CeilToInt(damage * playerObj._stats["str"].Value));
         ApplyEffects(enemy);
     }
 

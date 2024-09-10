@@ -60,6 +60,7 @@ public class ExfilLampLogic : MonoBehaviour
     public IEnumerator MovePlayer()
     {
         //gzController.StartFadeOut();
+        GameSceneManager.instance.musicMaker.SwapTrack();
         gzController.StartFadeOut();
         //Time.timeScale = 0;
         while(gzController.IsFadingOut)

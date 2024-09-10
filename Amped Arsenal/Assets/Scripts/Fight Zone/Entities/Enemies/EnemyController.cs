@@ -15,7 +15,7 @@ public class EnemyController : Actor
     public int largeEnemyRelicDropChance;
 
 
-    public List<GameObject> drops = new List<GameObject>();
+    public List<GameObject> drops = new();
     int goldDropChance, xpDropChance;
     public TextMeshProUGUI lifeText;
 
@@ -58,50 +58,54 @@ public class EnemyController : Actor
         _stats["gold"].Value = gold;
     }
 
-    public void IncreaseStats(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
+    public void IncreaseStats(float _waveScale, float _levelScale, float _str, float _def, int waveNum, int _zoneNum)
     {
         //float nHp;//, nStr, nDef;
-
+        float nHP = _stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale);
         // nHp = (_hpScaleAmount * _zoneNum) * waveNum;
         // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
         //nStr = _str * _zoneNum;
         //nDef = _def * _zoneNum;
         
-        _stats["hp"].IncreaseMaxByPercent(.1f,true,false);
+        _stats["hp"].Max = nHP;
+        _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseByPercent(.1f);
         //_stats["spd"].Fill();
     }
 
-    public void IncreaseStats(float _hpScaleAmount, float _str, float _def, float timer, int _zoneNum)
+    public void IncreaseStats(float _waveScale, float _levelScale, float _exfilScale, float _interval, float _str, float _def, float timer, int waveNum, int _zoneNum)
     {
         
         // float nHp;//, nStr, nDef;
-
+        float nHP = _stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale);
+        nHP *= 1 + (timer / _interval) * _exfilScale;
         // nHp = (_hpScaleAmount * _zoneNum) * (20 + Mathf.RoundToInt(timer % 5)/2);
         // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
         // //nStr = _str * _zoneNum;
         // //nDef = _def * _zoneNum;
 
-        _stats["hp"].IncreaseMaxByPercent(.1f,true,false);
+        _stats["hp"].Max = nHP;
+        _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseByPercent(.1f);
         //_stats["spd"].Fill();
     }
 
-    public void CreateLargeEnemy(float _hpScaleAmount, float _str, float _def, int waveNum, int _zoneNum)
+    public void CreateLargeEnemy(float _waveScale, float _levelScale, float _exfilScale, float _interval, float _str, float _def, int waveNum, int _zoneNum)
     {
         // isLargeEnemy = true;
         // float nHp;//, nStr, nDef;
-
+        float nHP = 3 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
         // nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
         // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
         //nStr = _str * _zoneNum;
         //nDef = _def * _zoneNum;
         
-        _stats["hp"].IncreaseMaxByPercent(.1f,true,false);
+        _stats["hp"].Max = nHP;
+        _stats["hp"].Fill();
         //_stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
@@ -192,12 +196,12 @@ public class EnemyController : Actor
         }
     }
 
-    public void TakeDamageFromEffect(float damage, Color dmgColor)
+    public void TakeDamageFromEffect(float damage)
     {
         tookDamage = true;
         //curDamageColor = dmgColor;
         blinkTimer = blinkDuration;
-        Set("hp", _stats["hp"].Value - Mathf.FloorToInt(damage * _stats["def"].Value));
+        Set("hp", _stats["hp"].Value - damage);
 
         if(AmDead())
         {

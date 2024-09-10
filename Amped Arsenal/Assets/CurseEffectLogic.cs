@@ -27,7 +27,7 @@ public class CurseEffectLogic : EffectBase
             if(tickAmtDuration == tickMaxDuration)
             {
                 enemy._stats["str"].RemoveMod(mod.modName);
-                enemy._stats["def"].RemoveMod(mod.modName);
+                //enemy._stats["def"].RemoveMod(mod.modName);
                 enemy.RemoveEffect(this.effectName, createdUIObj);
             }
         }
@@ -43,7 +43,7 @@ public class CurseEffectLogic : EffectBase
         createdUIObj.GetComponent<RectTransform>().SetLocalPositionAndRotation(new Vector3(0,0,0), Quaternion.Euler(0,0,0));
 
         enemy._stats["str"].AddMod(mod);
-        enemy._stats["def"].AddMod(mod);
+        //enemy._stats["def"].AddMod(mod);
         activate = true;
 
         //change enemy color

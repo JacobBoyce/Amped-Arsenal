@@ -8067,7 +8067,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.15, z: -47.5}
-  m_LocalScale: {x: 40, y: 1, z: 1}
+  m_LocalScale: {x: 91.604004, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 710524201}
@@ -8104,7 +8104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &607246609
 Transform:
   m_ObjectHideFlags: 0
@@ -16309,16 +16309,13 @@ MonoBehaviour:
   - {fileID: 10646211}
   - {fileID: 735088033}
   spawnLargeTrigger: 1
-  hp: 0.1
-  str: 0.01
-  def: 0.01
+  strScaling: 0
+  defScaling: 0
   zoneMultiplier: 1
-  scaleLampLevel:
-  - 1
-  - 1.5
-  - 2
-  - 2.5
-  - 3
+  waveScale: 0.4
+  levelScale: 0.7
+  exfilScale: 1.2
+  exfilScaleInterval: 10
   maxWaveTimer: 30
   mainCountdown: 5
   spawnRate: 0
@@ -22285,9 +22282,6 @@ MonoBehaviour:
   lamps:
   - {fileID: 5772900441814749772}
   - {fileID: 2211976693391828358}
-  - {fileID: 2211976693452251159}
-  - {fileID: 2211976692699867869}
-  - {fileID: 2211976693540130646}
   globalLobbyLight: {fileID: 559793}
   mainMenuLightLamp: {fileID: 1541768278628007575}
   middleSpawnPoint: {fileID: 0}
@@ -26937,7 +26931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1721193902
 Transform:
   m_ObjectHideFlags: 0

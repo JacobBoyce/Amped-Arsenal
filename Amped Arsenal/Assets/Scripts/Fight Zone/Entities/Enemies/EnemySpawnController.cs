@@ -129,7 +129,8 @@ public class EnemySpawnController : MonoBehaviour
        
         tempePrefab = Instantiate(enemyPrefabs[index],esPoint[randomInd].sPoint.transform.position, esPoint[randomInd].sPoint.transform.rotation);
         //upgrade enemy stats here
-        tempePrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,waveNum,zoneMultiplier);
+        Debug.Log("F U");
+        //tempePrefab.GetComponent<EnemyController>().IncreaseStats(hp,str,def,waveNum,zoneMultiplier);
     }
 
 
