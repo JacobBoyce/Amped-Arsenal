@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EquippedUI : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class EquippedUI : MonoBehaviour
         //weapUI[idNum].lvl.text = wb.level.ToString();
         //weapUI[idNum].lvlBar.FillAmountTweenAtSpeed(wb.level/5, 2 * Time.deltaTime);
         weapUI[idNum].lvlBar.fillAmount = wb.level / 5f;
+        weapUI[idNum].GetComponent<Button>().interactable = true;
 
         weapUI[idNum].UpgradeableCheck(canUpgrade);
     }

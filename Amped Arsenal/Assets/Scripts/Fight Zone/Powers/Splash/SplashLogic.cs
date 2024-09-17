@@ -19,7 +19,7 @@ public class SplashLogic : MonoBehaviour
     public int randomIndex, babySpawnIndex;
     public float offsetY;
     public float shootPower, buffer;
-    public bool isBabySplash = false;
+    public bool isBabySplash = false, touchedGround = false;
     public List<int> spawnStuff = new List<int>();
 
     public void InitSplash(SplashController cont, WeaponMods mod)
@@ -33,7 +33,6 @@ public class SplashLogic : MonoBehaviour
 
         waterBallPrefab = cont.weapPrefab;
         shootFromObjects = cont.playerObj.spawnPoints;
-
         
         for(int i = 0; i < controller.splashSplitAmount; i++)
         {
@@ -86,7 +85,8 @@ public class SplashLogic : MonoBehaviour
         shootDir = new Vector3(shootDir.x, shootDir.y + offsetY, shootDir.z);
         //Debug.DrawLine(gameObject.transform.position, shootObjectDir.transform.position, Color.white, 2.5f);
 
-        thisRB.AddForce(shootDir * shootPower, ForceMode.Impulse);
+        //thisRB.AddForce(shootDir * shootPower, ForceMode.Impulse);
+        thisRB.AddForce(6 * shootPower * Vector3.up, ForceMode.Impulse);
     }
 
     public void ChooseBabyDir()
@@ -111,31 +111,50 @@ public class SplashLogic : MonoBehaviour
         y = visualObjectToRotate.transform.localRotation.y;
 
         // moving right
-        if(thisRB.velocity.x > 0)
+        if(isBabySplash)
         {
-            this.GetComponentInChildren<SpriteRenderer>().flipY = true;
-            visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(thisRB.velocity.y + 180)*buffer);
-        }
-        else if(thisRB.velocity.x < 0)
-        {
-            visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(-thisRB.velocity.y)*buffer);
+            if(thisRB.velocity.x > 0)
+            {
+                this.GetComponentInChildren<SpriteRenderer>().flipY = true;
+                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(thisRB.velocity.y + 180)*buffer);
+            }
+            else if(thisRB.velocity.x < 0)
+            {
+                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(-thisRB.velocity.y)*buffer);
+            }
         }
         else
         {
-            //if not moving delete it
-            //Destroy(this.gameObject);
-        }
+            //check which way quispy is facing then flipY when needed
 
-        if(Vector3.Distance(controller.playerObj.gameObject.transform.position, transform.position) > 100)
+            //face up then down
+            if(thisRB.velocity.y > 0)
+            {
+                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,-90);   
+            }
+            else
+            {
+                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,90);   
+            }
+        }
+        if(touchedGround)
         {
             Destroy(this.gameObject);
         }
+        // if(Vector3.Distance(controller.playerObj.gameObject.transform.position, transform.position) > 100)
+        // {
+        //     Destroy(this.gameObject);
+        // }
     }
 
     public void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "TerrainObj" || collision.gameObject.tag == "Enemy")
         {
+            if(collision.gameObject.tag == "TerrainObj")
+            {
+                touchedGround = true;
+            }
             //spawn splash object
             if(isBabySplash)
             {

@@ -15,6 +15,7 @@ public class BombController : WeaponBase
             curCooldown++;
         };
         //SetSpawnDetails();
+        UpdateValues();
     }
     public void Update()
     {

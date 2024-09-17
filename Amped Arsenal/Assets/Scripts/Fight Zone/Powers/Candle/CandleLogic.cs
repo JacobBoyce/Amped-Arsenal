@@ -9,8 +9,8 @@ public class CandleLogic : MonoBehaviour
     private bool switched2 = false, switched3 = false;
     public CandleController controller;
     public WeaponMods weapMod;
-    public CapsuleCollider bodyCollider;
-
+    public ParticleSystem pSys;
+    public float[] pSysSize;
     [Header("Battle Vars")]
     //Battle Vars
     public float aoeRange;
@@ -42,6 +42,7 @@ public class CandleLogic : MonoBehaviour
 
         //set visuals for range here
         rangeCollider.radius = aoeRange;
+        pSys.startSize = controller.level == controller.maxLevel ? pSysSize[controller.level] : pSysSize[controller.level-1];
     }
 
 

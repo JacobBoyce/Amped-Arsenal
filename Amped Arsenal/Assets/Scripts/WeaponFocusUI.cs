@@ -131,7 +131,7 @@ public class WeaponFocusUI : MonoBehaviour
             if (focusedWeap.weapUpgrades.costValues[focusedWeap.level - 1] <= player._stats["xp"].Value)
             {
                 //Debug.Log("turnon on init");
-                //upgradeButton.interactable = true;
+                upgradeButton.interactable = true;
                 upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetGreen(false);
                 //buttonImage.sprite = canBuyImg;
                 // make button green
@@ -139,7 +139,7 @@ public class WeaponFocusUI : MonoBehaviour
             else
             {
                 //Debug.Log("turnoff on init");
-                //upgradeButton.interactable = false;
+                upgradeButton.interactable = false;
                 upgradeButton.GetComponent<UIInteracableObjectVisuals>().SetRed(false);
                 //buttonImage.sprite = cantBuyImg;
                 // make button red

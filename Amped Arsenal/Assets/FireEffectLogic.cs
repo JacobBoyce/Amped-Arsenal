@@ -27,7 +27,7 @@ public class FireEffectLogic : EffectBase
         {
             if(tickDamage == maxTickDamage)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamageFromEffect(damage);
                 tickDamage = 0;
             }
 

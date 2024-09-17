@@ -35,7 +35,7 @@ public class PoisonEffectLogic : EffectBase
         {
             if(tickDamage == maxTickDamage)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamageFromEffect(damage);
                 tickDamage = 0;
             }
 

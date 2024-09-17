@@ -65,9 +65,15 @@ MonoBehaviour:
   maxLevel: 5
   damageSound: {fileID: 2643590859953853502}
   pitchMultiplier: 0.25
-  aoeRange: 5
+  aoeRange: 3
   deathTimer: 10
   damageTick: 0.5
+  _layersToNotSpawnOn:
+    serializedVersion: 2
+    m_Bits: 512
+  totalAttempts: 0
+  maxTotalAttempts: 200
+  isSpawnPosValid: 0
 --- !u!114 &3255418615466689697
 MonoBehaviour:
   m_ObjectHideFlags: 0

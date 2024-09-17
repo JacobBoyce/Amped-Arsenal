@@ -5,7 +5,7 @@ using TMPro;
 
 public class FreeLampLogic : MonoBehaviour
 {
-    public TextMeshProUGUI countdownText;
+    //public TextMeshProUGUI countdownText;
     public Light aoeLight;
     public MeshRenderer lightMat;
     private string formatTime;
@@ -14,17 +14,20 @@ public class FreeLampLogic : MonoBehaviour
     private float maxLightIntensity;
 
     public GameObject spawnRewardPoint;
+    private BarLogic bLogic;
 
     public Color initColor;
     // Start is called before the first frame update
     void Start()
     {
         countdown = cdMax;
-        formatTime = countdown.ToString("0");
-        countdownText.text = formatTime;
+        //formatTime = countdown.ToString("0");
+        //countdownText.text = formatTime;
 
         maxLightIntensity = aoeLight.intensity;
         aoeLight.intensity = maxLightIntensity/2f;
+
+        bLogic = GetComponentInChildren<BarLogic>();
  
         initColor = lightMat.material.GetColor("_EmissionColor");
     }
@@ -35,16 +38,17 @@ public class FreeLampLogic : MonoBehaviour
         if(inRange && !done)
         {
             countdown -= Time.deltaTime;
-            formatTime = countdown.ToString("0");
-            countdownText.text = formatTime;
+            //formatTime = countdown.ToString("0");
+            //countdownText.text = formatTime;
             aoeLight.intensity = (.5f + (1 - (countdown / cdMax))) * maxLightIntensity;
+            bLogic.FillBar(countdown, cdMax);
             //aoeLight.intensity += 1f;
             //lightMat.material.SetColor("_EmissionColor", lightMat.material.color * ((1 - (countdown / cdMax)) * Mathf.Pow(2, 5)));
             if (countdown <= 0)
             {
                 //aoeLight.intensity = 0;
                 done = true;
-                countdownText.text = "";
+                //countdownText.text = "";
                 //spawn artifact
 
                 // get random relic and spawn reward
@@ -69,8 +73,9 @@ public class FreeLampLogic : MonoBehaviour
                 inRange = false;
                 aoeLight.intensity = maxLightIntensity/2;
                 countdown = cdMax;
-                formatTime = countdown.ToString("0");
-                countdownText.text = formatTime;
+                bLogic.FillBar(countdown, cdMax);
+                //formatTime = countdown.ToString("0");
+                //countdownText.text = formatTime;
             }
         }
     }

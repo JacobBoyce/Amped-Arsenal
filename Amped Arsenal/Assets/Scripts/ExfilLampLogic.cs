@@ -8,7 +8,7 @@ public class ExfilLampLogic : MonoBehaviour
     public WaveController waveController;
     public LobbyController lobController;
     public POIController poiController;
-
+    private BarLogic bLogic;
     
     public MeshRenderer lightMat;
     public GameObject moveToPos;
@@ -17,13 +17,14 @@ public class ExfilLampLogic : MonoBehaviour
 
     public float cdMax, cd;
     [Space(10)]
-    public TextMeshProUGUI countdownText;
+    //public TextMeshProUGUI countdownText;
     private string formatTime;
 
     public void Start()
     {
         cd = cdMax;
-        countdownText.text = "";
+        //countdownText.text = "";
+        bLogic = GetComponentInChildren<BarLogic>();
     }
 
 
@@ -36,14 +37,14 @@ public class ExfilLampLogic : MonoBehaviour
                 if(cd > 0)
                 {
                     cd -= Time.deltaTime;
-                    formatTime = cd.ToString("0");
-                    countdownText.text = formatTime;
+                    //formatTime = cd.ToString("0");
+                    //countdownText.text = formatTime;
                 }
                 else
                 {
                     if(triggeredLoad == false)
                     {
-                        countdownText.text = "";
+                        //countdownText.text = "";
                         triggeredLoad = true;
                         exfilTime = false;
                         waveController.startExfilDelay = false;
@@ -53,6 +54,7 @@ public class ExfilLampLogic : MonoBehaviour
                         StartCoroutine(MovePlayer());
                     }
                 }
+                bLogic.FillBar(cd, cdMax);
             }
         }
     }
@@ -116,7 +118,8 @@ public class ExfilLampLogic : MonoBehaviour
         exfilTime = false;
         inRange = false;
         cd = cdMax;
-        countdownText.text = "";
+        bLogic.FillBar(cd, cdMax);
+        //countdownText.text = "";
     }
 
     public void OnTriggerStay(Collider other)
@@ -144,8 +147,9 @@ public class ExfilLampLogic : MonoBehaviour
             {
                 inRange = false;
                 cd = cdMax;
-                formatTime = cd.ToString("0");
-                countdownText.text = formatTime;
+                bLogic.FillBar(cd, cdMax);
+                //formatTime = cd.ToString("0");
+                //countdownText.text = formatTime;
             }
         }
     }

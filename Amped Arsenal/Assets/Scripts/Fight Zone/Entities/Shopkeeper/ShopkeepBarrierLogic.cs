@@ -15,7 +15,7 @@ public class ShopkeepBarrierLogic : MonoBehaviour
         }
         else if(other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerController>().mainController.OpenShop();
+            //other.gameObject.GetComponent<PlayerController>().mainController.OpenShop();
         }
     }
 
@@ -49,6 +49,8 @@ public class ShopkeepBarrierLogic : MonoBehaviour
             //moveScript.RunToLogic(other.gameObject);
             //other.GetComponent<PlayerController>().OpenShop(true);
             //tell player he can press space
+            
+            other.GetComponent<PlayerController>().OpenShop(true);
             moveScript.alertUI.text = "!";
             //trigger ! over head off
         }

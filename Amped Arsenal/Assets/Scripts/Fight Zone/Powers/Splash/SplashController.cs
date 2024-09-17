@@ -7,6 +7,7 @@ public class SplashController : WeaponBase
     public int splashSplitAmount;
     public float offsetY;
     public float shootPower, buffer;
+    public GameObject initialSpawnSplash;
 
     void Start()
     {
@@ -15,7 +16,7 @@ public class SplashController : WeaponBase
             curCooldown++;
         };
 
-        
+        UpdateValues(); 
         //SetSpawnDetails();
     }
     public void Update()
@@ -43,8 +44,11 @@ public class SplashController : WeaponBase
         //spawn object and call its init method 
         curCooldown = 0;
 
-        GameObject tempSplash = Instantiate(weapPrefab, playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.position, playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.rotation);
+        GameObject tempSplash = Instantiate(weapPrefab, playerObj.rotatingSpawnPoints[spawnDetails[0].spawnpoint].transform.position + (playerObj.rotatingSpawnPoints[spawnDetails[0].spawnpoint].transform.forward *5f), playerObj.spawnPoints[1].transform.rotation);
         tempSplash.GetComponentInChildren<SplashLogic>().InitSplash(this, weapMod);
+
+        
+        Instantiate(initialSpawnSplash, tempSplash.transform.position, tempSplash.transform.rotation);
     }
 
     public override void PlayDamageSound()

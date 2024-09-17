@@ -92,10 +92,10 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
                 
                 slotNum++;
             }
-        }
-        if(isFirstLoad)
-        {
-            equippedUICont.SelectThisOne(menuController.menuItems[0].GetComponent<WeapItemSlotUI>()); 
+            if(isFirstLoad)
+            {
+                equippedUICont.SelectThisOne(menuController.menuItems[0].GetComponent<WeapItemSlotUI>()); 
+            }
         }
     }
 

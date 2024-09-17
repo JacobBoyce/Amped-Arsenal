@@ -28,7 +28,7 @@ public class BombLogic : MonoBehaviour
         shootBackDir = controller.spawnPointBack;
 
         shootDir = shootBackDir.transform.position - shootCenterDir.transform.position;
-        Debug.DrawLine(shootCenterDir.transform.position,shootBackDir.transform.position, Color.white, 2f);
+        //Debug.DrawLine(shootCenterDir.transform.position,shootBackDir.transform.position, Color.white, 2f);
         //add offset
         shootDir = new Vector3(shootDir.x, shootDir.y + offsetY, shootDir.z);
         thisRB.AddForce(shootDir * shootPower, ForceMode.Impulse);

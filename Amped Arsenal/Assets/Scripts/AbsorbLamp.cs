@@ -9,7 +9,8 @@ public class AbsorbLamp : MonoBehaviour
     public bool ableToAbsorb;
     public GameObject spawnRewardPoint;
     public Light lampLight;
-    public TextMeshProUGUI countdownText;
+    //public TextMeshProUGUI countdownText;
+    private BarLogic bLogic;
 
     public void Start()
     {
@@ -18,15 +19,18 @@ public class AbsorbLamp : MonoBehaviour
         lightIntensityMax = lampLight.intensity;
         lampLight.intensity = 200;
 
-        countdownText.text = absorbAmount.ToString();
+        bLogic = GetComponentInChildren<BarLogic>();
+
+        //countdownText.text = absorbAmount.ToString();
     }
 
     public void UpdateCount()
     {
         absorbAmount--;
-        countdownText.text = absorbAmount.ToString();
+        //countdownText.text = absorbAmount.ToString();
         //Debug.Log((1 - (absorbAmount / absorbAmountMax)) * lightIntensityMax);
         lampLight.intensity = (1 - (absorbAmount / absorbAmountMax)) * lightIntensityMax;
+        bLogic.FillBar(absorbAmount, absorbAmountMax);
     }
 
     public void Update()
@@ -34,7 +38,7 @@ public class AbsorbLamp : MonoBehaviour
         if(absorbAmount <= 0 && ableToAbsorb == true)
         {
             ableToAbsorb = false;
-            countdownText.text = "";
+            //countdownText.text = "";
             lampLight.intensity = lightIntensityMax;
             //decide what relic to spawn
             //GameZoneController.Instance.

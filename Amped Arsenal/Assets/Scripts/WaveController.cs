@@ -28,9 +28,11 @@ public class WaveController : MonoBehaviour
     public WaveMaster waveMaster;
 
     [Header("Spawn Stuff")]
+    public float[] waveSpawnTimers;
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
     private GameObject tempPrefab;
     public bool spawnLargeTrigger = true;
+    private int everyOtherWaveChangeBoss = 0;
 
     [Header("Stat Scaling")]
     public float strScaling, defScaling;
@@ -41,7 +43,7 @@ public class WaveController : MonoBehaviour
     //Time stuff
     [Header("Timers")]
     public int maxWaveTimer;
-    public float mainCountdown;
+    public float mainCountdown, exfilTimer;
     public float spawnRate, spawnRateMax, seconds;
     public int min;   
     public bool toggleSpawning = false;
@@ -49,7 +51,7 @@ public class WaveController : MonoBehaviour
     public float delayStartMax, delayStart, delayExfilMax, delayExfil;
     public bool startDelay, startExfilDelay;
     private int randomIndex;
-    public int largeEnemyCount;
+    public int largeEnemyIndex;
     public float whenToSpawnLargeEnemy;
     public LayerMask _layersToNotSpawnOn;
 
@@ -120,30 +122,6 @@ public class WaveController : MonoBehaviour
                toggleSpawning = false;
                gvController.StartRedFade();
             }
-
-            if(spawnLargeTrigger)
-            {
-                if(whenToSpawnLargeEnemy > 0)
-                {
-                    whenToSpawnLargeEnemy -= Time.deltaTime;
-                }    
-                else
-                {
-                    int spwnLoc = ChooseValidSpawnLocation();
-                    Debug.Log(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyCount]+ "  " + largeEnemyCount);
-                    tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyCount],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
-                    tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier);
-                    //tempPrefab = ObjectPoolManager.SpawnObject(beginningSpawnList[curWave-1],esPoint[spwnIndex].sPoint.transform.position, esPoint[spwnIndex].sPoint.transform.rotation, ObjectPoolManager.PoolType.Enemies);
-                    tempPrefab.transform.parent = enemyParentObj.transform;
-                    tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
-                    largeEnemyCount++;
-                    whenToSpawnLargeEnemy = Mathf.RoundToInt((totalWaveTime / 5) - (maxWaveTimer / 2));
-                    if(largeEnemyCount == 5)
-                    {
-                        spawnLargeTrigger = false;
-                    }
-                } 
-            }
         }
         #endregion
 
@@ -151,6 +129,7 @@ public class WaveController : MonoBehaviour
         if(exfilPhase)
         {
             mainCountdown += Time.deltaTime;
+            exfilTimer += Time.deltaTime;
             seconds = Mathf.FloorToInt(mainCountdown) % 60;
     
             if (seconds == 0 && Mathf.FloorToInt(mainCountdown) != 0)
@@ -227,21 +206,65 @@ public class WaveController : MonoBehaviour
                 seconds = 0;
                 exfilPhase = true;
                 toggleSpawning = true;
-                spawnRateMax = .05f;
+                spawnRateMax = .2f;
                 
             }
         }
         #endregion
     }
 
+    public void SpawnLargeEnemy(bool randomBoss)
+    {
+        if(!randomBoss)
+        {
+            if(everyOtherWaveChangeBoss == 0 || everyOtherWaveChangeBoss == 1)
+            {
+                everyOtherWaveChangeBoss++;
+            }
+            else
+            {
+                everyOtherWaveChangeBoss = 1;
+                largeEnemyIndex++;
+            }
+            int spwnLoc = ChooseValidSpawnLocation();
+            GameObject largeEnemyPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyIndex == 5 ? largeEnemyIndex-1 : largeEnemyIndex],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
+            largeEnemyPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier);
+            largeEnemyPrefab.transform.parent = enemyParentObj.transform;
+            largeEnemyPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
+
+            if(largeEnemyIndex == 5)
+            {
+                largeEnemyIndex = 0;
+            }
+        }
+        else
+        {
+            int randIndex = Random.Range(0, enemyPrefabs[zoneMultiplier-1].ePrefabs.Count);
+            
+            int spwnLoc = ChooseValidSpawnLocation();
+            tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[randIndex],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
+            tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier);
+            tempPrefab.transform.parent = enemyParentObj.transform;
+            tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
+
+        }
+    }
     public void StartNextWave()
     {
+        if(curWave > 1)
+        {
+            SpawnLargeEnemy(false);
+        }
+        else if(curWave > 10)
+        {
+            SpawnLargeEnemy(true);
+        }
         //update wave UI
         //waveText.text = "Wave " + curWave + "/" + maxWave;
-        if(spawnRateMax > .1f)
-        {
-            spawnRateMax -= .1f;
-        }
+        // if(spawnRateMax > 1f)
+        // {
+            spawnRateMax = waveSpawnTimers[curWave-1];
+        //}
         
         //spawn enemies
         toggleSpawning = true; 
@@ -255,11 +278,14 @@ public class WaveController : MonoBehaviour
         infoMessages.gameObject.SetActive(true);
         delayStart = delayStartMax;
         delayExfil = delayExfilMax;
-        spawnRateMax = 1f;
+        //spawnRateMax = 1f;
 
         moons.localRotation = Quaternion.Euler(0,0,0);
         totalWaveTime = (maxWave-1)*maxWaveTimer;
         mainCountdown = maxWaveTimer;
+        spawnRateMax = waveSpawnTimers[0];
+        largeEnemyIndex = 0;
+        everyOtherWaveChangeBoss = 0;
     }
 
     public void DeactivateWaveSystem()
@@ -301,7 +327,7 @@ public class WaveController : MonoBehaviour
             if(exfilPhase)
             {
                 //increase stats by exfil amount
-                tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, exfilScale, exfilScaleInterval, strScaling,defScaling,mainCountdown,curWave,zoneMultiplier);
+                tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, exfilScaleInterval, strScaling,defScaling,exfilTimer,curWave,zoneMultiplier);
             }
             else
             {
@@ -342,7 +368,7 @@ public class WaveController : MonoBehaviour
                 {
                     isInvalidCollision = false;
                     UpdateSpawnPoints(esPoint[randomIndex]);
-
+                    
                     colliders = Physics.OverlapSphere(esPoint[randomIndex].sPoint.transform.position, 2f);
 
                     foreach (Collider col in colliders)

@@ -7,14 +7,21 @@ public class CandleController : WeaponBase
     public float aoeRange;
     public float deathTimer;
     public float damageTick;
+    public LayerMask _layersToNotSpawnOn; 
+    public int totalAttempts, maxTotalAttempts;
+    public bool isSpawnPosValid;
 
     void Start()
     {
+        totalAttempts = 0;
+        maxTotalAttempts = 200;
+        isSpawnPosValid = false;
         TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e)
         {
             curCooldown++;
         };
         //SetSpawnDetails();
+        UpdateValues();
     }
     public void Update()
     {
@@ -37,10 +44,33 @@ public class CandleController : WeaponBase
     public override void ActivateAbility()
     {
         curCooldown = 0;
+        totalAttempts = 0;
+        isSpawnPosValid = false;
+        Collider[] colliders;
+        while (!isSpawnPosValid && totalAttempts < maxTotalAttempts)
+        {
+            colliders = Physics.OverlapSphere(playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.position, 2f);
+            foreach (Collider col in colliders)
+            {
+                if (((1 << col.gameObject.layer) & _layersToNotSpawnOn) != 0)
+                {
+                    isSpawnPosValid = false;
+                    totalAttempts++;
+                    break;
+                }
+                else
+                {
+                    isSpawnPosValid = true;
+                }
+            }
 
-        GameObject tempCandle = Instantiate(weapPrefab, playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.position + new Vector3(0,1,0), playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.rotation);
-        tempCandle.GetComponentInChildren<CandleLogic>().InitCandle(this, weapMod, deathTimer , aoeRange);
-        //send weap stats to logic script
+            if(isSpawnPosValid)
+            {
+                GameObject tempCandle = Instantiate(weapPrefab, playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.position + new Vector3(0,1,0), playerObj.spawnPoints[spawnDetails[0].spawnpoint].transform.rotation);
+                tempCandle.GetComponentInChildren<CandleLogic>().InitCandle(this, weapMod, deathTimer , aoeRange);
+                break;
+            }
+        }
     }
 
     public override void PlayDamageSound()

@@ -29,7 +29,7 @@ public class GameZoneController : MonoBehaviour
     private float maxGCD = 4f, goldCD = 0;
     GameObject focusedUI;
     public GameObject notifyGamesOfUpgrade;
-    public bool isPaused, statsVisible;
+    public bool isPaused, statsVisible, isShopping;
     public TextMeshProUGUI gameTimerUIText, endGameGoldText;
     public int endGameGold = 0, endGameGoldHalved = 0;
     public List<GameObject> lightsToToggle;
@@ -307,17 +307,21 @@ public class GameZoneController : MonoBehaviour
                 if(!isPaused)
                 {
                     FocusUI(pauseMenu, true);
+                    pauseMenu.GetComponent<PauseMenuController>().pauseMainMenu.SetActive(true);
                     pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
                 }
                 else
                 {
+                    pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
                     ResumeGamePlay();
                 }
             }        
             else
             {
                 isUpgrading = false;
+                //pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
                 ResumeGamePlay();
+                //deactivate all menus and turn
             }    
         }
     }
@@ -344,15 +348,20 @@ public class GameZoneController : MonoBehaviour
 
     public void OpenShop()
     {
-        p1.GetComponent<ThirdPersonMovement>().movementEnabled = false;
-        PauseGame();
+        if(!isShopping)
+        {
+            p1.GetComponent<ThirdPersonMovement>().movementEnabled = false;
+            PauseGame();
+            
+            //p1.GetComponent<PlayerInput>().defaultActionMap = "UI";
+            joystickController.SetActive(false);
+            shopPanel.SetActive(true);
+            shopController.InitShop();
+            upgradeButton.SetActive(false);
+            isShopping = true;
+            //shopAnimeController.ToggleDots();
+        }
         
-        //p1.GetComponent<PlayerInput>().defaultActionMap = "UI";
-        joystickController.SetActive(false);
-        shopPanel.SetActive(true);
-        shopController.InitShop();
-        upgradeButton.SetActive(false);
-        //shopAnimeController.ToggleDots();
     }
 
     public void TurnOffShop()
@@ -364,6 +373,7 @@ public class GameZoneController : MonoBehaviour
         shopPanel.SetActive(false);
         upgradeButton.SetActive(true);
         p1.CheckIfCanUpgradeWeapons();
+        isShopping = false;
         //shopAnimeController.ToggleDots();
     }
 

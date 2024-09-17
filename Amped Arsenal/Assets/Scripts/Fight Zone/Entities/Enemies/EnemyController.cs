@@ -75,12 +75,11 @@ public class EnemyController : Actor
         //_stats["spd"].Fill();
     }
 
-    public void IncreaseStats(float _waveScale, float _levelScale, float _exfilScale, float _interval, float _str, float _def, float timer, int waveNum, int _zoneNum)
+    public void IncreaseStats(float _waveScale, float _levelScale, float _interval, float _str, float _def, float timer, int waveNum, int _zoneNum)
     {
-        
+        waveNum += Mathf.RoundToInt(timer / _interval);
         // float nHp;//, nStr, nDef;
         float nHP = _stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale);
-        nHP *= 1 + (timer / _interval) * _exfilScale;
         // nHp = (_hpScaleAmount * _zoneNum) * (20 + Mathf.RoundToInt(timer % 5)/2);
         // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
         // //nStr = _str * _zoneNum;
@@ -98,7 +97,8 @@ public class EnemyController : Actor
     {
         // isLargeEnemy = true;
         // float nHp;//, nStr, nDef;
-        float nHP = 3 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+        float nHP = 4 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+
         // nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
         // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
         //nStr = _str * _zoneNum;
@@ -106,11 +106,14 @@ public class EnemyController : Actor
         
         _stats["hp"].Max = nHP;
         _stats["hp"].Fill();
+        _stats["def"].Value = .75f;
         //_stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseByPercent(.1f);
-        //_stats["spd"].Fill();
+        _stats["spd"].IncreaseByPercent(.2f);
+        //_stats["spd"].Fill();i
+
+        isLargeEnemy = true;
 
         transform.localScale = new Vector3(2f,2f,2f);
         if(GetComponentInChildren<VisualEffects>().wantBob == true)
@@ -225,22 +228,8 @@ public class EnemyController : Actor
                 GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
                 largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
                 largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
-
-                //chance to drop relic
-                if(Random.Range(0, 10) < largeEnemyRelicDropChance)
-                {
-                    GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
-                    relicToSpawnObj.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
-                    GetComponent<EnemyMovementController>().visuals.GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
-                
-                }
-                else
-                {
-                    _stats["xp"].Value = 10;
-                    _stats["gold"].Value = 10;
-                    spawnedXp = true;
-                    SpawnDrop();
-                }
+                spawnedXp = true;
+                SpawnLargeDrop();
             }
             else
             {
@@ -251,7 +240,7 @@ public class EnemyController : Actor
             spriteObj.SetActive(false);
             effectCont.uiSatusEffectParent.SetActive(false);
             effectCont.effectSpwnPointOnEnemy.SetActive(false);
-            Destroy(this.gameObject, .5f);
+            Destroy(this.gameObject, 1f);
             //StartCoroutine(ReturnToPoolAfterTime());
         }
     }
@@ -305,6 +294,7 @@ public class EnemyController : Actor
             //spawn xp and gold
             GameObject tempGoldDrop = ObjectPoolManager.SpawnObject(drops[1], transform.position, transform.rotation, ObjectPoolManager.PoolType.GoldNug);
             tempGoldDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
+            tempGoldDrop.GetComponent<MoveToPlayer>().visuals.transform.localScale = new Vector3(1,1,1);
             GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempGoldDrop, ShootReward.ShootType.Up);
         }
 
@@ -313,9 +303,42 @@ public class EnemyController : Actor
         {
             GameObject tempDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
             tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
+            tempDrop.GetComponent<MoveToPlayer>().visuals.transform.localScale = new Vector3(1,1,1);
             GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempDrop, ShootReward.ShootType.Up);
         }
         //spawn xp
+    }
+
+    public void SpawnLargeDrop()
+    {
+        int dropChance = Random.Range(0,101); 
+        //Debug.Log(dropChance);
+        if(dropChance <= 35)
+        {
+            GameObject tempGoldDrop = ObjectPoolManager.SpawnObject(drops[1], transform.position, transform.rotation, ObjectPoolManager.PoolType.GoldNug);
+            _stats["gold"].Value = 10;
+            tempGoldDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["gold"].Value;
+            tempGoldDrop.GetComponent<MoveToPlayer>().visuals.transform.localScale = new Vector3(2,2,2);
+            tempGoldDrop.GetComponent<MoveToPlayer>().visuals.GetComponent<VisualEffects>().offset += 1;
+            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempGoldDrop, ShootReward.ShootType.Up);
+        }
+        else if(dropChance > 35 && dropChance <= 70)
+        {
+            GameObject tempXpDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
+            _stats["xp"].Value = 10;
+            tempXpDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
+            tempXpDrop.GetComponent<MoveToPlayer>().visuals.transform.localScale = new Vector3(2,2,2);
+            tempXpDrop.GetComponent<MoveToPlayer>().visuals.GetComponent<VisualEffects>().offset += 1;
+            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempXpDrop, ShootReward.ShootType.Up);
+        }
+        else
+        {
+            //drop relic
+            GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
+            relicToSpawnObj.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
+            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
+                
+        }
     }
 
     public void VisualDamage()

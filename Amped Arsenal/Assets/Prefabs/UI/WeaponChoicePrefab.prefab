@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4905719138094144375}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -109,7 +108,6 @@ RectTransform:
   - {fileID: 185191504908735759}
   - {fileID: 4468462265245403847}
   m_Father: {fileID: 3810989198626378211}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -166,6 +164,7 @@ GameObject:
   - component: {fileID: 8650216990217783429}
   - component: {fileID: 3974333617666009996}
   - component: {fileID: 4799796449426387824}
+  - component: {fileID: 3178963660458769249}
   m_Layer: 5
   m_Name: WeaponChoicePrefab
   m_TagString: Untagged
@@ -187,7 +186,6 @@ RectTransform:
   m_Children:
   - {fileID: 4905719138094144375}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -208,9 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapImg: {fileID: 709618314089318230}
   bgImg: {fileID: 7534761915614724108}
-  weapName: {fileID: 0}
-  deselected: {fileID: 21300000, guid: edef03ece7a3e734aa3a885741a80ec2, type: 3}
-  selected: {fileID: 21300000, guid: 37751a2fc468788438b04da37b947344, type: 3}
+  weapName: 
   isSelected: 0
 --- !u!114 &3974333617666009996
 MonoBehaviour:
@@ -288,30 +284,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-        m_MethodName: set_overrideSprite
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 21300000, guid: 3dc6a15b47232cf47b0c4e048b420e4f, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+--- !u!114 &3178963660458769249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6788778195480048482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abceee73b071bc84abd75b8d4ad55445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundMaker: {fileID: 0}
+  bgObjectImage: {fileID: 7534761915614724108}
+  selectedPlain: {fileID: 21300000, guid: 37751a2fc468788438b04da37b947344, type: 3}
+  notSelectedPlain: {fileID: 21300000, guid: edef03ece7a3e734aa3a885741a80ec2, type: 3}
+  selectedGreen: {fileID: 21300000, guid: 80893d2eb67cb1a489cc914a11a3e794, type: 3}
+  notSelectedGreen: {fileID: 21300000, guid: 3dc6a15b47232cf47b0c4e048b420e4f, type: 3}
+  selectedRed: {fileID: 21300000, guid: 998fbb39e0f4bf94a9bed19a0f21486e, type: 3}
+  notSelectedRed: {fileID: 21300000, guid: b16afa35925782946b4f4c87ba67a131, type: 3}
+  isSelected: 0
+  menuController: {fileID: 0}
+  _verticalMoveAmount: 30
+  _moveTime: 0.1
+  _scaleAmount: 1.1
+  wantUIChange: 1
+  isOpened: 0
 --- !u!1 &9156419674203387141
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,12 +342,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4905719138094144375}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: 0}
-  m_SizeDelta: {x: -22.1308, y: -20.519}
+  m_AnchoredPosition: {x: -0.0000076293945, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3627043927421050926
 CanvasRenderer:
@@ -378,7 +376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cef01b6945e2cf44fa9d8d884292234d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ebefe4992803bf4f90df9e50f1045f8, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

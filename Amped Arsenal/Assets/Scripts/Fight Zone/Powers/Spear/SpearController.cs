@@ -14,6 +14,7 @@ public class SpearController : WeaponBase
         };
         //SetSpawnDetails();
         SpawnDetails();
+        UpdateValues();
     }
 
     public void SpawnDetails()

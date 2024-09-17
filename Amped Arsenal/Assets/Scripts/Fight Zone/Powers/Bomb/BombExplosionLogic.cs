@@ -7,11 +7,14 @@ public class BombExplosionLogic : MonoBehaviour
     private float cd = 2.5f;
     public float maxCD;
     public BombController controller;
+    public ParticleSystem pSys;
+    public float[] pSysSize;
 
     public void Start()
     {
         maxCD = cd;
         GetComponent<SphereCollider>().radius = controller.range;
+        pSys.startSize = controller.level == controller.maxLevel ? pSysSize[controller.level] : pSysSize[controller.level-1];
     }
     public void OnTriggerEnter(Collider collision)
     {
