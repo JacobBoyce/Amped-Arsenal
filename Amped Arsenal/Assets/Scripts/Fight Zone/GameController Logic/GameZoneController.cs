@@ -17,7 +17,7 @@ public class GameZoneController : MonoBehaviour
     public RelicLib relicLibrary;
     public PlayerController p1;
     public float exfilPercentAmount;
-    public GameObject statsPanel, uiController, currencyUI, upgradePanel, pauseMenu, shopPanel, chooseWeapApplyEffect;
+    public GameObject statsPanel, uiController, currencyUI, upgradePanel, pauseMenu, returnMenu, shopPanel, chooseWeapApplyEffect;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
     public ShopMenuAnimController shopAnimeController;
@@ -326,6 +326,22 @@ public class GameZoneController : MonoBehaviour
         }
     }
 
+    public void ReturnToMainMenuMenuOpen()
+    {
+        FocusUI(returnMenu,true);
+    }
+
+    public void TriggerReturnToMainMenu()
+    {
+        MainMenuController.Instance._playerGold += (int)p1._stats["gold"].Value;
+        MainMenuController.Instance.SaveGoldData();
+        GameSceneManager.instance.LoadMainMenu();
+    }
+
+    public void ChooseNoToReturnToMainMenu()
+    {
+        ResumeGamePlay();
+    }
     public void ShowStats(bool onoff)
     {
         statsPanel.SetActive(onoff);

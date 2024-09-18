@@ -23,10 +23,12 @@ public class PlayerController : Actor
     public event Action<Stat> UpdateHPBar;
     public event Action OnDamaged;
     public event Action OnHealed;
+    public event Action TriggerInteractEvent;
     public bool openShop = false;
     public float inflationAmount = 0;
 
     public ParticleSystem dropGetPartSys;
+    public GameObject intObj;
 
     [Header("Visual Damage")]
     public MeshRenderer quispySprite;
@@ -39,6 +41,7 @@ public class PlayerController : Actor
     [Header("UI")]
     public TextMeshProUGUI xpText;
     public TextMeshProUGUI goldText;
+    public TextMeshProUGUI interactText;
 
     public Light aoeLight;
     public int lightMax = 60;
@@ -118,6 +121,7 @@ public class PlayerController : Actor
 
         goldText.text = _stats["gold"].Value.ToString();
         xpText.text = _stats["xp"].Value.ToString();
+        interactText.text = "";
         UpdateBar(_stats["hp"]);
     }
 
@@ -197,10 +201,16 @@ public class PlayerController : Actor
             if(openShop == true)
             {
                 mainController.OpenShop();
+                //invoke interacted delegate
             }
+            TriggerInteractStuff();
         }
     }
-
+    
+    public void TriggerInteractStuff()
+    {
+        TriggerInteractEvent?.Invoke();
+    }
     public void TakeDamage(float damage)
     {
         blinkTimer = blinkDuration;
@@ -403,6 +413,28 @@ public class PlayerController : Actor
             tookDamage = false;
             //curBlinkIntensity = blinkIntesity;
             //curDamageColor = baseDamageColor;
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Interactable")
+        {
+            //turn on UI
+            interactText.text = "!";
+            intObj = other.gameObject;
+            intObj.GetComponent<InteractableObject>().InRange(this); 
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Interactable")
+        {
+            //turn on UI
+            interactText.text = "";
+            intObj.GetComponent<InteractableObject>().NotInRange(this);
+            intObj = null; 
         }
     }
 

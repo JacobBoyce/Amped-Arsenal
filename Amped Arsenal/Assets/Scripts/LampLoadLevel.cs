@@ -8,6 +8,8 @@ public class LampLoadLevel : MonoBehaviour
     public WaveController waveController;
     public LobbyController lobController;
     public POIController poiController;
+    public GameObject barlogicObj;
+    private BarLogic bLogic;
     public GameObject lampLevelSpawnZone;
     public GameObject exfilLamp, terrainToLoad;
     public GameObject moveToPos, shopStartPos;
@@ -35,6 +37,8 @@ public class LampLoadLevel : MonoBehaviour
         aoeLight.intensity = maxLightIntensity/2;
         //aoeLight.gameObject.SetActive(false);
         initColor = lightMat.material.GetColor("_EmissionColor");
+        bLogic = barlogicObj.GetComponent<BarLogic>();
+        barlogicObj.SetActive(false);
         //lightMat.material.SetColor("_EmissionColor", initColor /** Mathf.Pow(2, 4)*/);
 
         //coroutine = waveController.StartWaveSystem(5f);
@@ -47,8 +51,10 @@ public class LampLoadLevel : MonoBehaviour
             if(cd > 0)
             {
                 cd -= Time.deltaTime;
-                formatTime = cd.ToString("0");
-                countdownText.text = formatTime;
+                countdownText.gameObject.SetActive(false);
+                //formatTime = cd.ToString("0");
+                //countdownText.text = formatTime;
+                bLogic.FillBar(cd, cdMax);
                 aoeLight.intensity = (.5f + (1 - (cd / cdMax))) * maxLightIntensity;
                 //aoeLight.intensity += 2f;
                 //lightMat.material.SetColor("_EmissionColor", initColor * (1 - (cd / cdMax)) * Mathf.Pow(2, 2));
@@ -59,7 +65,7 @@ public class LampLoadLevel : MonoBehaviour
                 {
                     inRange = false;
                     usable = false;
-                    countdownText.text = "";
+                    //countdownText.text = "";
                     //set difficulty
                     lobController.levelDifficulty = levelNum;
 
@@ -128,6 +134,8 @@ public class LampLoadLevel : MonoBehaviour
                 {
                     inRange = true;
                     p1 = other.gameObject.GetComponent<PlayerController>();
+                    barlogicObj.SetActive(true);
+                    countdownText.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -150,6 +158,8 @@ public class LampLoadLevel : MonoBehaviour
                 inRange = false;
                 aoeLight.intensity = maxLightIntensity/2;
                 //lightMat.material.SetColor("_EmissionColor", initColor /** Mathf.Pow(2, 4)*/);
+                barlogicObj.SetActive(false);
+                countdownText.gameObject.SetActive(true);
                 cd = cdMax;
                 countdownText.text = levelName;
             }

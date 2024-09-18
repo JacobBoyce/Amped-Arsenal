@@ -89,7 +89,8 @@ public class EnemyController : Actor
         _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseByPercent(.1f);
+        _stats["spd"].IncreaseByAmount(2f);
+        _stats["spd"].IncreaseByPercent(.2f);
         //_stats["spd"].Fill();
     }
 
