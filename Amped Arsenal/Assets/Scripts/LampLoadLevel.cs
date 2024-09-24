@@ -20,6 +20,7 @@ public class LampLoadLevel : MonoBehaviour
     public int levelNum;
     private string formatTime;
     private PlayerController p1;
+    public ShopMovement shopKeeper;
 
     public float cd, cdMax;
     public bool inRange = false, usable = true;
@@ -90,7 +91,9 @@ public class LampLoadLevel : MonoBehaviour
     public IEnumerator MovePlayer()
     {
         gzController.StartFadeOut();
-        GameSceneManager.instance.musicMaker.SwapTrack();
+        GameSceneManager.instance.musicMaker.SwapTrack(GameSceneManager.instance.musicMaker.gameMusic1);
+        gzController.inLobby = false;
+        shopKeeper.UndoEscape();
         //Time.timeScale = 0;
         while(gzController.IsFadingOut)
         {

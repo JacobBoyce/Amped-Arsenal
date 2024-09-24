@@ -15,7 +15,7 @@ public class MoveToPlayer : MonoBehaviour
     public DropItem itemType;
     public float speed, rateOfSpeed, distance, distToLamp;
     public int amount;
-    public bool isDelay = true, inRangeOfLamp = false, givenXp = false;
+    public bool isDelay = true, inRangeOfLamp = false, givenXp = false, magnetPickedUp = false;
     private PlayerController p1;
     public GameObject visuals; //visuals;
     public AbsorbLamp lamp;
@@ -31,8 +31,10 @@ public class MoveToPlayer : MonoBehaviour
         //p1 = PlayerController.playerObj;
         givenXp = false;
         speed = 1;
+        magnetPickedUp = false;
         isDelay = true;
         visuals.SetActive(true);
+        
         //get lamp from game controller or event controller
         // lamp = gamezonecontroller.instance.absorblamp
         StartCoroutine(DelayStart());
@@ -55,6 +57,11 @@ public class MoveToPlayer : MonoBehaviour
         }
     }
 
+    public void OnDisable()
+    {
+        magnetPickedUp = false;
+    }
+
     public IEnumerator DelayStart()
     {
         yield return new WaitForSeconds(1f);
@@ -75,37 +82,46 @@ public class MoveToPlayer : MonoBehaviour
 
     public void Update()
     {
-        if (!inRangeOfLamp)
+        if(magnetPickedUp)
         {
-            distance = Vector3.Distance(p1.transform.position, transform.position);
-
-            if (distance < p1._stats["pull"].Value && isDelay == false)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
-                speed += rateOfSpeed*rateOfSpeed;
-            }
+            transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
+            speed += rateOfSpeed*rateOfSpeed;
         }
-        else if(inRangeOfLamp && itemType == DropItem.XP)
+        else
         {
-            if(lamp.ableToAbsorb == true)
+            if (!inRangeOfLamp)
             {
-                //move towards lamp
-                //maybe get lamp script to get the point the balls should fly to
-                transform.position = Vector3.MoveTowards(transform.position, lamp.transform.position, speed * Time.deltaTime);
-                speed += .2f;
+                distance = Vector3.Distance(p1.transform.position, transform.position);
 
-                distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
-
-                if (distToLamp < 3 && !givenXp)
+                if (distance < p1._stats["pull"].Value && isDelay == false)
                 {
-                    givenXp = true;
-                    //call lamp script to subtract from counter
-                    lamp.UpdateCount();
+                    transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
+                    speed += rateOfSpeed*rateOfSpeed;
+                }
+            }
+            else if(inRangeOfLamp && itemType == DropItem.XP)
+            {
+                if(lamp.ableToAbsorb == true)
+                {
+                    //move towards lamp
+                    //maybe get lamp script to get the point the balls should fly to
+                    transform.position = Vector3.MoveTowards(transform.position, lamp.transform.position, speed * Time.deltaTime);
+                    speed += .2f;
 
-                    ObjectPoolManager.ReturnObjectToPool(this.gameObject);
+                    distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
+
+                    if (distToLamp < 3 && !givenXp)
+                    {
+                        givenXp = true;
+                        //call lamp script to subtract from counter
+                        lamp.UpdateCount(amount);
+
+                        ObjectPoolManager.ReturnObjectToPool(this.gameObject);
+                    }
                 }
             }
         }
+        
     }
 
 

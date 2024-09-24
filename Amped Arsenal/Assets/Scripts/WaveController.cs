@@ -54,6 +54,7 @@ public class WaveController : MonoBehaviour
     public int largeEnemyIndex;
     public float whenToSpawnLargeEnemy;
     public LayerMask _layersToNotSpawnOn;
+    private bool spawnedLarge;
 
 
     // Start is called before the first frame update
@@ -140,6 +141,19 @@ public class WaveController : MonoBehaviour
 
             string niceTime = string.Format("{0:0}:{1:00}", min, seconds);
             infoMessages.text = niceTime;
+
+            float incCount = Mathf.RoundToInt(exfilTimer/exfilScaleInterval);
+            if(incCount % 2 == 0 && spawnedLarge == false)
+            {
+                SpawnLargeEnemy(true,true);
+                spawnedLarge = true;
+            }
+            if(incCount % 2 == 1)
+            {
+                spawnedLarge = false;
+            }
+
+
         }
         #endregion
 
@@ -213,7 +227,7 @@ public class WaveController : MonoBehaviour
         #endregion
     }
 
-    public void SpawnLargeEnemy(bool randomBoss)
+    public void SpawnLargeEnemy(bool randomBoss, bool isExfil)
     {
         if(!randomBoss)
         {
@@ -228,7 +242,7 @@ public class WaveController : MonoBehaviour
             }
             int spwnLoc = ChooseValidSpawnLocation();
             GameObject largeEnemyPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyIndex == 5 ? largeEnemyIndex-1 : largeEnemyIndex],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
-            largeEnemyPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier);
+            largeEnemyPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier,false);
             largeEnemyPrefab.transform.parent = enemyParentObj.transform;
             largeEnemyPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
 
@@ -243,7 +257,7 @@ public class WaveController : MonoBehaviour
             
             int spwnLoc = ChooseValidSpawnLocation();
             tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[randIndex],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
-            tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier);
+            tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier,false);
             tempPrefab.transform.parent = enemyParentObj.transform;
             tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
 
@@ -253,11 +267,11 @@ public class WaveController : MonoBehaviour
     {
         if(curWave > 1)
         {
-            SpawnLargeEnemy(false);
+            SpawnLargeEnemy(false,false);
         }
         else if(curWave > 10)
         {
-            SpawnLargeEnemy(true);
+            SpawnLargeEnemy(true,false);
         }
         //update wave UI
         //waveText.text = "Wave " + curWave + "/" + maxWave;
@@ -328,6 +342,7 @@ public class WaveController : MonoBehaviour
             {
                 //increase stats by exfil amount
                 tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, exfilScaleInterval, strScaling,defScaling,exfilTimer,curWave,zoneMultiplier);
+
             }
             else
             {

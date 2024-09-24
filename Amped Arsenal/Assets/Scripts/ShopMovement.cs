@@ -6,6 +6,7 @@ using TMPro;
 public class ShopMovement : MonoBehaviour
 {
     public GameObject startpos;
+    public ShopkeepBarrierLogic barrierLogic;
     [Header("Relevant Objects")]
     public Animator animCont;
     public Rigidbody thisRB;
@@ -27,6 +28,13 @@ public class ShopMovement : MonoBehaviour
     public Vector3 moveDir;
     public GameObject runFromObject = null;
 
+    [Header("Despawning Vars")]
+    public GameObject deathPoof;
+    public GameObject visuals;
+    public bool escapedPhase = false;
+    private bool flag;
+    public float dpoofYOffset;
+
     public void Start()
     {
         StartCoroutine(WaitLogic());
@@ -35,7 +43,24 @@ public class ShopMovement : MonoBehaviour
     public void OnEnable()
     {
         transform.position = startpos.transform.position;
+        flag = false;
         StartCoroutine(WaitLogic());
+    }
+
+    public void EscapeBloodMoon()
+    {
+        //barrierLogic.TriggerEscapeIfWasNearby(GameZoneController.Instance.p1);
+        GameZoneController.Instance.p1.CleanInteractableObj();
+        escapedPhase = true;
+        visuals.SetActive(false);
+        GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofYOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+        largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
+        largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
+    }
+    public void UndoEscape()
+    {
+        escapedPhase = false;
+        visuals.SetActive(true);
     }
 
     IEnumerator WaitLogic()
@@ -111,6 +136,16 @@ public class ShopMovement : MonoBehaviour
                 walking = false;
                 StartCoroutine(WaitLogic());
             }
+        }
+
+        if(flag == false)
+        {
+            if(GameZoneController.Instance.wvController.startExfilDelay)
+            {
+                flag = true;
+                EscapeBloodMoon();
+            }
+
         }
     }
 

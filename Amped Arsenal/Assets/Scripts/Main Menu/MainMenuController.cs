@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DataManagement;
 using UnityEngine.UI;
-
+using UnityEngine.InputSystem;
 
 
 public class MainMenuController : MonoBehaviour
 {
     public static MainMenuController Instance{get; private set;}
+
     public Data data;
     public UpgradeController upController;
     public OptionsMenuController opsController;
@@ -36,14 +37,13 @@ public class MainMenuController : MonoBehaviour
         { 
             Instance = this; 
         } 
-        
         data = new Data("MainSave");
     }
     
     void Start()
     {
         _fadeOutStartColor.a = 0f;
-
+        
         //load save and add to player prefs gold value
         LoadData();
         UpdatePlayerPrefs();

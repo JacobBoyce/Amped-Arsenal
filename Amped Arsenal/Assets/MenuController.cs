@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DataManagement;
+using UnityEngine.InputSystem;
+
 public class MenuController : MonoBehaviour
 {
     public Image fadeImage;

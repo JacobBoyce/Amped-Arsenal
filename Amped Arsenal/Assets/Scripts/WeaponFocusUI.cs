@@ -58,14 +58,15 @@ public class WeaponFocusUI : MonoBehaviour
             //disable cost of upgrade button
             //upgradeButton.interactable = false;
             // ------- set cost string to  empty -------- 
-            costUI.text = "";
+            costUI.text = "MAX";
         }
         else
         {
             //show next level
             //lvlUpTo.text = (focusedWeap.level + 1).ToString();
             //show cost of upgrade
-            costUI.text = ((byte)focusedWeap.weapUpgrades.costValues[focusedWeap.level-1]).ToString();
+            //HERE
+            costUI.text = ((byte)focusedWeap.weapUpgrades.costValues[focusedWeap.level]).ToString();
         }        
 
 
@@ -96,25 +97,27 @@ public class WeaponFocusUI : MonoBehaviour
             {
                 //tempSlot.upFrom.text = up.upValues[focusedWeap.level - 1].ToString();
                 //tempSlot.upTo.text = up.upValues[focusedWeap.level - 1].ToString();
-                if(up.upValues[up.upValues.Length-1] < up.upValues[0])
-                {
-                    tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level-1],up.upValues[focusedWeap.level-1], tempUpgradeType.MaxValue);
-                }
-                else
-                {
-                    tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level-1],up.upValues[focusedWeap.level-1], tempUpgradeType.MaxValue);
-                }
+                //HERE
+                tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level],up.upValues[focusedWeap.level], tempUpgradeType.MaxValue);
+                // if(up.upValues[up.upValues.Length] < up.upValues[0])
+                // {
+                    
+                // }
+                // else
+                // {
+                //     tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level],up.upValues[focusedWeap.level], tempUpgradeType.MaxValue);
+                // }
             }
             else
             {
                 //check if value values goes down (cooldown lowers)
                 if(up.upValues[up.upValues.Length-1] < up.upValues[0])
                 {
-                    tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level - 1],up.upValues[focusedWeap.level], tempUpgradeType.MaxValue);
+                    tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level+1],up.upValues[focusedWeap.level], tempUpgradeType.MaxValue);
                 }
                 else
                 {
-                    tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level - 1],up.upValues[focusedWeap.level], tempUpgradeType.MaxValue);
+                    tempSlot.SetFillAmount(0, up.upValues[focusedWeap.level],up.upValues[focusedWeap.level+1], tempUpgradeType.MaxValue);
                 }
                 
                 //tempSlot.upFrom.text = up.upValues[focusedWeap.level - 1].ToString();
@@ -128,7 +131,8 @@ public class WeaponFocusUI : MonoBehaviour
         //Debug.Log("Cost of upgrade: " + focusedWeap.weapUpgrades.costValues[focusedWeap.level - 1] + "  >= current xp: " + player._stats["xp"].Value);
         if(!focusedWeap.IsMaxLvl())
         {
-            if (focusedWeap.weapUpgrades.costValues[focusedWeap.level - 1] <= player._stats["xp"].Value)
+            //HERE
+            if (focusedWeap.weapUpgrades.costValues[focusedWeap.level] <= player._stats["xp"].Value)
             {
                 //Debug.Log("turnon on init");
                 upgradeButton.interactable = true;
@@ -185,10 +189,11 @@ public class WeaponFocusUI : MonoBehaviour
                 {
                     if(!focusedWeap.IsMaxLvl())
                     {
+                        //HERE
                         //can afford and can buy
-                        if (focusedWeap.weapUpgrades.costValues[focusedWeap.level - 1] <= player._stats["xp"].Value)
+                        if (focusedWeap.weapUpgrades.costValues[focusedWeap.level] <= player._stats["xp"].Value)
                         {
-                            player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level - 1]);
+                            player.RemoveXP(tempWeap.weapUpgrades.costValues[tempWeap.level]);
                             //upgrade weapon
                             tempWeap.UpgradeWeapon();
 

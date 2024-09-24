@@ -76,7 +76,8 @@ public class UpgradeMenuController : MonoBehaviour,IEnumerable<UpgradeIcons>
                 //check if upgradeable
                 if (tempWeap != null && !tempWeap.IsMaxLvl())
                 {
-                    if (tempWeap.weapUpgrades.costValues[tempWeap.level - 1] <= playerCont._stats["xp"].Value)
+                    //HERE
+                    if (tempWeap.weapUpgrades.costValues[tempWeap.level] <= playerCont._stats["xp"].Value)
                     {
                         // can be upgraded
                         canUpgrade = true;

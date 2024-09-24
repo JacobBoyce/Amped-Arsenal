@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5459033776724572898}
   - component: {fileID: 707232750734307783}
   - component: {fileID: 5296947393509600175}
-  - component: {fileID: -893367269539655270}
+  - component: {fileID: 1132506444093945382}
   m_Layer: 9
   m_Name: BombController
   m_TagString: Weapon
@@ -63,9 +63,9 @@ MonoBehaviour:
     needsParent: 0
   - spawnpoint: 1
     needsParent: 0
-  level: 1
+  level: 0
   maxLevel: 5
-  damageSound: {fileID: -893367269539655270}
+  damageSound: {fileID: 1132506444093945382}
   pitchMultiplier: 0.25
   range: 3
   timeToExplode: 1.5
@@ -87,7 +87,7 @@ MonoBehaviour:
   giveKnockback: 1
   knockbackModAmount: 0
   eleType: 0
---- !u!82 &-893367269539655270
+--- !u!82 &1132506444093945382
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,8 +97,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 9175591447802546459, guid: 7835ecf04547c1547b98bb349d0efd82, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 3fca96eab97fa2a488f9939bd657bcd3, type: 3}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 2ad7f73bc4f5ee848bf389d7cbed79de, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

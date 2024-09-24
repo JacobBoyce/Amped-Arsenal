@@ -4,6 +4,10 @@ using UnityEngine;
 using System;
 using TMPro;
 using System.Linq;
+using UnityEngine.InputSystem;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem.Utilities;
+using Den.Tools;
 
 public class PlayerController : Actor
 {
@@ -24,6 +28,8 @@ public class PlayerController : Actor
     public event Action OnDamaged;
     public event Action OnHealed;
     public event Action TriggerInteractEvent;
+    public GameObject keyboardImg, gamepadImg;
+    public bool iskeyboard;
     public bool openShop = false;
     public float inflationAmount = 0;
 
@@ -44,6 +50,7 @@ public class PlayerController : Actor
     public TextMeshProUGUI interactText;
 
     public Light aoeLight;
+    public QuispyLightAOE aoeLightElse;
     public int lightMax = 60;
 
     [Header("Audio")]
@@ -84,16 +91,54 @@ public class PlayerController : Actor
         return tempRelic;
     }
 
+    public void OnEnable()
+    {
+        GameSceneManager.OnInputModeChanged += ChangeInteractButtonImage;
+    }
+
+    public void OnDisable()
+    {
+        GameSceneManager.OnInputModeChanged -= ChangeInteractButtonImage;
+    }
+
+    public void ChangeInteractButtonImage(GameSceneManager.InputMode mode)
+    {
+        if(mode == GameSceneManager.InputMode.Keyboard)
+        {
+            iskeyboard = true;
+        }
+        else
+        {
+            iskeyboard = false;
+        }
+    }
+
+    public void ChangeInteractButtonImage()
+    {
+        if(GameSceneManager.instance._currentInputMode == GameSceneManager.InputMode.Keyboard)
+        {
+            iskeyboard = true;
+            
+        }
+        else
+        {
+            iskeyboard = false;
+        }
+        if(intObj != null)
+        {
+            ActivateUIForInteract();
+        }
+    }
 
     public void Awake()
     {
 
         playerObj = this;
         _stats = new Stats();
-        _stats.AddStat("hp",       100,100);    // Max Health
+        _stats.AddStat("hp",       1000,1000);    // Max Health
         _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
-        _stats.AddStat("spd",    10,50);    // Movement speed
+        _stats.AddStat("spd",    9,50);    // Movement speed
         _stats.AddStat("luck",   65,100);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",   5,50);    // How far to pull object from.
         _stats.AddStat("xp",      0,100000); // Xp.
@@ -109,15 +154,19 @@ public class PlayerController : Actor
         //Debug.Log((float)PlayerPrefs.GetInt("Strength")/100);
         _stats["str"].Value += tempstr;
 
-        float tempDef = PlayerPrefs.GetInt("Armor") / 100;
+        float tempDef = (float)PlayerPrefs.GetInt("Armor") / 100;
+        Debug.Log(tempDef);
         _stats["def"].Value -= tempDef;
 
-        float tempSpd = PlayerPrefs.GetInt("Speed") / 20;
+        float tempSpd = PlayerPrefs.GetInt("Speed") / 2;
         _stats["spd"].Value += tempSpd;
 
         _stats["pull"].Value += PlayerPrefs.GetInt("Magnet");
 
+        _stats["luck"].Value = PlayerPrefs.GetInt("Luck");
+
         aoeLight.range = PlayerPrefs.GetInt("Light");
+        aoeLightElse.AdjustMyLight((int)aoeLight.range);
 
         goldText.text = _stats["gold"].Value.ToString();
         xpText.text = _stats["xp"].Value.ToString();
@@ -163,7 +212,8 @@ public class PlayerController : Actor
         
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            aoeLight.range += 4;
+            aoeLight.range += 5;
+            aoeLightElse.AdjustMyLight((int)aoeLight.range);
         }
 
         if(Input.GetKey(KeyCode.X))
@@ -195,29 +245,50 @@ public class PlayerController : Actor
         // }
         
         #endregion
+       // DetectInputDevice();
+        ChangeInteractButtonImage();
+        // if (Input.GetKeyDown(KeyCode.E))
+        // {
+        //     if(openShop == true)
+        //     {
+        //         mainController.OpenShop();
+        //         //invoke interacted delegate
+        //     }
+        //     TriggerInteractStuff();
+        // }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        // if(Gamepad.current.buttonWest.wasPressedThisFrame)
+        // {
+        //     if(openShop == true)
+        //     {
+        //         mainController.OpenShop();
+        //         //invoke interacted delegate
+        //     }
+        //     TriggerInteractStuff();
+        // }
+    }
+    
+    public void TriggerInteractStuff(InputAction.CallbackContext context)
+    {
+        //Debug.Log("pressed");
+        if (context.performed)
         {
-            if(openShop == true)
-            {
-                mainController.OpenShop();
-                //invoke interacted delegate
-            }
-            TriggerInteractStuff();
+            TriggerInteractEvent?.Invoke();
         }
     }
     
-    public void TriggerInteractStuff()
-    {
-        TriggerInteractEvent?.Invoke();
-    }
+
+    
     public void TakeDamage(float damage)
     {
         blinkTimer = blinkDuration;
         tookDamage = true;
+
+        
         float dmg = _stats["def"].Value * damage;
         Set("hp", _stats["hp"].Value - Mathf.CeilToInt(dmg));
         UpdateBar(_stats["hp"]);
+
 
         //trigger damage event list
         OnDamaged?.Invoke();
@@ -229,7 +300,13 @@ public class PlayerController : Actor
             // Debug.Log("inflation percentage: " + (inflationAmount / 10) 
             // + "\ncurrent gold: " + _stats["gold"].Value
             // + "\n amount to take back: " + (_stats["gold"].Value * (inflationAmount / 10)));
-            
+            if(!audioController.deathSound.isPlaying)
+            {
+                audioController.StopAllCoroutines();
+                audioController.damageSound.Stop();
+                audioController.deathSound.time = .5f;
+                audioController.deathSound.Play();
+            }
             mainController.StartEndGamePhase();
             
             // PlayerPrefs.SetInt("Gold", Mathf.RoundToInt(_stats["gold"].Value * (inflationAmount / 10)));
@@ -377,7 +454,8 @@ public class PlayerController : Actor
             WeaponBase weap = go.GetComponent<WeaponBase>();
             if (weap != null && !weap.IsMaxLvl())
             {
-                if (weap.weapUpgrades.costValues[weap.level - 1] <= _stats["xp"].Value)
+                //HERE
+                if (weap.weapUpgrades.costValues[weap.level] <= _stats["xp"].Value)
                 {
                     counter++;
                 }
@@ -416,14 +494,34 @@ public class PlayerController : Actor
         }
     }
 
+    public void ActivateUIForInteract()
+    {
+        if(iskeyboard)
+        {
+            keyboardImg.SetActive(true);
+            gamepadImg.SetActive(false);
+        }
+        else
+        {
+            keyboardImg.SetActive(false);
+            gamepadImg.SetActive(true);
+        }
+    }
+
+    public void DeactivateUIForInteract()
+    {
+        keyboardImg.SetActive(false);
+        gamepadImg.SetActive(false);
+    }
     public void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Interactable")
         {
             //turn on UI
-            interactText.text = "!";
+            ActivateUIForInteract();
+            //interactText.text = "!";
             intObj = other.gameObject;
-            intObj.GetComponent<InteractableObject>().InRange(this); 
+            intObj.GetComponent<InteractableObject>()?.InRange(this); 
         }
     }
 
@@ -432,9 +530,26 @@ public class PlayerController : Actor
         if(other.tag == "Interactable")
         {
             //turn on UI
-            interactText.text = "";
-            intObj.GetComponent<InteractableObject>().NotInRange(this);
+            DeactivateUIForInteract();
+            //interactText.text = "";
+            intObj.GetComponent<InteractableObject>()?.NotInRange(this);
             intObj = null; 
+        }
+    }
+
+    public void CleanInteractableObj()
+    {
+        DeactivateUIForInteract();
+        //interactText.text = "";
+        intObj?.GetComponent<InteractableObject>()?.NotInRange(this);
+        intObj = null; 
+    }
+
+    public void ReactivateInteractableAfterMenuClose()
+    {
+        if(intObj != null)
+        {
+            intObj.GetComponent<InteractableObject>().EventTriggered = false;
         }
     }
 

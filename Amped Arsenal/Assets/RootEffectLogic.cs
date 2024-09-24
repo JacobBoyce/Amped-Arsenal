@@ -74,6 +74,7 @@ public class RootEffectLogic : EffectBase
     public void EndEffect()
     {
         //enemy._stats["spd"].RemoveMod(mod.modName);
+        enemy.TakeDamageFromEffect(damage);
         enemy.RemoveEffect(this.effectName);
     }
 }

@@ -71,6 +71,10 @@ public class EnemyController : Actor
         _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+        if(_zoneNum > 1)
+        {
+            _stats["spd"].IncreaseByAmount(_zoneNum+2);
+        }
         _stats["spd"].IncreaseByPercent(.1f);
         //_stats["spd"].Fill();
     }
@@ -89,16 +93,25 @@ public class EnemyController : Actor
         _stats["hp"].Fill();
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseByAmount(2f);
+        _stats["spd"].IncreaseByAmount(1f);
         _stats["spd"].IncreaseByPercent(.2f);
         //_stats["spd"].Fill();
     }
 
-    public void CreateLargeEnemy(float _waveScale, float _levelScale, float _exfilScale, float _interval, float _str, float _def, int waveNum, int _zoneNum)
+    public void CreateLargeEnemy(float _waveScale, float _levelScale, float _exfilScale, float _interval, float _str, float _def, int waveNum, int _zoneNum, bool isExfil)
     {
         // isLargeEnemy = true;
         // float nHp;//, nStr, nDef;
-        float nHP = 4 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+        float nHP;
+        if(isExfil)
+        {
+            nHP = 8 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+        }
+        else
+        {
+            nHP = 4 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+        }
+        
 
         // nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
         // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
@@ -271,7 +284,7 @@ public class EnemyController : Actor
     {
         if(!AmDead())
         {
-            player.TakeDamage(_stats["attk"].Value + Mathf.CeilToInt(_stats["attk"].Value * _stats["str"].Value));
+            player.TakeDamage(Mathf.CeilToInt(_stats["attk"].Value * _stats["str"].Value));
         }
     }
 

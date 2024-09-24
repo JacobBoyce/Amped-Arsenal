@@ -42,7 +42,7 @@ public class CandleLogic : MonoBehaviour
 
         //set visuals for range here
         rangeCollider.radius = aoeRange;
-        pSys.startSize = controller.level == controller.maxLevel ? pSysSize[controller.level] : pSysSize[controller.level-1];
+        pSys.startSize = pSysSize[controller.level];
     }
 
 

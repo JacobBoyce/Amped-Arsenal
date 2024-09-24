@@ -27,6 +27,10 @@ public class SlowEffectLogic : EffectBase
                 enemy.RemoveEffect(this.effectName, createdUIObj);
                 enemy._stats["spd"].RemoveMod(mod.modName);
             }
+            if(tickAmtDuration == tickMaxDuration/2)
+            {
+                enemy.TakeDamageFromEffect(damage);
+            }
         }
     }
     public override void CallEffect()

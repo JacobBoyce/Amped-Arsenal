@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LobbyController : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class LobbyController : MonoBehaviour
     {
         //waveController.zoneMultiplier = levelDifficulty;
         waveController.waveUIObj.SetActive(false);
-
+        GameZoneController.Instance.inLobby = true;
         //set lamps activatable stuff here
         //if player pref is true then show main menu lamp
 
@@ -35,11 +36,13 @@ public class LobbyController : MonoBehaviour
     {
         if(GameSceneManager.instance.triggerEndLoadingScreen)
         {
+            
             GameSceneManager.instance.triggerEndLoadingScreen = false;
             foreach(GameObject go in uiToInitAfterLoadingScreen)
             {
                 go.SetActive(true);
             }
+            GameZoneController.Instance.p1.GetComponent<PlayerInput>().ActivateInput();
         }
     }
 

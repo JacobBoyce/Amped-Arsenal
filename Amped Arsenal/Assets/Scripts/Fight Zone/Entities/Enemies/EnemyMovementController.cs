@@ -287,11 +287,11 @@ public class EnemyMovementController : MonoBehaviour
         }
     }
 
-    public IEnumerator ApplyKnockback()
+    public IEnumerator ApplyKnockback(float knockbackForce)
     {
         gettingKnockedBack = true;
         lastHitDirection = ( transform.position - target.transform.position).normalized;
-        Vector3 force = lastHitDirection * knockbackAmount;
+        Vector3 force = lastHitDirection * knockbackForce;
         //Debug.Log("KNOCKBACKINNNNNG!!!!");
         yield return null;
         nMA.enabled = false;

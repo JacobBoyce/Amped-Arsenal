@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class KnockbackLogic : EffectBase
 {
+    public float knockbackAmt;
     [Header("Specific Effect Vars")]
 
     public Color damageColor;
@@ -38,13 +39,13 @@ public class KnockbackLogic : EffectBase
         
         //This starts the countdown for the effect to be removed
         activate = true;
-
+        enemy.TakeDamageFromEffect(damage);
         
         //enemy.movementController.isStaggered = true;
         if(enemy.movementController.gettingKnockedBack == false)
         {
             enemy.movementController.enemyState = EnemyMovementController.EnemyStates.STAGGER;
-            enemy.movementController.StartCoroutine(enemy.movementController.ApplyKnockback());
+            enemy.movementController.StartCoroutine(enemy.movementController.ApplyKnockback(knockbackAmt));
             enemy.movementController.stagCD = tickMaxDuration;
         }
     }

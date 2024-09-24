@@ -61,8 +61,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.57, z: -0.57}
-  m_LocalScale: {x: 0.65478307, y: 0.65478307, z: 0.65478307}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1243145342119965629}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,7 +107,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: d9de99284eac7cf459675c5c9c94b320, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 840b831b62e1eed4c8d004c341ec7292, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -245,9 +245,6 @@ MonoBehaviour:
   relicImg: {fileID: 0}
   rType: 5
   visuals: {fileID: 1243145342119965628}
-  strAmount: 0.1
-  timer: 0
-  maxTimer: 5
   mod:
     modName: StrRelicUp
     modAmount: 0.1

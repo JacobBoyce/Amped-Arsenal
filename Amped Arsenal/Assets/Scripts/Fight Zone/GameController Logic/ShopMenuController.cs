@@ -22,6 +22,7 @@ public class ShopMenuController : MonoBehaviour
     public GameObject uiParent;
     public TextMeshProUGUI goldText;
     public GameObject upgradeButtonUI;
+    public int[] shopPrices;
     //player controller.p1
 
     public void Update()
@@ -54,25 +55,37 @@ public class ShopMenuController : MonoBehaviour
     public void ReRollShop()
     {
         //take money away-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        //delete current shop items
-        /*foreach (ShopItemPrefab pf in buyableItems)
+        if(controller.p1._stats["gold"].Value >= 5)
         {
-            Destroy(pf.gameObject);
-        }*/
-        //buyableItems.Clear();
-        weapChoices[0] = -1;
-        weapChoices[1] = -1;
-        weapChoices[2] = -1;
-        MakeShopItems();
-        shopDirty = 0;
+            controller.p1.RemoveGold(5);
+        
+            //delete current shop items
+            /*foreach (ShopItemPrefab pf in buyableItems)
+            {
+                Destroy(pf.gameObject);
+            }*/
+            //buyableItems.Clear();
+            weapChoices[0] = -1;
+            weapChoices[1] = -1;
+            weapChoices[2] = -1;
+            MakeShopItems();
+            shopDirty = 0;
 
-        if (NumAvailableWeaponsToBuy() == 3 && shopDirty == 0)
-        {
-            rerollButton.GetComponent<Button>().interactable = false;
+            if (NumAvailableWeaponsToBuy() == 3 && shopDirty == 0)
+            {
+                rerollButton.GetComponent<Button>().interactable = false;
+            }
+            if(controller.p1._stats["gold"].Value >= 5)
+            {
+                rerollButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                rerollButton.GetComponent<Button>().interactable = false;
+            }
+
+            StartCoroutine(menuController.SetSelectedAfterOneFrame(3, true));
         }
-
-        StartCoroutine(menuController.SetSelectedAfterOneFrame(3, true));
     }
 
     public void ChooseWeapons()
@@ -218,6 +231,16 @@ public class ShopMenuController : MonoBehaviour
                 tempShopItem.buyButton.interactable = false;
             }
         }
+
+        if(controller.p1._stats["gold"].Value >= 5)
+        {
+            rerollButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
+
         CheckIfCanBuy();
     }
 
@@ -249,6 +272,16 @@ public class ShopMenuController : MonoBehaviour
         {
             rerollButton.GetComponent<Button>().interactable = false;
         }
+
+        if(controller.p1._stats["gold"].Value >= 5)
+        {
+            rerollButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
+
         StartCoroutine(menuController.SetSelectedAfterOneFrame(4, true));
     }
 
@@ -281,12 +314,22 @@ public class ShopMenuController : MonoBehaviour
                 sp.buyButton.interactable = false;
             }
         }
+
+
     }
 
     public void ScalePrices()
     {
         amountBought++;
-        price += 25;
+        if(amountBought < shopPrices.Length)
+        {
+            price = shopPrices[amountBought];
+        }
+        else
+        {
+            price = 0;
+        }
+       
         // if (amountBought == 1)
         // {
             

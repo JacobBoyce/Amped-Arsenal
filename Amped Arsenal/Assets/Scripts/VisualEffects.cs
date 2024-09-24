@@ -68,7 +68,6 @@ public class VisualEffects : MonoBehaviour
 
     void Update () 
     {
-
         //check if want to billboard
         if(wantBillboard)
         {

@@ -18,6 +18,7 @@ public class GameZoneController : MonoBehaviour
     public PlayerController p1;
     public float exfilPercentAmount;
     public GameObject statsPanel, uiController, currencyUI, upgradePanel, pauseMenu, returnMenu, shopPanel, chooseWeapApplyEffect;
+    public ReturnToMainMenuInLobby rtmmilObj;
     public TextMeshProUGUI statsTxt;
     public ShopMenuController shopController;
     public ShopMenuAnimController shopAnimeController;
@@ -25,9 +26,9 @@ public class GameZoneController : MonoBehaviour
     public GameObject EndGameUI;
     public List<GameObject> mainUIComponents = new();
     public List<GameObject> gamePlayUIComponents = new();
-    public bool isUpgrading, isEndGame = false, startGoldUICountDown = false;
+    public bool isUpgrading, isEndGame = false, startGoldUICountDown = false, inLobby;
     private float maxGCD = 4f, goldCD = 0;
-    GameObject focusedUI;
+    public GameObject focusedUI;
     public GameObject notifyGamesOfUpgrade;
     public bool isPaused, statsVisible, isShopping;
     public TextMeshProUGUI gameTimerUIText, endGameGoldText;
@@ -91,8 +92,12 @@ public class GameZoneController : MonoBehaviour
         //ADD JOYSTICK BACK HERE FOR UI ACTIVATION
         foreach (GameObject go in gamePlayUIComponents)
         {
+            //if in lobby dont turn on certain things
             focusedUI.SetActive(false);
-            go.SetActive(true);
+            if(go.name != "GameTimeUI")
+            {
+                go.SetActive(true);
+            }
             joystickController.SetActive(true);
         }
         PauseGame();
@@ -109,7 +114,6 @@ public class GameZoneController : MonoBehaviour
         { 
             Instance = this; 
         } 
-        p1.inflationAmount = PlayerPrefs.GetInt("Inflation");
         fadeImage.color = Color.black;
         //MainMenuController.Instance._fadeOutStartColor.a = 0f;
         StartFadeIn();
@@ -152,6 +156,10 @@ public class GameZoneController : MonoBehaviour
                         quispyDPoof.SetActive(true);
                         quispyDeathAnim.SetActive(true);
                     }
+                    else
+                    {
+                        p1.GetComponent<PlayerInput>().DeactivateInput();
+                    }
                 }
             }
 
@@ -165,6 +173,7 @@ public class GameZoneController : MonoBehaviour
             else
             {
                 IsFadingIn = false;
+                p1.GetComponent<PlayerInput>().ActivateInput();
             }
         }
 
@@ -304,16 +313,28 @@ public class GameZoneController : MonoBehaviour
             if(isUpgrading == false)
             {
                 //if game is not paused
-                if(!isPaused)
+                if(!isPaused && !pauseMenu.GetComponent<PauseMenuController>().IsPausedMenuUp)
                 {
                     FocusUI(pauseMenu, true);
                     pauseMenu.GetComponent<PauseMenuController>().pauseMainMenu.SetActive(true);
                     pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
+                    pauseMenu.GetComponent<PauseMenuController>().IsPausedMenuUp = true;
                 }
                 else
                 {
-                    pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
-                    ResumeGamePlay();
+                    if(isShopping)
+                    {
+                        TurnOffShop();
+                        p1.ReactivateInteractableAfterMenuClose();
+                    }
+                    else if(pauseMenu.GetComponent<PauseMenuController>().IsPausedMenuUp)
+                    {
+                        pauseMenu.GetComponent<PauseMenuController>().pauseMainMenu.SetActive(false);
+                        pauseMenu.GetComponent<PauseMenuController>().CloseOtherMenus();
+                        p1.ReactivateInteractableAfterMenuClose();
+                        PauseGame();
+                        pauseMenu.GetComponent<PauseMenuController>().IsPausedMenuUp = false;   
+                    }
                 }
             }        
             else
@@ -329,6 +350,7 @@ public class GameZoneController : MonoBehaviour
     public void ReturnToMainMenuMenuOpen()
     {
         FocusUI(returnMenu,true);
+        p1.GetComponent<ThirdPersonMovement>().movementEnabled = false;
     }
 
     public void TriggerReturnToMainMenu()
@@ -354,10 +376,20 @@ public class GameZoneController : MonoBehaviour
         if(isPaused == true)
         {
             Time.timeScale = 0;
+            // if(p1.audioController.damageSound.isPlaying)
+            // {
+            //     StartCoroutine(p1.audioController.HurtSFXFade(false));
+
+            // }
         }
         else
         {
             Time.timeScale = 1;
+            // if(p1.audioController.beingDamaged)
+            // {
+            //     StartCoroutine(p1.audioController.HurtSFXFade(true));
+
+            // }
         }
 
     }
@@ -418,6 +450,7 @@ public class GameZoneController : MonoBehaviour
     {
         isEndGame = true;
         GameSceneManager.instance.musicMaker.StopMusic();
+        
         //turn off UI
         foreach (GameObject go in gamePlayUIComponents)
         {
@@ -450,6 +483,7 @@ public class GameZoneController : MonoBehaviour
             yield return null; // Wait for the next frame
         }
         StartFadeOut();
+        
         // Ensure final values are set
         Time.timeScale = 0f; // Set time scale to 0
         if (GetComponent<GlobalVolumeController>().vignette != null)

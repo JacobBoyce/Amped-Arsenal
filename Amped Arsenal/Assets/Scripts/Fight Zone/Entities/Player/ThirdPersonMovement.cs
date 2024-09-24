@@ -12,7 +12,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector2 moveInput;
     public Animator quispyAnim;
     public PlayerController player;
-    public bool movementEnabled = true;
+    public bool movementEnabled {get;set;}
 
     public bool lookingLeft, lookingRight;
 
@@ -28,6 +28,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public void Start()
     {
+        quispyAnim.SetBool("Flip",true);
         fpState = FlipState.CHECKSTATE;
         _movement = InputManager.playerInput.actions["Movement"];
     }

@@ -54,5 +54,6 @@ public class SwordSwingLogic : MonoBehaviour
     public void CollisionWithEnemy(EnemyController ec)
     {
         controller.SendDamage(ec);
+        controller.PlayDamageSound();
     }
 }

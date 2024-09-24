@@ -4787,6 +4787,8 @@ MonoBehaviour:
   upController: {fileID: 1774441263}
   optionsMenu: {fileID: 2925506808815295421}
   optionsController: {fileID: 1331222152}
+  allowInputTimer: 0
+  allowInputTimerMax: 1
 --- !u!1 &904567374
 GameObject:
   m_ObjectHideFlags: 0
@@ -6148,7 +6150,7 @@ PrefabInstance:
       objectReference: {fileID: 1952827822}
     - target: {fileID: 123805662602858033, guid: 261f9dd175f7b2742bc6926866ec9402, type: 3}
       propertyPath: toolTIP
-      value: Increases how much money you bring back with you after a game
+      value: This increases enemy Gold Drop Chance
       objectReference: {fileID: 0}
     - target: {fileID: 123805662602858033, guid: 261f9dd175f7b2742bc6926866ec9402, type: 3}
       propertyPath: uiBGObj
@@ -7449,6 +7451,7 @@ MonoBehaviour:
   - {fileID: 5003664507626046553}
   - {fileID: 4406157193897893251}
   optionSaveData: []
+  fullScreenToggleObj: {fileID: 7212526919097798825}
 --- !u!4 &1331222153
 Transform:
   m_ObjectHideFlags: 0
@@ -7835,6 +7838,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2011777294}
         m_TargetAssemblyTypeName: MainMenuCameraController, Assembly-CSharp
         m_MethodName: MoveToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 885781795}
+        m_TargetAssemblyTypeName: MainMenuEvents, Assembly-CSharp
+        m_MethodName: StartActivationOfMenuButtons
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10244,7 +10259,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -11001,20 +11016,20 @@ MonoBehaviour:
   - upName: Strength
     upValues: 000000000a000000140000001e00000028000000320000003c0000004600000050000000c8000000
   - upName: HP
-    upValues: 0000000019000000320000004b000000640000007d00000096000000af000000c8000000fa000000
+    upValues: 00000000c8000000900100005802000020030000e8030000dc050000d0070000b80b0000a00f0000
   - upName: Armor
     upValues: 000000000a0000000f00000014000000190000001e00000023000000280000002d00000032000000
   - upName: Light
     upValues: 1e00000023000000280000002d00000032000000370000003c000000460000005500000064000000
   - upName: Speed
-    upValues: 00000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
+    upValues: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
   - upName: Magnet
     upValues: 000000000400000006000000080000000a0000000c0000000e000000100000001200000019000000
   - upName: Inflation
-    upValues: 14000000170000001a0000001e00000022000000260000002a0000002e000000320000003c000000
+    upValues: 0f00000013000000170000001c00000021000000260000002a0000002e000000320000003c000000
   - upName: Luck
-    upValues: 00000000050000000a0000000f000000120000001400000016000000180000001a0000003c000000
-  upgradeCostValues: 0a000000190000002800000032000000500000006400000078000000a0000000b4000000c8000000
+    upValues: 1e00000023000000280000002d000000320000003c0000004100000046000000500000005a000000
+  upgradeCostValues: 0a0000001e0000004b000000960000002c010000f4010000e8030000e2040000dc050000d0070000
 --- !u!4 &1774441264
 Transform:
   m_ObjectHideFlags: 0
@@ -11649,7 +11664,7 @@ PrefabInstance:
       objectReference: {fileID: 1952827822}
     - target: {fileID: 123805662602858033, guid: 261f9dd175f7b2742bc6926866ec9402, type: 3}
       propertyPath: toolTIP
-      value: This affects rarity of rewards and a higher chance enemies drop gold
+      value: This affects How often your Weapon Mods apply to enemies
       objectReference: {fileID: 0}
     - target: {fileID: 123805662602858033, guid: 261f9dd175f7b2742bc6926866ec9402, type: 3}
       propertyPath: uiBGObj
@@ -38519,7 +38534,7 @@ Light:
   m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 33554431
+    m_Bits: 8
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -90397,7 +90412,7 @@ PrefabInstance:
       objectReference: {fileID: 1440911964}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -90410,7 +90425,7 @@ PrefabInstance:
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 1396142907}
+      objectReference: {fileID: 885781795}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
@@ -90420,12 +90435,20 @@ PrefabInstance:
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: StartActivationOfMenuButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: MainMenuEvents, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7615326606861354377, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_AnchorMax.x
@@ -90452,6 +90475,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+--- !u!1 &7212526919097798825 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 872491932588252836, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+  m_PrefabInstance: {fileID: 7212526919097798824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &7214015702263474888
 MeshRenderer:
   m_ObjectHideFlags: 0

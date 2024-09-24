@@ -8,6 +8,7 @@ public class EquippedUI : MonoBehaviour
     public UpgradeMenuController controller;
     public List<WeapItemSlotUI> weapUI = new();
     private List<WeapItemSlotUI> allSlots = new();
+    public Color maxLvlColor;
 
     public void Start()
     {
@@ -22,6 +23,10 @@ public class EquippedUI : MonoBehaviour
         //weapUI[idNum].lvl.text = wb.level.ToString();
         //weapUI[idNum].lvlBar.FillAmountTweenAtSpeed(wb.level/5, 2 * Time.deltaTime);
         weapUI[idNum].lvlBar.fillAmount = wb.level / 5f;
+        if(weapUI[idNum].lvlBar.fillAmount == 1)
+        {
+            weapUI[idNum].lvlBar.color = maxLvlColor;
+        }
         weapUI[idNum].GetComponent<Button>().interactable = true;
 
         weapUI[idNum].UpgradeableCheck(canUpgrade);

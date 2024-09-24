@@ -14,7 +14,7 @@ public class BombExplosionLogic : MonoBehaviour
     {
         maxCD = cd;
         GetComponent<SphereCollider>().radius = controller.range;
-        pSys.startSize = controller.level == controller.maxLevel ? pSysSize[controller.level] : pSysSize[controller.level-1];
+        pSys.startSize = pSysSize[controller.level];
     }
     public void OnTriggerEnter(Collider collision)
     {
@@ -23,6 +23,7 @@ public class BombExplosionLogic : MonoBehaviour
         if(ec != null)
         {
             controller.SendDamage(ec);
+            controller.PlayDamageSound();
         }
     }
 

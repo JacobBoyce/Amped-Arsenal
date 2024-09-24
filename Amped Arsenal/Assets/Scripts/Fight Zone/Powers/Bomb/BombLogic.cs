@@ -59,7 +59,7 @@ public class BombLogic : MonoBehaviour
             //Instantiate(deathPoof, new Vector3(transform.position.x , transform.position.y, transform.position.z), transform.rotation);
             GameObject tempExpl = Instantiate(explosion, new Vector3(transform.position.x , transform.position.y, transform.position.z), quaternion.identity);
             tempExpl.GetComponent<BombExplosionLogic>().controller = controller;
-            controller.PlayDamageSound();
+            //controller.PlayDamageSound();
             Destroy(this.gameObject);
         }
     }

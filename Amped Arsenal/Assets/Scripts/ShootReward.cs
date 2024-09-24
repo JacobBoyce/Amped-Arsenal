@@ -39,7 +39,10 @@ public class ShootReward : MonoBehaviour
         if(weapsWithMods == 6)
         {
             //pull from relic list and not mod list
-            relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)];
+            relicToSpawn = GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.weapModList.Count)];
+            GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, Quaternion.identity);
+            tempRelicSpawned.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
+            return tempRelicSpawned;
         }
         else
         {
@@ -52,13 +55,16 @@ public class ShootReward : MonoBehaviour
             //}
             //else
             //{
-                relicToSpawn = GameZoneController.Instance.relicLibrary.weapModList[Random.Range(0,GameZoneController.Instance.relicLibrary.weapModList.Count)];
+                relicToSpawn = GameZoneController.Instance.relicLibrary.ReturnAWeapModNotChosenYet();
+                GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, Quaternion.identity);
+                GameZoneController.Instance.relicLibrary.weapModList.Remove(relicToSpawn);
+                tempRelicSpawned.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
+                return tempRelicSpawned;
             //}
         }
                 
-        GameObject tempRelicSpawned = Instantiate(relicToSpawn, pointToShootFrom.transform.position, Quaternion.identity);
-        tempRelicSpawned.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
-        return tempRelicSpawned;
+        
+        
     }
 
     public void GiveRewardAndYeetIt(GameObject pointToShootFrom)
@@ -90,6 +96,46 @@ public class ShootReward : MonoBehaviour
             {
                 //shootAngle += shooter.transform.up;
                 objToShoot.GetComponent<Rigidbody>().AddForce(shooter.transform.up * randPower, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            if(shootingType == ShootType.Facing && !wantRandom)
+            {
+                //shootAngle += shooter.transform.forward;
+                objToShoot.GetComponent<Rigidbody>().AddForce(shooter.transform.forward * randPower, ForceMode.Impulse);
+            }
+            else if(shootingType == ShootType.Up && !wantRandom)
+            {
+                //shootAngle += shooter.transform.up;
+                objToShoot.GetComponent<Rigidbody>().AddForce(shooter.transform.up * randPower, ForceMode.Impulse);
+            }
+        }
+    }
+
+    public void ShootObjectPlusOffset(GameObject shooter, Vector3 offset, GameObject objToShoot, ShootType shootingType)
+    {
+        shooterX = shooter.transform.eulerAngles.x;
+        shooterY = shooter.transform.eulerAngles.y;
+        shooterZ = shooter.transform.eulerAngles.z;
+
+        randY = Random.Range(0,360);
+        randPower = Random.Range(powerMin, powerMax); //15 and 20
+        shooter.transform.eulerAngles = new Vector3(shooterX, randY, shooterZ);
+
+
+        if(wantRandom)
+        {
+            //randY = Random.Range(0,360);
+            if(shootingType == ShootType.Facing)
+            {
+                //shootAngle += shooter.transform.forward;
+                objToShoot.GetComponent<Rigidbody>().AddForce(shooter.transform.forward * randPower, ForceMode.Impulse);
+            }
+            else if(shootingType == ShootType.Up)
+            {
+                //shootAngle += shooter.transform.up;
+                objToShoot.GetComponent<Rigidbody>().AddForce(shooter.transform.up + offset* randPower, ForceMode.Impulse);
             }
         }
         else

@@ -24,9 +24,9 @@ public class AbsorbLamp : MonoBehaviour
         //countdownText.text = absorbAmount.ToString();
     }
 
-    public void UpdateCount()
+    public void UpdateCount(int amount)
     {
-        absorbAmount--;
+        absorbAmount-= amount;
         //countdownText.text = absorbAmount.ToString();
         //Debug.Log((1 - (absorbAmount / absorbAmountMax)) * lightIntensityMax);
         lampLight.intensity = (1 - (absorbAmount / absorbAmountMax)) * lightIntensityMax;
