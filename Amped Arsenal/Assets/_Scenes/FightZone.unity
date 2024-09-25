@@ -2370,7 +2370,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 500
+  m_Intensity: 1500
   m_Range: 32
   m_SpotAngle: 179
   m_InnerSpotAngle: 179
@@ -19589,7 +19589,7 @@ MonoBehaviour:
   levelScale: 10
   exfilScale: 0.6
   exfilScaleInterval: 10
-  maxWaveTimer: 2
+  maxWaveTimer: 30
   mainCountdown: 5
   exfilTimer: 0
   spawnRate: 0
@@ -23337,7 +23337,7 @@ MonoBehaviour:
   uiParent: {fileID: 648377586}
   goldText: {fileID: 934208171}
   upgradeButtonUI: {fileID: 878394975}
-  shopPrices: 0000000019000000320000004b0000006400000096000000
+  shopPrices: 0000000014000000280000003c0000005000000064000000
 --- !u!114 &1089248754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39642,6 +39642,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundMaker: {fileID: 2049817787}
   musicMaker: {fileID: 0}
+  mainMenuUIObj: {fileID: 0}
+  howToPlayUI: {fileID: 0}
   optionSettingObj:
   - {fileID: 1550207694}
   - {fileID: 73646698}

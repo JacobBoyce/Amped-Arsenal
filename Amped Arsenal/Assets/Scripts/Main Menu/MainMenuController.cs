@@ -6,7 +6,6 @@ using DataManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-
 public class MainMenuController : MonoBehaviour
 {
     public static MainMenuController Instance{get; private set;}
@@ -84,7 +83,6 @@ public class MainMenuController : MonoBehaviour
         _currentFadeImage.color = _fadeOutStartColor;
         IsFadingOut = true;
     }
-
     public void StartFadeIn()
     {
         if(_currentFadeImage.color.a >= 1f)
@@ -165,6 +163,8 @@ public class MainMenuController : MonoBehaviour
             PlayerPrefs.SetFloat("SFXVolumeSlider", float.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "SFXVolumeSlider")].optionData));
 
             PlayerPrefs.SetInt("FullScreenToggle", int.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "FullScreenToggle")].optionData));
+        
+            PlayerPrefs.SetInt("HowToPlayOnFirstTime", int.Parse(opsController.optionSaveData[opsController.optionSaveData.FindIndex(opt => opt.optionName == "HowToPlayOnFirstTime")].optionData));
         }
         else
         {
@@ -172,6 +172,7 @@ public class MainMenuController : MonoBehaviour
             PlayerPrefs.SetFloat("MusicVolumeSlider", 1);
             PlayerPrefs.SetFloat("SFXVolumeSlider", 1);
             PlayerPrefs.SetInt("FullScreenToggle", 1);
+            PlayerPrefs.SetInt("HowToPlayOnFirstTime", 1);
             data.SaveProfile();
         }
 
@@ -222,7 +223,6 @@ public class MainMenuController : MonoBehaviour
         data.SetData("PlayerGold", _playerGold);
         data.SaveProfile();
     }
-
 
     public void SaveOptionsData()
     {

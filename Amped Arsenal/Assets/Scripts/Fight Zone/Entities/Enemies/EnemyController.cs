@@ -11,8 +11,6 @@ public class EnemyController : Actor
     public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
     public bool tookDamage, spawnedXp = false, isLargeEnemy = false, triggeredDeath = false;
-    [Range(1,10),Header("1 = 10%  10 = 100%")]
-    public int largeEnemyRelicDropChance;
 
 
     public List<GameObject> drops = new();
@@ -327,7 +325,7 @@ public class EnemyController : Actor
     {
         int dropChance = Random.Range(0,101); 
         //Debug.Log(dropChance);
-        if(dropChance <= 35)
+        if(dropChance <= 50)
         {
             GameObject tempGoldDrop = ObjectPoolManager.SpawnObject(drops[1], transform.position, transform.rotation, ObjectPoolManager.PoolType.GoldNug);
             _stats["gold"].Value = 10;
@@ -336,7 +334,7 @@ public class EnemyController : Actor
             tempGoldDrop.GetComponent<MoveToPlayer>().visuals.GetComponent<VisualEffects>().offset += 1;
             GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempGoldDrop, ShootReward.ShootType.Up);
         }
-        else if(dropChance > 35 && dropChance <= 70)
+        else
         {
             GameObject tempXpDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
             _stats["xp"].Value = 10;
@@ -345,7 +343,9 @@ public class EnemyController : Actor
             tempXpDrop.GetComponent<MoveToPlayer>().visuals.GetComponent<VisualEffects>().offset += 1;
             GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, tempXpDrop, ShootReward.ShootType.Up);
         }
-        else
+
+        int relicDropChance = Random.Range(0,101);
+        if(relicDropChance <= 80)
         {
             //drop relic
             GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);

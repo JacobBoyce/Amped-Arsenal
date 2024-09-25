@@ -155,7 +155,6 @@ public class PlayerController : Actor
         _stats["str"].Value += tempstr;
 
         float tempDef = (float)PlayerPrefs.GetInt("Armor") / 100;
-        Debug.Log(tempDef);
         _stats["def"].Value -= tempDef;
 
         float tempSpd = PlayerPrefs.GetInt("Speed") / 2;
