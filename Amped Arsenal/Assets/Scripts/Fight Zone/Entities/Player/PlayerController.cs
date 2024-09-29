@@ -514,25 +514,40 @@ public class PlayerController : Actor
     }
     public void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Interactable")
+        if (other.tag == "Interactable")
         {
-            //turn on UI
-            ActivateUIForInteract();
-            //interactText.text = "!";
-            intObj = other.gameObject;
-            intObj.GetComponent<InteractableObject>()?.InRange(this); 
+            // Check if the object is either in the lobby or not a barrier
+            bool isInLobby = GameZoneController.Instance.inLobby;
+            bool isNotBarrier = !other.name.Equals("Barrier");
+
+            if (isInLobby && isNotBarrier || !isInLobby)
+            {
+                // Turn on UI
+                ActivateUIForInteract();
+                // interactText.text = "!"; // Uncomment if needed
+                intObj = other.gameObject;
+                intObj.GetComponent<InteractableObject>()?.InRange(this);
+            }
         }
+
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Interactable")
+        if (other.tag == "Interactable")
         {
-            //turn on UI
-            DeactivateUIForInteract();
-            //interactText.text = "";
-            intObj.GetComponent<InteractableObject>()?.NotInRange(this);
-            intObj = null; 
+            // Check if the object is either in the lobby or not a barrier
+            bool isInLobby = GameZoneController.Instance.inLobby;
+            bool isNotBarrier = !other.name.Equals("Barrier");
+
+            if (isInLobby && isNotBarrier || !isInLobby)
+            {
+                //turn on UI
+                DeactivateUIForInteract();
+                //interactText.text = "";
+                intObj.GetComponent<InteractableObject>()?.NotInRange(this);
+                intObj = null; 
+            }
         }
     }
 

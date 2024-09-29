@@ -92,7 +92,7 @@ public class EnemyController : Actor
         //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
         //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
         _stats["spd"].IncreaseByAmount(1f);
-        _stats["spd"].IncreaseByPercent(.2f);
+        _stats["spd"].IncreaseByPercent(.1f);
         //_stats["spd"].Fill();
     }
 
@@ -311,7 +311,7 @@ public class EnemyController : Actor
         }
 
         xpDropChance = Random.Range(0,101);
-        if(xpDropChance < 80)
+        if(xpDropChance < 90)
         {
             GameObject tempDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
             tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;

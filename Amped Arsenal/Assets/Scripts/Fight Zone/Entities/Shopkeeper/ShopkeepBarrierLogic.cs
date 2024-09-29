@@ -50,10 +50,13 @@ public class ShopkeepBarrierLogic : InteractableObject
             //moveScript.RunToLogic(other.gameObject);
             //other.GetComponent<PlayerController>().OpenShop(true);
             //tell player he can press space
-            if(moveScript.escapedPhase == false)
+            if(!GameZoneController.Instance.inLobby)
             {
-                //other.GetComponent<PlayerController>().OpenShop(true);
-                moveScript.alertUI.text = "!";
+                if(moveScript.escapedPhase == false)
+                {
+                    //other.GetComponent<PlayerController>().OpenShop(true);
+                    moveScript.alertUI.text = "!";
+                }
             }
             
             //trigger ! over head off
@@ -80,20 +83,26 @@ public class ShopkeepBarrierLogic : InteractableObject
     public override void InRange(PlayerController player)
     {
         //base.InRange();
-
-        //subscribe to player interact method
-        player.GetComponent<PlayerController>().OpenShop(true);
-        player.TriggerInteractEvent += TriggerInteract;
-        isInRange = true;
+        if(!GameZoneController.Instance.inLobby)
+        {
+            //subscribe to player interact method
+            player.GetComponent<PlayerController>().OpenShop(true);
+            player.TriggerInteractEvent += TriggerInteract;
+            isInRange = true;
+        }
+        
     }
 
     public override void NotInRange(PlayerController player)
     {
         //base.InRange();
-        isInRange = false;
-        EventTriggered = false;
-        player.GetComponent<PlayerController>().OpenShop(false);
-        player.TriggerInteractEvent -= TriggerInteract;
+        if(!GameZoneController.Instance.inLobby)
+        {
+            isInRange = false;
+            EventTriggered = false;
+            player.GetComponent<PlayerController>().OpenShop(false);
+            player.TriggerInteractEvent -= TriggerInteract;
+        }
     }
 
     public override void TriggerInteract()

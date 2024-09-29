@@ -29,7 +29,7 @@ public class ShootReward : MonoBehaviour
         int weapsWithMods = 0;
         foreach(GameObject weap in GameZoneController.Instance.p1.equippedWeapons)
         {
-            if(weap.GetComponent<WeaponBase>().weapMod != null)
+            if(weap.GetComponent<WeaponBase>().effectSlots.Count >= 1)
             {
                 weapsWithMods++;
             }

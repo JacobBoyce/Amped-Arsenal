@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8569558137420099097}
   - component: {fileID: 3844017346430205298}
   - component: {fileID: 7427194997690648170}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: cuboid_1
-  m_TagString: Untagged
+  m_TagString: TerrainObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758795272417630667}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3708057747010501787}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3844017346430205298
 MeshFilter:
@@ -93,9 +93,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3708057747010501787}
   - component: {fileID: 4519749466735600246}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: TombstonePrefab
-  m_TagString: Untagged
+  m_TagString: TerrainObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +107,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4052811350823560737}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9880475, z: 0.15414998, w: 0}
   m_LocalPosition: {x: 15.145479, y: -1.8924427, z: 6.079132}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -115,7 +116,6 @@ Transform:
   - {fileID: 8169553528255158366}
   - {fileID: 8569558137420099097}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -17.735, y: 180, z: 0}
 --- !u!65 &4519749466735600246
 BoxCollider:
@@ -125,9 +125,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4052811350823560737}
   m_Material: {fileID: 13400000, guid: 1e0335ea713e9464a99977e523951254, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 3.371259, y: 4.326615, z: 1.4589052}
   m_Center: {x: -0.020442724, y: 1.9976255, z: 0.20423934}
 --- !u!1 &6682636996784057404
@@ -141,9 +149,9 @@ GameObject:
   - component: {fileID: 8169553528255158366}
   - component: {fileID: 4110209801684484538}
   - component: {fileID: 2742216207659544918}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: cuboid
-  m_TagString: Untagged
+  m_TagString: TerrainObj
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,13 +163,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6682636996784057404}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3708057747010501787}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4110209801684484538
 MeshFilter:

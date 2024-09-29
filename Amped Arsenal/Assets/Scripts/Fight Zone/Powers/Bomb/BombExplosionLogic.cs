@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BombExplosionLogic : MonoBehaviour
 {
-    private float cd = 2.5f;
+    private float cd = 1f;
     public float maxCD;
     public BombController controller;
     public ParticleSystem pSys;
@@ -35,6 +35,7 @@ public class BombExplosionLogic : MonoBehaviour
             if(cd < maxCD*.8f)
             {
                 GetComponent<SphereCollider>().radius = 0;
+                gameObject.GetComponent<SphereCollider>().enabled = false;
             }
             else
             {

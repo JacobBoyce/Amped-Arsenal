@@ -72,10 +72,12 @@ public class LampLoadLevel : MonoBehaviour
 
                     //set up the correct terrain and deactivate others
                     lobController.DeactivateTerrains();
+                    lobController.arrowUI.exfilLamp = exfilLamp;
                     terrainToLoad.SetActive(true);
 
                     //set the shops location for the right area
-                    lobController.frogShop.GetComponent<ShopMovement>().startpos = shopStartPos;
+                    shopKeeper.startpos = shopStartPos;
+                    shopKeeper.GoToLevel();
                     //setup the correct exfil lamp to end the level
                     waveController.exfilLampObject = exfilLamp.GetComponent<ExfilLampLogic>();
 
@@ -93,7 +95,7 @@ public class LampLoadLevel : MonoBehaviour
         gzController.StartFadeOut();
         GameSceneManager.instance.musicMaker.SwapTrack(GameSceneManager.instance.musicMaker.gameMusic1);
         gzController.inLobby = false;
-        shopKeeper.UndoEscape();
+        //shopKeeper.UndoEscape();
         //Time.timeScale = 0;
         while(gzController.IsFadingOut)
         {
@@ -113,7 +115,7 @@ public class LampLoadLevel : MonoBehaviour
 
     public IEnumerator AfterMovePlayer()
     {
-        
+        lobController.arrowUI.enabled = true;
         lobController.ToggleLamps(false);
         //yield return new WaitForSeconds(2f);
         gzController.StartFadeIn();

@@ -5,7 +5,7 @@ using TMPro;
 
 public class ShopMovement : MonoBehaviour
 {
-    public GameObject startpos;
+    public GameObject startpos, lobbyPos;
     public ShopkeepBarrierLogic barrierLogic;
     [Header("Relevant Objects")]
     public Animator animCont;
@@ -22,7 +22,7 @@ public class ShopMovement : MonoBehaviour
     public bool flipFlag = false;
 
     [Header("Walking Vars")]
-    public bool walking = true;
+    public bool walking;
     public float moveSpeed;
     public float walkTimer, walkTimerMin, walkTimerMax;
     public Vector3 moveDir;
@@ -37,25 +37,49 @@ public class ShopMovement : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine(WaitLogic());
+        //StartCoroutine(WaitLogic());
+        walking = false;
+        StartCoroutine(StandLobbyLogic());
     }
 
     public void OnEnable()
     {
+        //transform.position = startpos.transform.position;
+        //flag = false;
+        //StartCoroutine(WaitLogic());
+    }
+
+    public void GoToLevel()
+    {
         transform.position = startpos.transform.position;
+        walking = true;
+        escapedPhase = false;
         flag = false;
         StartCoroutine(WaitLogic());
     }
 
+    public void GoToLobby()
+    {
+        transform.position = lobbyPos.transform.position;
+        walking = false;
+        StartCoroutine(StandLobbyLogic());
+    }
+
     public void EscapeBloodMoon()
     {
+        if(escapedPhase && flag == true)
+        {
+            GameZoneController.Instance.p1.CleanInteractableObj();
+            Debug.Log("Called");
+            escapedPhase = false;
+            GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofYOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
+            largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
+            largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
+
+            GoToLobby();
+        }
         //barrierLogic.TriggerEscapeIfWasNearby(GameZoneController.Instance.p1);
-        GameZoneController.Instance.p1.CleanInteractableObj();
-        escapedPhase = true;
-        visuals.SetActive(false);
-        GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofYOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
-        largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
-        largeDPoof.GetComponent<DeathPoofLogic>().isLarge = true;
+        
     }
     public void UndoEscape()
     {
@@ -89,7 +113,7 @@ public class ShopMovement : MonoBehaviour
                 animCont.SetBool("Flip", flipFlag);
                 yield return new WaitForSeconds(1.2f);
             }
-            StartCoroutine("WaitLogic");
+            StartCoroutine(WaitLogic());
         }
         // Choose to walk
         else
@@ -123,8 +147,32 @@ public class ShopMovement : MonoBehaviour
         }
     }
 
+    IEnumerator StandLobbyLogic()
+    {
+        //Enter standing state
+        thisRB.isKinematic = true;
+        animCont.SetBool("Stand", true);
+        meshRend.material = standMat;
+
+        //decide wait time
+        waitTime = Random.Range(waitMin,waitMax);
+        //wait
+        yield return new WaitForSeconds(waitTime);
+
+        tempFlipChance = Random.Range(0,101);
+        if(tempFlipChance < waitFlipChance)
+        {
+            //flip
+            flipFlag = !flipFlag;
+            animCont.SetBool("Flip", flipFlag);
+            yield return new WaitForSeconds(1.2f);
+        }
+        StartCoroutine(StandLobbyLogic());
+    }
+
     public void Update()
     {
+        
         if(walking)
         {
             walkTimer -= Time.deltaTime;
@@ -142,8 +190,12 @@ public class ShopMovement : MonoBehaviour
         {
             if(GameZoneController.Instance.wvController.startExfilDelay)
             {
-                flag = true;
-                EscapeBloodMoon();
+                if(escapedPhase == false)
+                {
+                    flag = true;
+                    escapedPhase = true;
+                    EscapeBloodMoon();
+                }
             }
 
         }

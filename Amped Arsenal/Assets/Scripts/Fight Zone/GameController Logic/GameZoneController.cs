@@ -498,11 +498,12 @@ public class GameZoneController : MonoBehaviour
         endGameGold = (int)p1._stats["gold"].Value;
         endGameGoldHalved = Mathf.RoundToInt(endGameGold / 2);
 
-        MainMenuController.Instance._playerGold += endGameGold;
+        MainMenuController.Instance._playerGold += endGameGoldHalved;
         MainMenuController.Instance.SaveGoldData();
         
         endGameGoldText.text = endGameGold.ToString();
         EndGameUI.SetActive(true);
+        goldCD = 0;
         startGoldUICountDown = true;
     }
     public void EndGame()

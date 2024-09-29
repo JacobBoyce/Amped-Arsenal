@@ -11,10 +11,9 @@ public class ShopMenuController : MonoBehaviour
     public GameZoneController controller;
     public MenuItemSelectionManager menuController;
     public WeaponLib weapLib;
-    public GameObject shopWeaponParent, itemPrefab, tempItemPrefab, rerollButton;
+    public GameObject rerollButton;
     public List<ShopItemPrefab> buyableItems;
     public ShopItemPrefab tempShopItem;
-    GameObject tempItemObj;
     public int amountBought, price;
     public bool populatedShop = false;
     int[] weapChoices = new int[3]{-1,-1,-1};
@@ -74,17 +73,21 @@ public class ShopMenuController : MonoBehaviour
             if (NumAvailableWeaponsToBuy() == 3 && shopDirty == 0)
             {
                 rerollButton.GetComponent<Button>().interactable = false;
-            }
-            if(controller.p1._stats["gold"].Value >= 5)
-            {
-                rerollButton.GetComponent<Button>().interactable = true;
+                StartCoroutine(menuController.SetSelectedAfterOneFrame(4, true));
             }
             else
             {
-                rerollButton.GetComponent<Button>().interactable = false;
+                if(controller.p1._stats["gold"].Value >= 5)
+                {
+                    rerollButton.GetComponent<Button>().interactable = true;
+                    StartCoroutine(menuController.SetSelectedAfterOneFrame(3, true));
+                }
+                else
+                {
+                    rerollButton.GetComponent<Button>().interactable = false;
+                    StartCoroutine(menuController.SetSelectedAfterOneFrame(4, true));
+                }
             }
-
-            StartCoroutine(menuController.SetSelectedAfterOneFrame(3, true));
         }
     }
 
@@ -232,15 +235,6 @@ public class ShopMenuController : MonoBehaviour
             }
         }
 
-        if(controller.p1._stats["gold"].Value >= 5)
-        {
-            rerollButton.GetComponent<Button>().interactable = true;
-        }
-        else
-        {
-            rerollButton.GetComponent<Button>().interactable = false;
-        }
-
         CheckIfCanBuy();
     }
 
@@ -258,29 +252,70 @@ public class ShopMenuController : MonoBehaviour
         //if dirty = 0 and num left is >= 3 allow reroll
         if(shopDirty == 3 && numLeft > 0)
         {
-            rerollButton.GetComponent<Button>().interactable = true;
+            // All 3 slots have been bought
+            // More than 1 weapon is left to buy
+            // Allow Reroll if you have enough money
+
+            //rerollButton.GetComponent<Button>().interactable = true;
+            if(controller.p1._stats["gold"].Value >= 5)
+            {
+                rerollButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                rerollButton.GetComponent<Button>().interactable = false;
+            }
         }
         else if(shopDirty == 2 && numLeft >= 2)
         {
-            rerollButton.GetComponent<Button>().interactable = true;
+            // 2 slots have been bought
+            // 2 or more weapons are left to buy
+            // Allow Reroll if you have enough money
+            //rerollButton.GetComponent<Button>().interactable = true;
+            if(controller.p1._stats["gold"].Value >= 5)
+            {
+                rerollButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                rerollButton.GetComponent<Button>().interactable = false;
+            }
         }
-        else if(shopDirty == 1 && numLeft >= 3)
+        else if(shopDirty == 1 && numLeft > 2)
         {
-            rerollButton.GetComponent<Button>().interactable = true;
+            // 1 slot has been bought
+            // 2 or more weapons are left to buy
+            // Allow Reroll if you have enough money
+            //rerollButton.GetComponent<Button>().interactable = true;
+            if(controller.p1._stats["gold"].Value >= 5)
+            {
+                rerollButton.GetComponent<Button>().interactable = true;
+            }
+            else 
+            {
+                rerollButton.GetComponent<Button>().interactable = false;
+            }
         }
         else
         {
             rerollButton.GetComponent<Button>().interactable = false;
         }
-
-        if(controller.p1._stats["gold"].Value >= 5)
-        {
-            rerollButton.GetComponent<Button>().interactable = true;
-        }
-        else
-        {
-            rerollButton.GetComponent<Button>().interactable = false;
-        }
+        // else if (shopDirty == 1 && numLeft == 3)
+        // {
+        //     //rerollButton.GetComponent<Button>().interactable = false;
+        //     if(controller.p1._stats["gold"].Value >= 5)
+        //     {
+        //         rerollButton.GetComponent<Button>().interactable = true;
+        //     }
+        //     else 
+        //     {
+        //         rerollButton.GetComponent<Button>().interactable = false;
+        //     }
+        // }
+        // else if (shopDirty == 1 && numLeft <= 2)
+        // {
+        //     //rerollButton.GetComponent<Button>().interactable = false;
+        // }
 
         StartCoroutine(menuController.SetSelectedAfterOneFrame(4, true));
     }
@@ -315,6 +350,21 @@ public class ShopMenuController : MonoBehaviour
             }
         }
 
+        if (NumAvailableWeaponsToBuy() == 3 && shopDirty == 0)
+        {
+            rerollButton.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            if(controller.p1._stats["gold"].Value >= 5)
+            {
+                rerollButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                rerollButton.GetComponent<Button>().interactable = false;
+            }
+        }
 
     }
 

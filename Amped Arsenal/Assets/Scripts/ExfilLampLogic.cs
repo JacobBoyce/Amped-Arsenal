@@ -63,6 +63,7 @@ public class ExfilLampLogic : MonoBehaviour
     {
         //gzController.StartFadeOut();
         GameSceneManager.instance.musicMaker.SwapTrack(GameSceneManager.instance.musicMaker.mainMenuMusic);
+        
         gzController.StartFadeOut();
         gzController.inLobby = true;
         //Time.timeScale = 0;
@@ -96,6 +97,7 @@ public class ExfilLampLogic : MonoBehaviour
         {
             yield return null;
         }
+        lobController.arrowUI.enabled = true;
 
          //delete all xp and gold
         GameObject[] xpObj = GameObject.FindGameObjectsWithTag("XP");

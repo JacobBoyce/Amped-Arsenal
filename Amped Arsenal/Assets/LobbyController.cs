@@ -8,6 +8,7 @@ public class LobbyController : MonoBehaviour
 {
     public WaveController waveController;
     public ExfilLampLogic exfilLamp;
+    public ArrowToCamp arrowUI;
 
     public GameObject lobbyTerrain;
     public GameObject frogShop;
@@ -50,7 +51,6 @@ public class LobbyController : MonoBehaviour
     {
         //set level difficulty so the next lamp can be used
         waveController.zoneMultiplier = levelDifficulty;
-        
 
         foreach(LampLoadLevel lamp in lamps)
         {

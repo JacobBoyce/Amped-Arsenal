@@ -187,7 +187,7 @@ public class WaveController : MonoBehaviour
             else
             {
                 startDelay = false;
-
+                GameZoneController.Instance.lobCont.arrowUI.enabled = true;
                 infoMessages.gameObject.SetActive(false);
                 curWave = 1;
                 //spawnRateMax = 2;

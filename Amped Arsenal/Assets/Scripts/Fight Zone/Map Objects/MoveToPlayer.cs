@@ -82,46 +82,58 @@ public class MoveToPlayer : MonoBehaviour
 
     public void Update()
     {
-        if(magnetPickedUp)
+
+        // Check if the magnet is picked up
+        if (magnetPickedUp)
         {
+            // Move towards the player (p1) if magnet is picked up
             transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
-            speed += rateOfSpeed*rateOfSpeed;
+            speed += rateOfSpeed * rateOfSpeed;
         }
         else
         {
-            if (!inRangeOfLamp)
+            // Check if the lamp exists
+            if (lamp != null)
             {
-                distance = Vector3.Distance(p1.transform.position, transform.position);
-
-                if (distance < p1._stats["pull"].Value && isDelay == false)
+                // Check if the lamp can absorb and the item is XP and in range
+                if (lamp.ableToAbsorb == true && inRangeOfLamp && itemType == DropItem.XP)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
-                    speed += rateOfSpeed*rateOfSpeed;
-                }
-            }
-            else if(inRangeOfLamp && itemType == DropItem.XP)
-            {
-                if(lamp.ableToAbsorb == true)
-                {
-                    //move towards lamp
-                    //maybe get lamp script to get the point the balls should fly to
                     transform.position = Vector3.MoveTowards(transform.position, lamp.transform.position, speed * Time.deltaTime);
                     speed += .2f;
 
-                    distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
+                    float distToLamp = Vector3.Distance(lamp.transform.position, transform.position);
 
+                    // Check if the item is close enough to the lamp to absorb it
                     if (distToLamp < 3 && !givenXp)
                     {
                         givenXp = true;
-                        //call lamp script to subtract from counter
+                        // Call lamp script to subtract from counter
                         lamp.UpdateCount(amount);
-
                         ObjectPoolManager.ReturnObjectToPool(this.gameObject);
                     }
                 }
+                else
+                {
+                    // If not absorbed by the lamp, check distance to player
+                    float distance = Vector3.Distance(p1.transform.position, transform.position);
+                    if (distance < p1._stats["pull"].Value && !isDelay)
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
+                        speed += rateOfSpeed * rateOfSpeed;
+                    }
+                }
+            }
+            else // If the lamp does not exist
+            {
+                // Just move towards the player if in range
+                float distance = Vector3.Distance(p1.transform.position, transform.position);
+                if (distance < p1._stats["pull"].Value && !isDelay)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, p1.transform.position, speed * Time.deltaTime);
+                    speed += rateOfSpeed * rateOfSpeed;
+                }
             }
         }
-        
     }
 
 
