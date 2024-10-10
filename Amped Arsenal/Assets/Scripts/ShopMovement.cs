@@ -7,6 +7,7 @@ public class ShopMovement : MonoBehaviour
 {
     public GameObject startpos, lobbyPos;
     public ShopkeepBarrierLogic barrierLogic;
+    public SphereCollider col1,col2;
     [Header("Relevant Objects")]
     public Animator animCont;
     public Rigidbody thisRB;
@@ -39,6 +40,8 @@ public class ShopMovement : MonoBehaviour
     {
         //StartCoroutine(WaitLogic());
         walking = false;
+        col1.enabled = false;
+        col2.enabled = false;
         StartCoroutine(StandLobbyLogic());
     }
 
@@ -55,6 +58,8 @@ public class ShopMovement : MonoBehaviour
         walking = true;
         escapedPhase = false;
         flag = false;
+        col1.enabled = true;
+        col2.enabled = true;
         StartCoroutine(WaitLogic());
     }
 
@@ -62,6 +67,9 @@ public class ShopMovement : MonoBehaviour
     {
         transform.position = lobbyPos.transform.position;
         walking = false;
+        col1.enabled = false;
+        col2.enabled = false;
+        StopAllCoroutines();
         StartCoroutine(StandLobbyLogic());
     }
 
@@ -70,7 +78,6 @@ public class ShopMovement : MonoBehaviour
         if(escapedPhase && flag == true)
         {
             GameZoneController.Instance.p1.CleanInteractableObj();
-            Debug.Log("Called");
             escapedPhase = false;
             GameObject largeDPoof = ObjectPoolManager.SpawnObject(deathPoof, new Vector3(transform.position.x , transform.position.y + dpoofYOffset, transform.position.z), transform.rotation, ObjectPoolManager.PoolType.DPoof);
             largeDPoof.transform.localScale += new Vector3(largeDPoof.transform.localScale.x *1.5f, largeDPoof.transform.localScale.y *1.5f, largeDPoof.transform.localScale.z *1.5f);
@@ -177,7 +184,11 @@ public class ShopMovement : MonoBehaviour
         {
             walkTimer -= Time.deltaTime;
             //walk logic
-            thisRB.velocity = moveDir.normalized * moveSpeed;
+            if(!thisRB.isKinematic)
+            {
+                thisRB.velocity = moveDir.normalized * moveSpeed;
+            }
+            
 
             if(walkTimer <= 0)
             {

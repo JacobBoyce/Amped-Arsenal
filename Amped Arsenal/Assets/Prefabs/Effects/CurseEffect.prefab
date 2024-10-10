@@ -123,7 +123,7 @@ MonoBehaviour:
   effectName: Curse
   damage: 0
   tickAmtDuration: 0
-  tickMaxDuration: 30
+  tickMaxDuration: 8
   modRelicImg: {fileID: 1656945958, guid: 5b1166bcd1f5f9f4eab06bf9599af17e, type: 3}
   partSys: {fileID: 0}
   uiEffectImg: {fileID: 3115880002463839843}
@@ -133,10 +133,17 @@ MonoBehaviour:
   damageColor: {r: 1, g: 0, b: 0.8391533, a: 0}
   intensity: 1
   activate: 0
-  mod:
-    modName: curseRelic
-    modAmount: -0.6
+  modStr:
+    modName: curseRelicSTR
+    modAmount: -0.75
     isMaxMod: 1
     amtChanged: 0
     modType: 2
     buffType: 2
+  modDef:
+    modName: curseRelicDEF
+    modAmount: 0.5
+    isMaxMod: 1
+    amtChanged: 0
+    modType: 1
+    buffType: 1

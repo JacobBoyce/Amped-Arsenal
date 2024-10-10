@@ -66,7 +66,7 @@ public class WeaponFocusUI : MonoBehaviour
             //lvlUpTo.text = (focusedWeap.level + 1).ToString();
             //show cost of upgrade
             //HERE
-            costUI.text = ((byte)focusedWeap.weapUpgrades.costValues[focusedWeap.level]).ToString();
+            costUI.text = focusedWeap.weapUpgrades.costValues[focusedWeap.level].ToString();
         }        
 
 

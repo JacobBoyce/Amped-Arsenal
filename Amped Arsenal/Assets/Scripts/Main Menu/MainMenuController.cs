@@ -25,6 +25,14 @@ public class MainMenuController : MonoBehaviour
     public bool IsFadingOut {get; private set;}
     public bool IsFadingIn {get; private set;}
 
+    public enum SaveNames
+    {
+        PLAYTEST,
+        DEMO,
+        MAINSAVE
+    }
+    public SaveNames saveFileToUse;
+
     public void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -36,7 +44,20 @@ public class MainMenuController : MonoBehaviour
         { 
             Instance = this; 
         } 
-        data = new Data("MainSave");
+
+        if(saveFileToUse == SaveNames.PLAYTEST)
+        {
+            data = new Data("Playtest");
+        }
+        else if(saveFileToUse == SaveNames.DEMO)
+        {
+            data = new Data("Demo");
+        }
+        else if(saveFileToUse == SaveNames.DEMO)
+        {
+            data = new Data("MainSave");
+        }
+        //data = new Data("MainSave");
     }
     
     void Start()

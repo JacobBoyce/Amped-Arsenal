@@ -138,7 +138,7 @@ public class PlayerController : Actor
         _stats.AddStat("hp",       1000,1000);    // Max Health
         _stats.AddStat("str",     1,50);    // Multiply this by the damage of weapon being used. (Attk > 1)
         _stats.AddStat("def",        1);    // Multiply by damage taken. (0 > Def < 1)
-        _stats.AddStat("spd",    9,50);    // Movement speed
+        _stats.AddStat("spd",    9,16);    // Movement speed
         _stats.AddStat("luck",   65,100);    // How lucky you are to get different upgrades or drops from enemies.
         _stats.AddStat("pull",   5,50);    // How far to pull object from.
         _stats.AddStat("xp",      0,100000); // Xp.
@@ -157,7 +157,7 @@ public class PlayerController : Actor
         float tempDef = (float)PlayerPrefs.GetInt("Armor") / 100;
         _stats["def"].Value -= tempDef;
 
-        float tempSpd = PlayerPrefs.GetInt("Speed") / 2;
+        float tempSpd = PlayerPrefs.GetInt("Speed") / 3;
         _stats["spd"].Value += tempSpd;
 
         _stats["pull"].Value += PlayerPrefs.GetInt("Magnet");
@@ -207,33 +207,33 @@ public class PlayerController : Actor
             //     }
             // }
         }
-        #region Cheats 
+        // #region Cheats 
         
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            aoeLight.range += 5;
-            aoeLightElse.AdjustMyLight((int)aoeLight.range);
-        }
+        // if (Input.GetKeyDown(KeyCode.Y))
+        // {
+        //     aoeLight.range += 5;
+        //     aoeLightElse.AdjustMyLight((int)aoeLight.range);
+        // }
 
-        if(Input.GetKey(KeyCode.X))
-        {
-            AddXP(10);
-        }
+        // if(Input.GetKey(KeyCode.X))
+        // {
+        //     AddXP(10);
+        // }
 
-        if(Input.GetKey(KeyCode.G))
-        {
-            AddGold(10);
-        }
+        // if(Input.GetKey(KeyCode.G))
+        // {
+        //     AddGold(10);
+        // }
 
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            _stats["pull"].Value++;
-        }
+        // if(Input.GetKeyDown(KeyCode.P))
+        // {
+        //     _stats["pull"].Value++;
+        // }
 
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            GameZoneController.Instance.wvController.enemyVisuals = !GameZoneController.Instance.wvController.enemyVisuals;
-        }
+        // if(Input.GetKeyDown(KeyCode.L))
+        // {
+        //     GameZoneController.Instance.wvController.enemyVisuals = !GameZoneController.Instance.wvController.enemyVisuals;
+        // }
 
         // if(Input.GetKeyDown(KeyCode.Z))
         // {
@@ -242,8 +242,8 @@ public class PlayerController : Actor
         //         go.GetComponent<WeaponBase>().UpgradeWeapon();
         //     }
         // }
-        
-        #endregion
+        // #endregion
+
        // DetectInputDevice();
         ChangeInteractButtonImage();
         // if (Input.GetKeyDown(KeyCode.E))

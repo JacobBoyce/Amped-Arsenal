@@ -196,11 +196,11 @@ public class GameZoneController : MonoBehaviour
         }*/
 
         #region Show Stats
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            statsVisible = !statsVisible;
-            ShowStats(statsVisible);
-        }
+        // if (Input.GetKeyDown(KeyCode.I))
+        // {
+        //     statsVisible = !statsVisible;
+        //     ShowStats(statsVisible);
+        // }
 
 
         statsTxt.text = "HP: " + p1._stats["hp"].Value + " / " + p1._stats["hp"].Max

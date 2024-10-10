@@ -10,11 +10,11 @@ public class EnemyController : Actor
     public EnemyMovementController movementController;
     public GameObject spriteObj, deathPoof;
     public float blinkIntesity, blinkDuration, blinkTimer, dpoofOffset;
-    public bool tookDamage, spawnedXp = false, isLargeEnemy = false, triggeredDeath = false;
+    public bool tookDamage, spawnedXp = false, isLargeEnemy = false, triggeredDeath = false, inExfilPhase;
 
 
     public List<GameObject> drops = new();
-    int goldDropChance, xpDropChance;
+    int goldDropChance, xpDropChance, baseXPDropChance;
     public TextMeshProUGUI lifeText;
 
     [Space(10)]
@@ -58,71 +58,113 @@ public class EnemyController : Actor
 
     public void IncreaseStats(float _waveScale, float _levelScale, float _str, float _def, int waveNum, int _zoneNum)
     {
-        //float nHp;//, nStr, nDef;
+        baseXPDropChance = 90;
         float nHP = _stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale);
-        // nHp = (_hpScaleAmount * _zoneNum) * waveNum;
-        // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
-        //nStr = _str * _zoneNum;
-        //nDef = _def * _zoneNum;
-        
+ 
         _stats["hp"].Max = nHP;
         _stats["hp"].Fill();
-        //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
-        //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
+
+        _stats["str"].Value += .01f;
+        if(_stats["def"].Value > .75)
+        {
+            _stats["def"].Value -= _def;
+        }
+
         if(_zoneNum > 1)
         {
             _stats["spd"].IncreaseByAmount(_zoneNum+2);
         }
         _stats["spd"].IncreaseByPercent(.1f);
-        //_stats["spd"].Fill();
     }
 
     public void IncreaseStats(float _waveScale, float _levelScale, float _interval, float _str, float _def, float timer, int waveNum, int _zoneNum)
-    {
+    {    
         waveNum += Mathf.RoundToInt(timer / _interval);
-        // float nHp;//, nStr, nDef;
-        float nHP = _stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale);
-        // nHp = (_hpScaleAmount * _zoneNum) * (20 + Mathf.RoundToInt(timer % 5)/2);
-        // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Value;
-        // //nStr = _str * _zoneNum;
-        // //nDef = _def * _zoneNum;
 
+
+        baseXPDropChance = 30;
+
+        baseXPDropChance = Mathf.RoundToInt(baseXPDropChance - (waveNum - 15) * .5f);
+        if(baseXPDropChance < 1)
+        {
+            baseXPDropChance = 1;
+        }
+
+        float nHP = _stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale);
         _stats["hp"].Max = nHP;
         _stats["hp"].Fill();
-        //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
-        //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseByAmount(1f);
-        _stats["spd"].IncreaseByPercent(.1f);
-        //_stats["spd"].Fill();
-    }
 
-    public void CreateLargeEnemy(float _waveScale, float _levelScale, float _exfilScale, float _interval, float _str, float _def, int waveNum, int _zoneNum, bool isExfil)
-    {
-        // isLargeEnemy = true;
-        // float nHp;//, nStr, nDef;
-        float nHP;
-        if(isExfil)
+        float newDef = _stats["def"].Value - (waveNum - 15) * _def;
+        if(newDef > .25f)
         {
-            nHP = 8 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+            _stats["def"].Value = newDef;
         }
         else
         {
-            nHP = 4 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+            _stats["def"].Value = .25f;
+        }
+
+        float newStr = _stats["str"].Value + (waveNum - 15) * _str;
+        _stats["str"].Value = newStr;
+        Debug.Log("normal enmy str: " + newStr);
+
+        //float newSpd = _stats["spd"].Value + (waveNum - 15) * .05f;
+        _stats["spd"].Value = _stats["spd"].Value * (1 + .01f * waveNum);
+        //Debug.Log(_stats["spd"].Value);
+        //Debug.Log("spd to add " + newEnemySpd);
+
+        //_stats["spd"].IncreaseByAmount(newEnemySpd);
+        //_stats["spd"].IncreaseByPercent(.2f);
+    }
+
+    public void CreateLargeEnemy(float _waveScale, float _levelScale, float _exfilScale, float timer, float _interval, float _str, float _def, int waveNum, int _zoneNum, bool isExfil)
+    {
+        inExfilPhase = isExfil;
+        waveNum += Mathf.RoundToInt(timer / _interval);
+
+        float nHP;
+
+
+        if(isExfil)
+        {
+            
+            nHP = 10 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
+            Debug.Log(nHP);
+        }
+        else
+        {
+            nHP = 5 * (_stats["hp"].Max * (1 + (waveNum * _waveScale) + (_zoneNum - 1) * _levelScale));
         }
         
-
-        // nHp = ((_hpScaleAmount * _zoneNum) * waveNum) * 2;
-        // nHp = (_stats["hp"].Value * nHp) + _stats["hp"].Max;
-        //nStr = _str * _zoneNum;
-        //nDef = _def * _zoneNum;
         
         _stats["hp"].Max = nHP;
         _stats["hp"].Fill();
         _stats["def"].Value = .75f;
-        //_stats["hp"].Fill();
-        //_stats["str"].Value = (_stats["str"].Value * nStr) + _stats["str"].Value;
-        //_stats["def"].Value = (_stats["def"].Value * nDef) - _stats["def"].Value;
-        _stats["spd"].IncreaseByPercent(.2f);
+        
+        if(isExfil)
+        {
+            float newDef = _stats["def"].Value - (waveNum - 15) * _def;
+
+            if(newDef > .25f)
+            {
+                _stats["def"].Value = newDef;
+            }
+            else
+            {
+                _stats["def"].Value = .25f;
+            }
+
+            float newStr = 1 + _stats["str"].Value + (waveNum - 15) * _str;
+            _stats["str"].Value = newStr;
+
+
+            _stats["spd"].Value = _stats["spd"].Value * (1 + .01f * waveNum);
+            //Debug.Log(_stats["spd"].Value);
+            //_stats["spd"].IncreaseByAmount(newEnemySpd);
+            //_stats["spd"].IncreaseByPercent(.2f);
+        }
+
+        //_stats["spd"].IncreaseByPercent(.2f);
         //_stats["spd"].Fill();i
 
         isLargeEnemy = true;
@@ -299,7 +341,7 @@ public class EnemyController : Actor
 
     public void SpawnDrop()
     {
-           // chance for multi drop
+        // chance for multi drop
         goldDropChance = Random.Range(0,101);
         if(goldDropChance < PlayerPrefs.GetInt("Inflation")) //inflation should be a whole number between 0-50
         {
@@ -311,7 +353,7 @@ public class EnemyController : Actor
         }
 
         xpDropChance = Random.Range(0,101);
-        if(xpDropChance < 90)
+        if(xpDropChance < baseXPDropChance)
         {
             GameObject tempDrop = ObjectPoolManager.SpawnObject(drops[0], transform.position, transform.rotation, ObjectPoolManager.PoolType.XpOrbParent);
             tempDrop.GetComponent<MoveToPlayer>().amount = (int)_stats["xp"].Value;
@@ -345,14 +387,29 @@ public class EnemyController : Actor
         }
 
         int relicDropChance = Random.Range(0,101);
-        if(relicDropChance <= 80)
+        if(inExfilPhase)
         {
-            //drop relic
-            GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
-            relicToSpawnObj.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
-            GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
-                
+            if(relicDropChance <= 40)
+            {
+                //drop relic
+                GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
+                relicToSpawnObj.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
+                GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
+                    
+            }
         }
+        else
+        {
+            if(relicDropChance <= 80)
+            {
+                //drop relic
+                GameObject relicToSpawnObj = Instantiate(GameZoneController.Instance.relicLibrary.relicList[Random.Range(0,GameZoneController.Instance.relicLibrary.relicList.Count)], GetComponent<EnemyMovementController>().visuals.transform.position, Quaternion.identity);
+                relicToSpawnObj.transform.parent = GameObject.FindGameObjectWithTag("RelicHolder").transform;
+                GetComponent<ShootReward>().ShootObject(GetComponent<EnemyMovementController>().visuals, relicToSpawnObj, ShootReward.ShootType.Facing);
+                    
+            }
+        }
+        
     }
 
     public void VisualDamage()

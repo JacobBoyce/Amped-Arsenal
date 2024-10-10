@@ -28,14 +28,15 @@ public class WaveController : MonoBehaviour
     public WaveMaster waveMaster;
 
     [Header("Spawn Stuff")]
-    public float[] waveSpawnTimers;
+    public WaveIntervalSpawnerMaster waveIntervalMaster;
     public List<EnemySpawnPoint> esPoint = new List<EnemySpawnPoint>();
     private GameObject tempPrefab;
     public bool spawnLargeTrigger = true;
     private int everyOtherWaveChangeBoss = 0;
 
     [Header("Stat Scaling")]
-    public float strScaling, defScaling;
+    public float strScaling;
+    public float defScaling;
     public int zoneMultiplier;
     //public float[] scaleLampLevel;
     public float waveScale, levelScale, exfilScale, exfilScaleInterval;
@@ -54,7 +55,7 @@ public class WaveController : MonoBehaviour
     public int largeEnemyIndex;
     public float whenToSpawnLargeEnemy;
     public LayerMask _layersToNotSpawnOn;
-    private bool spawnedLarge;
+    private bool spawnedLarge, increaseexfilmbSpd;
 
 
     // Start is called before the first frame update
@@ -143,12 +144,24 @@ public class WaveController : MonoBehaviour
             infoMessages.text = niceTime;
 
             float incCount = Mathf.RoundToInt(exfilTimer/exfilScaleInterval);
-            if(incCount % 2 == 0 && spawnedLarge == false)
+            if(incCount % 3 == 0 && spawnedLarge == false)
             {
+                Debug.Log("SpanwLarge enemy");
                 SpawnLargeEnemy(true,true);
                 spawnedLarge = true;
+
+                if(spawnRateMax > .06f)
+                {
+                    spawnRateMax -= 0.01f;
+                    if(exfilScaleInterval > 1.15f)
+                    {
+                        exfilScaleInterval -=.15f;
+                    }
+                    
+                    //Debug.Log(spawnRateMax);
+                }
             }
-            if(incCount % 2 == 1)
+            if(incCount % 3 == 1)
             {
                 spawnedLarge = false;
             }
@@ -242,7 +255,7 @@ public class WaveController : MonoBehaviour
             }
             int spwnLoc = ChooseValidSpawnLocation();
             GameObject largeEnemyPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[largeEnemyIndex == 5 ? largeEnemyIndex-1 : largeEnemyIndex],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
-            largeEnemyPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier,false);
+            largeEnemyPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilTimer, exfilScaleInterval, strScaling,defScaling,curWave,zoneMultiplier,isExfil);
             largeEnemyPrefab.transform.parent = enemyParentObj.transform;
             largeEnemyPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
 
@@ -257,7 +270,7 @@ public class WaveController : MonoBehaviour
             
             int spwnLoc = ChooseValidSpawnLocation();
             tempPrefab = Instantiate(enemyPrefabs[zoneMultiplier-1].ePrefabs[randIndex],esPoint[spwnLoc].sPoint.transform.position, esPoint[spwnLoc].sPoint.transform.rotation);
-            tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier,false);
+            tempPrefab.GetComponent<EnemyController>().CreateLargeEnemy(waveScale,levelScale, exfilScale, exfilTimer, exfilScaleInterval,strScaling,defScaling,curWave,zoneMultiplier,isExfil);
             tempPrefab.transform.parent = enemyParentObj.transform;
             tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
 
@@ -275,16 +288,12 @@ public class WaveController : MonoBehaviour
         }
         //update wave UI
         //waveText.text = "Wave " + curWave + "/" + maxWave;
-        // if(spawnRateMax > 1f)
-        // {
-            spawnRateMax = waveSpawnTimers[curWave-1];
-        //}
+
+        spawnRateMax = waveIntervalMaster.levelWaveList[zoneMultiplier-1].waves[curWave-1];
         
         //spawn enemies
         toggleSpawning = true; 
-    }
-
-    
+    } 
     public void StartWaveSystem()
     {
         startDelay = true;
@@ -292,12 +301,14 @@ public class WaveController : MonoBehaviour
         infoMessages.gameObject.SetActive(true);
         delayStart = delayStartMax;
         delayExfil = delayExfilMax;
+        exfilTimer = 0;
+        exfilScaleInterval = 5f;
         //spawnRateMax = 1f;
 
         moons.localRotation = Quaternion.Euler(0,0,0);
         totalWaveTime = (maxWave-1)*maxWaveTimer;
         mainCountdown = maxWaveTimer;
-        spawnRateMax = waveSpawnTimers[0];
+        spawnRateMax = waveIntervalMaster.levelWaveList[zoneMultiplier-1].waves[0];
         largeEnemyIndex = 0;
         everyOtherWaveChangeBoss = 0;
     }
@@ -318,7 +329,7 @@ public class WaveController : MonoBehaviour
     {
         if(spwnIndex != -1)
         {
-            if(curWave <= 15)
+            if(curWave < 15)
             {
                 int randEnemy = Random.Range(0, waveMaster.levelWaveList[zoneMultiplier-1].waves[curWave-1].enemysToSpawn.Count);
                 // Debug.Log("level: " + waveMaster.levelWaveList[zoneMultiplier-1].levelName
@@ -347,7 +358,7 @@ public class WaveController : MonoBehaviour
             else
             {
                 //upgrade enemy stats here
-                tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, strScaling,defScaling,curWave,zoneMultiplier);
+                tempPrefab.GetComponent<EnemyController>().IncreaseStats(waveScale, levelScale, strScaling, defScaling, curWave,zoneMultiplier);
             }
             tempPrefab.GetComponent<EnemyController>().ToggleViewHP(enemyVisuals);
         }
@@ -484,6 +495,33 @@ public struct WaveMaster
     [SerializeField]
     public List<WaveList> levelWaveList;
     public WaveMaster(List<WaveList> ep)
+    {
+        levelWaveList = ep;
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////
+///
+[System.Serializable]
+public struct WaveLevelSpawnTimes 
+{
+    [SerializeField]
+    public string levelName;
+    [SerializeField]
+    public List<float> waves;
+    public WaveLevelSpawnTimes(string lvlName, List<float> ep)
+    {
+        levelName = lvlName;
+        waves = ep;
+    }
+}
+
+[System.Serializable]
+public struct WaveIntervalSpawnerMaster 
+{
+    [SerializeField]
+    public List<WaveLevelSpawnTimes> levelWaveList;
+    public WaveIntervalSpawnerMaster(List<WaveLevelSpawnTimes> ep)
     {
         levelWaveList = ep;
     }

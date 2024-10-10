@@ -718,6 +718,7 @@ MonoBehaviour:
   _fadeInSpeed: 0.5
   _fadeOutStartColor: {r: 0, g: 0, b: 0, a: 0}
   _currentFadeImage: {fileID: 0}
+  saveFileToUse: 1
 --- !u!4 &39560577
 Transform:
   m_ObjectHideFlags: 0
@@ -2076,17 +2077,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8176413596571392978, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
   m_PrefabInstance: {fileID: 7212526919097798824}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &359021395 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4935981875415744068, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
-  m_PrefabInstance: {fileID: 7212526919097798824}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 359021393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &359021396 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1580609463040286212, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
@@ -12098,22 +12088,22 @@ MonoBehaviour:
   - {fileID: 1984447144}
   upVals:
   - upName: Strength
-    upValues: 0000000014000000280000003c0000005000000064000000780000008c000000a0000000f0000000
+    upValues: 00000000230000004b00000096000000f00000002c01000090010000f401000058020000e8030000
   - upName: HP
-    upValues: 00000000c8000000900100005802000020030000e8030000dc050000d0070000b80b0000a00f0000
+    upValues: 00000000c8000000900100005802000020030000e8030000dc050000d0070000b80b000070170000
   - upName: Armor
-    upValues: 000000000f00000014000000190000001e00000023000000280000002d000000320000003c000000
+    upValues: 000000000f00000014000000190000001e00000023000000280000002d0000003200000046000000
   - upName: Light
     upValues: 1e00000023000000280000002d00000032000000370000003c000000460000005500000064000000
   - upName: Speed
-    upValues: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
+    upValues: 0000000001000000020000000300000004000000050000000600000007000000080000000a000000
   - upName: Magnet
-    upValues: 0000000003000000040000000600000007000000090000000a0000000c0000000f00000014000000
+    upValues: 0000000003000000040000000600000007000000090000000a0000000c0000000f00000019000000
   - upName: Inflation
-    upValues: 0f00000014000000190000001e00000022000000260000002a0000002e000000320000003c000000
+    upValues: 0f00000014000000190000001e00000022000000260000002a0000002e0000003200000046000000
   - upName: Luck
-    upValues: 1e00000023000000280000002d000000320000003c0000004100000046000000500000005a000000
-  upgradeCostValues: 0a0000001e0000004b000000960000002c010000f4010000e8030000e2040000dc050000d0070000
+    upValues: 1e00000023000000280000002d000000320000003c0000004100000046000000500000005f000000
+  upgradeCostValues: 0a000000190000003200000064000000960000002c010000f4010000ee020000dc05000088130000
 --- !u!4 &1774441264
 Transform:
   m_ObjectHideFlags: 0
@@ -14168,6 +14158,10 @@ PrefabInstance:
     - target: {fileID: 9095173833546220798, guid: 205af0f724b702a419dfcf5178113b87, type: 3}
       propertyPath: m_Name
       value: HowToPlay
+      objectReference: {fileID: 0}
+    - target: {fileID: 9095173833546220798, guid: 205af0f724b702a419dfcf5178113b87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -68058,6 +68052,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4054a04513399ec42a23680b4e303be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5003664507626046555 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2369771589013851739, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+  m_PrefabInstance: {fileID: 7212526919097798824}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627255401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &5003937356404767577
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -91866,7 +91871,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 449907141209986173, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 946122688000117452, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_AnchorMax.x
@@ -91934,7 +91939,7 @@ PrefabInstance:
       objectReference: {fileID: 1396142913}
     - target: {fileID: 2062134161526103556, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: menuItems.Array.size
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2062134161526103556, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: menuItems.Array.data[0]
@@ -91960,6 +91965,18 @@ PrefabInstance:
       propertyPath: menuItems.Array.data[5]
       value: 
       objectReference: {fileID: 359021393}
+    - target: {fileID: 2369771589013851739, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369771589013851739, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 467637969384600439}
+    - target: {fileID: 2369771589013851739, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 459677910}
     - target: {fileID: 2649744226762072760, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -26.5
@@ -92120,6 +92137,26 @@ PrefabInstance:
       propertyPath: m_enableAutoSizing
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6972716551479841317, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972716551479841317, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5003664507626046555}
+    - target: {fileID: 6972716551479841317, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 2047187824}
+    - target: {fileID: 6972716551479841317, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 459677910}
+    - target: {fileID: 6972716551479841317, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 459677910}
     - target: {fileID: 7033293216892394337, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -92227,7 +92264,7 @@ PrefabInstance:
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 4406157193897893253}
+      objectReference: {fileID: 5003664507626046555}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -92239,7 +92276,7 @@ PrefabInstance:
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 359021395}
+      objectReference: {fileID: 0}
     - target: {fileID: 7289093817131472383, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -92302,7 +92339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8176413596571392978, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8438449368353648334, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
       propertyPath: m_SizeDelta.x

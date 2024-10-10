@@ -12,7 +12,8 @@ public class CurseEffectLogic : EffectBase
     public float intensity;
     public bool activate;
 
-    public Modifier mod = new("curseRelic", -.3f, Modifier.BuffOrDebuff.BUFF, Modifier.ChangeType.PERCENT, true);   
+    public Modifier modStr = new("curseRelicSTR", -.3f, Modifier.BuffOrDebuff.DEBUFF, Modifier.ChangeType.PERCENT, true);   
+    public Modifier modDef = new("curseRelicDEF", -.3f, Modifier.BuffOrDebuff.DEBUFF, Modifier.ChangeType.PERCENT, true); 
     public void Start()
     {
         TickSystem.OnSubTick += delegate (object sender, TickSystem.OnTickEventArgs e) 
@@ -26,7 +27,8 @@ public class CurseEffectLogic : EffectBase
         {
             if(tickAmtDuration == tickMaxDuration)
             {
-                enemy._stats["str"].RemoveMod(mod.modName);
+                enemy._stats["str"].RemoveMod(modStr.modName);
+                enemy._stats["def"].RemoveMod(modDef.modName);
                 //enemy._stats["def"].RemoveMod(mod.modName);
                 enemy.RemoveEffect(this.effectName, createdUIObj);
             }
@@ -42,7 +44,8 @@ public class CurseEffectLogic : EffectBase
         //createdUIObj.GetComponent<Image>().sprite = uiEffectImg.sprite;
         createdUIObj.GetComponent<RectTransform>().SetLocalPositionAndRotation(new Vector3(0,0,0), Quaternion.Euler(0,0,0));
 
-        enemy._stats["str"].AddMod(mod);
+        enemy._stats["str"].AddMod(modStr);
+        enemy._stats["def"].AddMod(modDef);
         //enemy._stats["def"].AddMod(mod);
         activate = true;
 
