@@ -718,7 +718,7 @@ MonoBehaviour:
   _fadeInSpeed: 0.5
   _fadeOutStartColor: {r: 0, g: 0, b: 0, a: 0}
   _currentFadeImage: {fileID: 0}
-  saveFileToUse: 1
+  saveFileToUse: 0
 --- !u!4 &39560577
 Transform:
   m_ObjectHideFlags: 0
@@ -1142,6 +1142,90 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66283651}
   m_CullTransparentMesh: 1
+--- !u!1 &71143113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 71143114}
+  - component: {fileID: 71143115}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &71143114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71143113}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &71143115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71143113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 2
+    Name: UpgradeButton3
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &102139398
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,6 +3231,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &456766174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 456766175}
+  - component: {fileID: 456766176}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &456766175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456766174}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &456766176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456766174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 5
+    Name: UpgradeButton6
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &459677907 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 708302116795811901, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
@@ -5188,8 +5356,9 @@ GameObject:
   - component: {fileID: 885781794}
   - component: {fileID: 885781793}
   - component: {fileID: 885781795}
+  - component: {fileID: 885781796}
   m_Layer: 5
-  m_Name: MainMenuUITK
+  m_Name: UITK - MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5209,7 +5378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: cdc29a9e3a70ab9498352264e6663d5e, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 67caa522cc9ed304f9fca67b2e4eddf5, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: 09ee39e187adb564cb9543c4c5d5144d, type: 3}
   m_SortingOrder: 0
 --- !u!4 &885781794
 Transform:
@@ -5223,7 +5392,16 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1706310570}
+  - {fileID: 1380213715}
+  - {fileID: 71143114}
+  - {fileID: 1542313955}
+  - {fileID: 1225990816}
+  - {fileID: 456766175}
+  - {fileID: 1134790028}
+  - {fileID: 1638819920}
+  - {fileID: 1663270195}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &885781795
@@ -5239,6 +5417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuController: {fileID: 1440911964}
+  upcont: {fileID: 885781796}
   soundMaker: {fileID: 1396142913}
   camController: {fileID: 2011777294}
   upgradeMenu: {fileID: 151810899}
@@ -5247,6 +5426,28 @@ MonoBehaviour:
   optionsController: {fileID: 1331222152}
   allowInputTimer: 0
   allowInputTimerMax: 1
+--- !u!114 &885781796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885781792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f2c9781ec164c841a524d4adf98e2c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeMenuContainer: {fileID: 1663270196}
+  upgradeButton:
+  - {fileID: 1706310571}
+  - {fileID: 1380213716}
+  - {fileID: 71143115}
+  - {fileID: 1542313956}
+  - {fileID: 1225990817}
+  - {fileID: 456766176}
+  - {fileID: 1134790029}
+  - {fileID: 1638819921}
 --- !u!1 &904567374
 GameObject:
   m_ObjectHideFlags: 0
@@ -7622,6 +7823,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1134790027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1134790028}
+  - component: {fileID: 1134790029}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1134790028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134790027}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134790029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134790027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 6
+    Name: UpgradeButton7
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1156634126
 GameObject:
   m_ObjectHideFlags: 0
@@ -8036,6 +8321,90 @@ MonoBehaviour:
   _scaleAmount: 1.5
   wantUIChange: 0
   isOpened: 0
+--- !u!1 &1225990815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1225990816}
+  - component: {fileID: 1225990817}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1225990816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225990815}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1225990817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225990815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 4
+    Name: UpgradeButton5
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1287635454 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7197497467018714833, guid: 261f9dd175f7b2742bc6926866ec9402, type: 3}
@@ -8787,6 +9156,90 @@ MonoBehaviour:
   fitType: 4
   fitX: 1
   fitY: 1
+--- !u!1 &1380213714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1380213715}
+  - component: {fileID: 1380213716}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1380213715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380213714}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1380213716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380213714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 1
+    Name: UpgradeButton2
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1396142907
 GameObject:
   m_ObjectHideFlags: 0
@@ -10688,6 +11141,90 @@ MonoBehaviour:
   _scaleAmount: 1.5
   wantUIChange: 1
   isOpened: 0
+--- !u!1 &1542313954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1542313955}
+  - component: {fileID: 1542313956}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1542313955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542313954}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1542313956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542313954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 3
+    Name: UpgradeButton4
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &1552586116 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3251070975671050612, guid: 5dd2eaeafa5ed314db1e56627583d834, type: 3}
@@ -11170,6 +11707,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1638819919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1638819920}
+  - component: {fileID: 1638819921}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1638819920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638819919}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1638819921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638819919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 7
+    Name: UpgradeButton8
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 7
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1655048177
 GameObject:
   m_ObjectHideFlags: 0
@@ -11363,6 +11984,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1660835784}
   m_CullTransparentMesh: 1
+--- !u!1 &1663270194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1663270195}
+  - component: {fileID: 1663270196}
+  m_Layer: 5
+  m_Name: UpgradeMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1663270195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663270194}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1663270196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663270194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16ec358c2f908ee40b2bcc301714cdcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 1
+  _guid: 
+  _guids: []
+  _name: UpgradeMenuContainer
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 0
+  - Index: 0
+    Name: UpgradeMenu
+    Init: 0
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
 --- !u!1 &1664945248
 GameObject:
   m_ObjectHideFlags: 3
@@ -11685,6 +12363,90 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704023859}
   m_CullTransparentMesh: 1
+--- !u!1 &1706310569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1706310570}
+  - component: {fileID: 1706310571}
+  m_Layer: 5
+  m_Name: UITK - UpgradeButton1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1706310570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706310569}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 885781794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1706310571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706310569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2fd0089a67bb45a031683c988bdfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _linkingMode: 2
+  _guid: 
+  _guids: []
+  _name: 
+  _names:
+  - Index: -1
+    Name: UpgradeMenu
+    Init: 1
+  - Index: -1
+    Name: UpgradeMenuContainer
+    Init: 1
+  - Index: -1
+    Name: Panel
+    Init: 1
+  - Index: -1
+    Name: BG
+    Init: 1
+  - Index: -1
+    Name: UpgradeContainer
+    Init: 1
+  - Index: 0
+    Name: UpgradeButton1
+    Init: 1
+  _uiDocument: {fileID: 885781793}
+  _debug: 0
+  _onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UITKUpgradeMenuController, Assembly-CSharp
+        m_MethodName: UpgradeButton_OnClick
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1730661749
 GameObject:
   m_ObjectHideFlags: 0

@@ -118,6 +118,10 @@ public class MainMenuController : MonoBehaviour
         {
             upController.upgradeList = data.GetData<List<BaseUpgrade>>("UpgradeList");
         }
+        else
+        {
+            //Debug.Log("No Update data found");
+        }
 
         for(int i = 0; i < upController.upgradeList.Count; i++)
         {
@@ -140,7 +144,7 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Upgrade Data Found");
+            //Debug.Log("No Upgrade Data Found");
         }
         #endregion
 
@@ -151,7 +155,7 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Gold Data Found");
+            //Debug.Log("No Gold Data Found");
             data.SetData("PlayerGold", _playerGold);
             data.SaveProfile();
             _playerGold = 0;
@@ -165,7 +169,7 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Stage Difficulty Data Found");
+            //Debug.Log("No Stage Difficulty Data Found");
             data.SetData("StageDifficulty", 1);
             data.SaveProfile();
         }
@@ -189,7 +193,7 @@ public class MainMenuController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Option Data Found");
+            //Debug.Log("No Option Data Found");
             PlayerPrefs.SetFloat("MusicVolumeSlider", 1);
             PlayerPrefs.SetFloat("SFXVolumeSlider", 1);
             PlayerPrefs.SetInt("FullScreenToggle", 1);
