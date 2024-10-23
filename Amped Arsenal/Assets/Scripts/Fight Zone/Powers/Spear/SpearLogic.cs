@@ -62,6 +62,6 @@ public class SpearLogic : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        transform.LookAt(transform.position + thisRB.velocity);
+        transform.LookAt(transform.position + thisRB.linearVelocity);
     }
 }

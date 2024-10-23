@@ -104,7 +104,7 @@ public class ShopMovementAI : MonoBehaviour
                 if(walkingTimer < walkingTimerMax)
                 {
                     walkingTimer += Time.deltaTime;
-                    thisRB.velocity = moveDir.normalized * moveSpeed;
+                    thisRB.linearVelocity = moveDir.normalized * moveSpeed;
                 }
                 else
                 {

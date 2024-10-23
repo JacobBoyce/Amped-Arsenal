@@ -120,7 +120,7 @@ namespace MapMagic.Previews
 				{
 					Shader shader;
 					#if UNITY_2019_2_OR_NEWER
-					Material defaultTerrainMat = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset?.defaultTerrainMaterial;
+					Material defaultTerrainMat = UnityEngine.Rendering.GraphicsSettings.defaultRenderPipeline?.defaultTerrainMaterial;
 					if (defaultTerrainMat != null  &&  defaultTerrainMat.shader.name.Contains("Universal Render Pipeline"))
 						shader = Shader.Find("MapMagic/TerrainPreviewURP");
 					else if (defaultTerrainMat != null  &&  defaultTerrainMat.shader.name.Contains("HDRP"))

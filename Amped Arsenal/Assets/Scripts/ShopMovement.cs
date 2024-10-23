@@ -186,7 +186,7 @@ public class ShopMovement : MonoBehaviour
             //walk logic
             if(!thisRB.isKinematic)
             {
-                thisRB.velocity = moveDir.normalized * moveSpeed;
+                thisRB.linearVelocity = moveDir.normalized * moveSpeed;
             }
             
 

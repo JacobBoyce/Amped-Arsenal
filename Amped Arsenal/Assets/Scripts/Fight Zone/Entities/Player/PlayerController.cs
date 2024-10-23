@@ -207,42 +207,42 @@ public class PlayerController : Actor
             //     }
             // }
         }
-        // #region Cheats 
+        #region Cheats 
         
-        // if (Input.GetKeyDown(KeyCode.Y))
-        // {
-        //     aoeLight.range += 5;
-        //     aoeLightElse.AdjustMyLight((int)aoeLight.range);
-        // }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            aoeLight.range += 5;
+            aoeLightElse.AdjustMyLight((int)aoeLight.range);
+        }
 
-        // if(Input.GetKey(KeyCode.X))
-        // {
-        //     AddXP(10);
-        // }
+        if(Input.GetKey(KeyCode.X))
+        {
+            AddXP(10);
+        }
 
-        // if(Input.GetKey(KeyCode.G))
-        // {
-        //     AddGold(10);
-        // }
+        if(Input.GetKey(KeyCode.G))
+        {
+            AddGold(10);
+        }
 
-        // if(Input.GetKeyDown(KeyCode.P))
-        // {
-        //     _stats["pull"].Value++;
-        // }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            _stats["pull"].Value++;
+        }
 
-        // if(Input.GetKeyDown(KeyCode.L))
-        // {
-        //     GameZoneController.Instance.wvController.enemyVisuals = !GameZoneController.Instance.wvController.enemyVisuals;
-        // }
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            GameZoneController.Instance.wvController.enemyVisuals = !GameZoneController.Instance.wvController.enemyVisuals;
+        }
 
-        // if(Input.GetKeyDown(KeyCode.Z))
-        // {
-        //     foreach(GameObject go in equippedWeapons)
-        //     {
-        //         go.GetComponent<WeaponBase>().UpgradeWeapon();
-        //     }
-        // }
-        // #endregion
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            foreach(GameObject go in equippedWeapons)
+            {
+                go.GetComponent<WeaponBase>().UpgradeWeapon();
+            }
+        }
+        #endregion
 
        // DetectInputDevice();
         ChangeInteractButtonImage();

@@ -55,7 +55,7 @@ public class ThirdPersonMovement : MonoBehaviour
         //moveInput.y = Input.GetAxis("Vertical");
         moveInput.Normalize();
 
-        theRB.velocity = new Vector3(moveInput.x * player._stats["spd"].Value, 0f, moveInput.y * player._stats["spd"].Value);
+        theRB.linearVelocity = new Vector3(moveInput.x * player._stats["spd"].Value, 0f, moveInput.y * player._stats["spd"].Value);
 
         switch(fpState)
         {

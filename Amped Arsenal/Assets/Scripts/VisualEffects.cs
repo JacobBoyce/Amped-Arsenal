@@ -122,9 +122,9 @@ public class VisualEffects : MonoBehaviour
             }
             else
             {
-                if(rb.velocity.magnitude > 0)
+                if(rb.linearVelocity.magnitude > 0)
                 {
-                    rb.velocity = rb.velocity * 0.95f * Time.deltaTime;
+                    rb.linearVelocity = rb.linearVelocity * 0.95f * Time.deltaTime;
                 }
                 Bobber();
             }

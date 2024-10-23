@@ -113,14 +113,14 @@ public class SplashLogic : MonoBehaviour
         // moving right
         if(isBabySplash)
         {
-            if(thisRB.velocity.x > 0)
+            if(thisRB.linearVelocity.x > 0)
             {
                 this.GetComponentInChildren<SpriteRenderer>().flipY = true;
-                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(thisRB.velocity.y + 180)*buffer);
+                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(thisRB.linearVelocity.y + 180)*buffer);
             }
-            else if(thisRB.velocity.x < 0)
+            else if(thisRB.linearVelocity.x < 0)
             {
-                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(-thisRB.velocity.y)*buffer);
+                visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,(-thisRB.linearVelocity.y)*buffer);
             }
         }
         else
@@ -128,7 +128,7 @@ public class SplashLogic : MonoBehaviour
             //check which way quispy is facing then flipY when needed
 
             //face up then down
-            if(thisRB.velocity.y > 0)
+            if(thisRB.linearVelocity.y > 0)
             {
                 visualObjectToRotate.transform.localRotation = Quaternion.Euler(x,y,-90);   
             }

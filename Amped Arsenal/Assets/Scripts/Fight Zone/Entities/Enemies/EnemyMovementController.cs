@@ -300,10 +300,10 @@ public class EnemyMovementController : MonoBehaviour
         thisRB.AddForce(force);
 
         yield return new WaitForFixedUpdate();
-        yield return new WaitUntil(() => thisRB.velocity.magnitude < .05f);
+        yield return new WaitUntil(() => thisRB.linearVelocity.magnitude < .05f);
         yield return new WaitForSeconds(.25f);
 
-        thisRB.velocity = Vector3.zero;
+        thisRB.linearVelocity = Vector3.zero;
         thisRB.angularVelocity = Vector3.zero;
         thisRB.useGravity = false;
         thisRB.isKinematic = true;
